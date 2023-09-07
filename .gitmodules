@@ -1,0 +1,3 @@
+[submodule "assets/logos"]
+	path = assets/logos
+	url = git@github.com:DerHabicht/logos.git
