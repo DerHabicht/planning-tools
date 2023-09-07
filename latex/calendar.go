@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -44,13 +45,25 @@ func NewCalendarTemplate(cal calendar.Calendar) (CalendarTemplate, error) {
 }
 
 func (ct *CalendarTemplate) LaTeX() string {
+	cfgDir, err := config.ConfigDir()
+	if err != nil {
+		panic(err)
+	}
+	coverLogoPath := filepath.Join(cfgDir, "assets", config.GetString("cover_logo"))
+
+	latex := ct.calendarTemplate
+
+	latex = strings.Replace(latex, "+PIC", coverLogoPath, 1)
+	latex = strings.Replace(latex, "+FY", strconv.Itoa(ct.calendar.FiscalYear()), 1)
+	latex = strings.Replace(latex, "+LCD", config.GetString("lunar_calibration_date"), 1)
+
 	for month := 1; month <= 13; month++ {
 		mt := NewMonthTemplate(ct.calendar, ct.monthTemplate)
 
-		ct.calendarTemplate = strings.Replace(ct.calendarTemplate, fmt.Sprintf("+M%02d", month), mt.LaTeX(), 1)
+		latex = strings.Replace(latex, fmt.Sprintf("+M%02d", month), mt.LaTeX(), 1)
 
 		ct.calendar.NextMonth()
 	}
 
-	return ct.calendarTemplate
+	return latex
 }

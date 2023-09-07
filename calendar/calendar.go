@@ -48,9 +48,10 @@ type Week struct {
 	ag7ifSprint  Ag7ifSprint
 	isoWeek      int
 	currentDay   date.Date
+	location     *time.Location
 }
 
-func NewWeek(d date.Date) Week {
+func NewWeek(d date.Date, loc *time.Location) Week {
 	_, isoWeek := d.ISOWeek()
 
 	fiscalYear := FiscalYearFromDate(d)
@@ -77,6 +78,7 @@ func NewWeek(d date.Date) Week {
 		ag7ifQuarter: ag7ifQuarter,
 		ag7ifSprint:  ag7ifSprint,
 		isoWeek:      isoWeek,
+		location:     loc,
 	}
 }
 
@@ -105,13 +107,11 @@ func (w *Week) CurrentDayStr(month bool) (string, error) {
 
 func (w *Week) CurrentDaySunriseSunset() (time.Time, time.Time, error) {
 	homeLat := config.GetFloat64("home_location.lat")
-	homeLong := config.GetFloat64("home_location.lat")
+	homeLong := config.GetFloat64("home_location.long")
 
 	sr, ss := sunrise.SunriseSunset(homeLat, homeLong, w.currentDay.Year(), w.currentDay.Month(), w.currentDay.Day())
 
-	loc, _ := time.LoadLocation(config.GetString("home_location.tz"))
-
-	return sr.In(loc), ss.In(loc), nil
+	return sr.In(w.location), ss.In(w.location), nil
 }
 
 func (w *Week) Next() (date.Date, error) {
@@ -163,14 +163,20 @@ type Calendar struct {
 	currentCalendarYear int
 	currentMonth        time.Month
 	currentWeek         Week
+	location            *time.Location
 }
 
 func NewCalendar(fiscalYear int) Calendar {
+	loc, err := time.LoadLocation(config.GetString("home_location.tz"))
+	if err != nil {
+		loc = time.UTC
+	}
 	return Calendar{
 		fiscalYear:          fiscalYear,
 		currentCalendarYear: fiscalYear - 1,
 		currentMonth:        time.September,
-		currentWeek:         NewWeek(date.New(fiscalYear-1, time.September, 1)),
+		currentWeek:         NewWeek(date.New(fiscalYear-1, time.September, 1), loc),
+		location:            loc,
 	}
 }
 
@@ -178,10 +184,14 @@ func (c *Calendar) CurrentWeek() Week {
 	return c.currentWeek
 }
 
+func (c *Calendar) FiscalYear() int {
+	return c.fiscalYear
+}
+
 func (c *Calendar) NextWeek() Week {
 	d := c.currentWeek.Reset()
 
-	c.currentWeek = NewWeek(d.Add(7))
+	c.currentWeek = NewWeek(d.Add(7), c.location)
 
 	return c.currentWeek
 }
@@ -199,14 +209,14 @@ func (c *Calendar) NextMonth() (string, Week) {
 		c.currentMonth += 1
 	}
 
-	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1))
+	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1), c.location)
 	return c.CurrentMonth(), c.currentWeek
 }
 
 func (c *Calendar) Reset() (string, Week) {
 	c.currentCalendarYear = c.fiscalYear - 1
 	c.currentMonth = time.September
-	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.September, 1))
+	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.September, 1), c.location)
 
 	return c.CurrentMonth(), c.currentWeek
 }

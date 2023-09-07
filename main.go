@@ -5,17 +5,13 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/Valgard/godotenv"
-
 	"github.com/derhabicht/planning-calendar/calendar"
+	"github.com/derhabicht/planning-calendar/config"
 	"github.com/derhabicht/planning-calendar/latex"
 )
 
 func main() {
-	dotenv := godotenv.New()
-	if err := dotenv.Load(".env"); err != nil {
-		panic(err)
-	}
+	config.InitConfig()
 
 	fiscalYear, err := strconv.Atoi(os.Args[1])
 	if err != nil {

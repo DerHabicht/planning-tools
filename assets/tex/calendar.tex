@@ -2,9 +2,17 @@
 
 \usepackage{fancyhdr}
 \usepackage[landscape,margin=0.5in]{geometry}
+\usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{tikz}
+\usepackage{titlepic}
+
+\title{\Huge{}AG7IF Planning Calendar \\ CAP FY +FY}
+\author{}
+\date{}
+\titlepic{\includegraphics[height=5in]{+PIC}}
+
 
 \renewcommand{\multirowsetup}{\raggedleft}
 \renewcommand{\headrulewidth}{0pt}
@@ -34,7 +42,7 @@
 }
 
 \makeatletter
-\pgfcalendardatetojulian{2010-01-15}{\c@pgf@counta} % 2010-01-15 07:11 UTC -- http://aa.usno.navy.mil/cgi-bin/aa_moonphases.pl?year=2010&ZZZ=END
+\pgfcalendardatetojulian{+LCD}{\c@pgf@counta}
 \def\synodicmonth{29.530588853}
 \newcommand{\moon}[2][]{%
     \edef\checkfordate{\noexpand\in@{-}{#2}}%
@@ -69,6 +77,8 @@
 \makeatother
 
 \begin{document}
+
+\maketitle
 
 +M01
 
