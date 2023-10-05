@@ -4,6 +4,95 @@ import (
 	"fmt"
 )
 
+type Suit int
+
+const (
+	Hearts Suit = iota + 1
+	Clubs
+	Diamonds
+	Spades
+)
+
+// Card represents a playing card.
+// Rank values have the following meanings:
+//
+//		0: Joker
+//	 1: Ace
+//		2: 2
+//	 ...
+//	 10: 10
+//	 11: Jack
+//	 12: Queen
+//	 13: King
+type Card struct {
+	Suit Suit
+	Rank uint
+}
+
+var weekCard map[int]Card = map[int]Card{
+	1:  Card{Suit: Hearts, Rank: 1},
+	2:  Card{Suit: Hearts, Rank: 2},
+	3:  Card{Suit: Hearts, Rank: 3},
+	4:  Card{Suit: Hearts, Rank: 4},
+	5:  Card{Suit: Hearts, Rank: 5},
+	6:  Card{Suit: Hearts, Rank: 6},
+	7:  Card{Suit: Hearts, Rank: 7},
+	8:  Card{Suit: Hearts, Rank: 8},
+	9:  Card{Suit: Hearts, Rank: 9},
+	10: Card{Suit: Hearts, Rank: 10},
+	11: Card{Suit: Hearts, Rank: 11},
+	12: Card{Suit: Hearts, Rank: 12},
+	13: Card{Suit: Hearts, Rank: 13},
+
+	14: Card{Suit: Clubs, Rank: 1},
+	15: Card{Suit: Clubs, Rank: 2},
+	16: Card{Suit: Clubs, Rank: 3},
+	17: Card{Suit: Clubs, Rank: 4},
+	18: Card{Suit: Clubs, Rank: 5},
+	19: Card{Suit: Clubs, Rank: 6},
+	20: Card{Suit: Clubs, Rank: 7},
+	21: Card{Suit: Clubs, Rank: 8},
+	22: Card{Suit: Clubs, Rank: 9},
+	23: Card{Suit: Clubs, Rank: 10},
+	24: Card{Suit: Clubs, Rank: 11},
+	25: Card{Suit: Clubs, Rank: 12},
+	26: Card{Suit: Clubs, Rank: 13},
+
+	27: Card{Suit: Diamonds, Rank: 13},
+	28: Card{Suit: Diamonds, Rank: 12},
+	29: Card{Suit: Diamonds, Rank: 11},
+	30: Card{Suit: Diamonds, Rank: 10},
+	31: Card{Suit: Diamonds, Rank: 9},
+	32: Card{Suit: Diamonds, Rank: 8},
+	33: Card{Suit: Diamonds, Rank: 7},
+	34: Card{Suit: Diamonds, Rank: 6},
+	35: Card{Suit: Diamonds, Rank: 5},
+	36: Card{Suit: Diamonds, Rank: 4},
+	37: Card{Suit: Diamonds, Rank: 3},
+	38: Card{Suit: Diamonds, Rank: 2},
+	39: Card{Suit: Diamonds, Rank: 1},
+
+	40: Card{Suit: Spades, Rank: 13},
+	41: Card{Suit: Spades, Rank: 12},
+	42: Card{Suit: Spades, Rank: 11},
+	43: Card{Suit: Spades, Rank: 10},
+	44: Card{Suit: Spades, Rank: 9},
+	45: Card{Suit: Spades, Rank: 8},
+	46: Card{Suit: Spades, Rank: 7},
+	47: Card{Suit: Spades, Rank: 6},
+	48: Card{Suit: Spades, Rank: 5},
+	49: Card{Suit: Spades, Rank: 4},
+	50: Card{Suit: Spades, Rank: 3},
+	51: Card{Suit: Spades, Rank: 2},
+	52: Card{Suit: Spades, Rank: 1},
+
+	53: Card{Suit: 0, Rank: 0},
+}
+
+func GetWeekCard(isoWeek int) Card {
+	return weekCard[isoWeek]
+}
+
 type Ag7ifSprint int
 
 const (

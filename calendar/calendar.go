@@ -47,6 +47,7 @@ type Week struct {
 	ag7ifQuarter Ag7ifQuarter
 	ag7ifSprint  Ag7ifSprint
 	isoWeek      int
+	card         Card
 	currentDay   date.Date
 	location     *time.Location
 }
@@ -78,6 +79,7 @@ func NewWeek(d date.Date, loc *time.Location) Week {
 		ag7ifQuarter: ag7ifQuarter,
 		ag7ifSprint:  ag7ifSprint,
 		isoWeek:      isoWeek,
+		card:         GetWeekCard(isoWeek),
 		location:     loc,
 	}
 }
@@ -154,8 +156,8 @@ func (w *Week) Ag7ifSprint() string {
 	return w.ag7ifSprint.String()
 }
 
-func (w *Week) IsoWeek() string {
-	return fmt.Sprintf("W%02d", w.isoWeek)
+func (w *Week) IsoWeek() (string, Card) {
+	return fmt.Sprintf("W%02d", w.isoWeek), w.card
 }
 
 type Calendar struct {

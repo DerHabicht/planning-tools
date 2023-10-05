@@ -46,12 +46,15 @@ func (m *MonthTemplate) fillDayDataWithSolar(dayStr string, sunrise, sunset time
 }
 
 func (m *MonthTemplate) fillWeekData(weekNum int, week calendar.Week) {
+	isoWeekString, weekCard := week.IsoWeek()
+	isoWeekString = fmt.Sprintf("%s%s", MarshallCard(weekCard), isoWeekString)
+
 	m.template = strings.Replace(m.template, fmt.Sprintf("+FT%d", weekNum), week.FyTrimester(), 1)
 	m.template = strings.Replace(m.template, fmt.Sprintf("+FQ%d", weekNum), week.FyQuarter(), 1)
 	m.template = strings.Replace(m.template, fmt.Sprintf("+FW%d", weekNum), week.FyWeek(), 1)
 	m.template = strings.Replace(m.template, fmt.Sprintf("+AQ%d", weekNum), week.Ag7ifQuarter(), 1)
 	m.template = strings.Replace(m.template, fmt.Sprintf("+AS%d", weekNum), week.Ag7ifSprint(), 1)
-	m.template = strings.Replace(m.template, fmt.Sprintf("+IW%d", weekNum), week.IsoWeek(), 1)
+	m.template = strings.Replace(m.template, fmt.Sprintf("+IW%d", weekNum), isoWeekString, 1)
 }
 
 func (m *MonthTemplate) LaTeX() string {
@@ -73,7 +76,8 @@ func (m *MonthTemplate) LaTeX() string {
 				dayStr, err = week.CurrentDayStr(false)
 			}
 			if err != nil {
-				panic(fmt.Errorf("unexpectedly got to the end of week %s", week.IsoWeek()))
+				wk, _ := week.IsoWeek()
+				panic(fmt.Errorf("unexpectedly got to the end of week %s", wk))
 			}
 
 			currentDate, _ := week.CurrentDay()
