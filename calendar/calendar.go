@@ -40,19 +40,20 @@ func (eow EndOfWeekError) Error() string {
 }
 
 type Week struct {
-	monday       date.Date
-	fiscalYear   CapFiscalYear
-	fyTrimester  FyTrimester
-	fyQuarter    FyQuarter
-	ag7ifQuarter Ag7ifQuarter
-	ag7ifSprint  Ag7ifSprint
-	isoWeek      int
-	card         Card
-	currentDay   date.Date
-	location     *time.Location
+	monday          date.Date
+	fiscalYear      CapFiscalYear
+	fyTrimester     FyTrimester
+	fyQuarter       FyQuarter
+	ag7ifQuarter    Ag7ifQuarter
+	ag7ifSprint     Ag7ifSprint
+	isoWeek         int
+	card            Card
+	currentDay      date.Date
+	location        *time.Location
+	holidayCalendar *HolidayCalendar
 }
 
-func NewWeek(d date.Date, loc *time.Location) Week {
+func NewWeek(d date.Date, loc *time.Location, hc *HolidayCalendar) Week {
 	_, isoWeek := d.ISOWeek()
 
 	fiscalYear := FiscalYearFromDate(d)
@@ -72,15 +73,16 @@ func NewWeek(d date.Date, loc *time.Location) Week {
 	ag7ifSprint := computeAg7ifSprint(isoWeek)
 
 	return Week{
-		monday:       monday,
-		fiscalYear:   fiscalYear,
-		fyTrimester:  fyTrimester,
-		fyQuarter:    fyQuarter,
-		ag7ifQuarter: ag7ifQuarter,
-		ag7ifSprint:  ag7ifSprint,
-		isoWeek:      isoWeek,
-		card:         GetWeekCard(isoWeek),
-		location:     loc,
+		monday:          monday,
+		fiscalYear:      fiscalYear,
+		fyTrimester:     fyTrimester,
+		fyQuarter:       fyQuarter,
+		ag7ifQuarter:    ag7ifQuarter,
+		ag7ifSprint:     ag7ifSprint,
+		isoWeek:         isoWeek,
+		card:            GetWeekCard(isoWeek),
+		location:        loc,
+		holidayCalendar: hc,
 	}
 }
 
@@ -160,12 +162,17 @@ func (w *Week) IsoWeek() (string, Card) {
 	return fmt.Sprintf("W%02d", w.isoWeek), w.card
 }
 
+func (w *Week) IsCurrentDayHoliday() (bool, bool, *Holiday) {
+	return w.holidayCalendar.IsHoliday(w.currentDay.Local())
+}
+
 type Calendar struct {
 	fiscalYear          int
 	currentCalendarYear int
 	currentMonth        time.Month
 	currentWeek         Week
 	location            *time.Location
+	holidayCalendar     *HolidayCalendar
 }
 
 func NewCalendar(fiscalYear int) Calendar {
@@ -173,12 +180,16 @@ func NewCalendar(fiscalYear int) Calendar {
 	if err != nil {
 		loc = time.UTC
 	}
+
+	hc := NewHolidayCalendar()
+
 	return Calendar{
 		fiscalYear:          fiscalYear,
 		currentCalendarYear: fiscalYear - 1,
 		currentMonth:        time.September,
-		currentWeek:         NewWeek(date.New(fiscalYear-1, time.September, 1), loc),
+		currentWeek:         NewWeek(date.New(fiscalYear-1, time.September, 1), loc, &hc),
 		location:            loc,
+		holidayCalendar:     &hc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (c *Calendar) FiscalYear() int {
 func (c *Calendar) NextWeek() Week {
 	d := c.currentWeek.Reset()
 
-	c.currentWeek = NewWeek(d.Add(7), c.location)
+	c.currentWeek = NewWeek(d.Add(7), c.location, c.holidayCalendar)
 
 	return c.currentWeek
 }
@@ -211,14 +222,24 @@ func (c *Calendar) NextMonth() (string, Week) {
 		c.currentMonth += 1
 	}
 
-	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1), c.location)
+	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1), c.location, c.holidayCalendar)
 	return c.CurrentMonth(), c.currentWeek
 }
 
 func (c *Calendar) Reset() (string, Week) {
 	c.currentCalendarYear = c.fiscalYear - 1
 	c.currentMonth = time.September
-	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.September, 1), c.location)
+	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.September, 1), c.location, c.holidayCalendar)
 
 	return c.CurrentMonth(), c.currentWeek
+}
+
+func (c *Calendar) Holidays() []Holiday {
+	holidays := make([]Holiday, 0)
+
+	for _, holiday := range c.holidayCalendar.holidays {
+		holidays = append(holidays, holiday)
+	}
+
+	return holidays
 }

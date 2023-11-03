@@ -3,17 +3,16 @@ module github.com/derhabicht/planning-calendar
 go 1.19
 
 require (
-	github.com/Valgard/godotenv v0.0.0-20200511222744-8873b92a09c5
 	github.com/fxtlabs/date v0.0.0-20150819233934-d9ab6e2a88a9
 	github.com/nathan-osman/go-sunrise v1.1.0
 	github.com/pkg/errors v0.9.1
+	github.com/rickar/cal/v2 v2.1.13
 	github.com/rs/zerolog v1.30.0
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.8.4
 )
 
 require (
-	github.com/Valgard/go-pcre v0.0.0-20200510215507-235e400e25e9 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

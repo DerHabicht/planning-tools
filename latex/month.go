@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/fxtlabs/date"
+	"github.com/rickar/cal/v2"
 
 	"github.com/derhabicht/planning-calendar/calendar"
 )
 
-const dayDataTemplate = `+DY\\\moon{+FD}\\\vspace{2em}+YD\hfill`
-const dayDataTemplateWithSolar = `+DY\\\moon{+FD}\\\vspace{1em}+SR\\+YD\hfill{}+SS`
+const dayDataTemplate = `+DY\\+HD\moon{+FD}\\\vspace{1em}\hspace{1em}+YD\hfill{}+SR\\+MJD\hfill{}+SS`
 
 type MonthTemplate struct {
 	calendar calendar.Calendar
@@ -27,20 +27,31 @@ func NewMonthTemplate(cal calendar.Calendar, template string) MonthTemplate {
 	}
 }
 
-func (m *MonthTemplate) fillDayData(dayStr string, dt date.Date) string {
+func (m *MonthTemplate) fillDayData(dayStr string, sunrise, sunset time.Time, dt date.Date) string {
+	mjd := int(cal.ModifiedJulianDate(dt.Local()))
+
 	data := strings.Replace(dayDataTemplate, "+DY", dayStr, 1)
-	data = strings.Replace(data, "+FD", dt.FormatISO(4), 1)
-	data = strings.Replace(data, "+YD", fmt.Sprintf("%03d", dt.YearDay()), 1)
-
-	return data
-}
-
-func (m *MonthTemplate) fillDayDataWithSolar(dayStr string, sunrise, sunset time.Time, dt date.Date) string {
-	data := strings.Replace(dayDataTemplateWithSolar, "+DY", dayStr, 1)
 	data = strings.Replace(data, "+SR", sunrise.Format("1504"), 1)
 	data = strings.Replace(data, "+SS", sunset.Format("1504"), 1)
 	data = strings.Replace(data, "+FD", dt.FormatISO(4), 1)
 	data = strings.Replace(data, "+YD", fmt.Sprintf("%03d", dt.YearDay()), 1)
+	data = strings.Replace(data, "+MJD", fmt.Sprintf("%d", mjd), 1)
+
+	return data
+}
+
+func (m *MonthTemplate) fillHolidayData(dayStr string, holiday *calendar.Holiday, actual bool) string {
+	data := dayStr
+
+	if holiday == nil {
+		data = strings.Replace(data, "+HD", "", 1)
+	} else {
+		abbv := holiday.Abbreviation()
+		if !actual {
+			abbv += "*"
+		}
+		data = strings.Replace(data, "+HD", fmt.Sprintf("%s\\hfill{}", abbv), 1)
+	}
 
 	return data
 }
@@ -82,23 +93,21 @@ func (m *MonthTemplate) LaTeX() string {
 
 			currentDate, _ := week.CurrentDay()
 
+			var holiday *calendar.Holiday
+			actual, _, holiday := week.IsCurrentDayHoliday()
+
 			sunrise, sunset, err := week.CurrentDaySunriseSunset()
-			var dayData string
 			if err != nil {
-				dayData = m.fillDayData(dayStr, currentDate)
-			} else {
-				dayData = m.fillDayDataWithSolar(dayStr, sunrise, sunset, currentDate)
+				panic(err)
 			}
+
+			dayData := m.fillDayData(dayStr, sunrise, sunset, currentDate)
+			dayData = m.fillHolidayData(dayData, holiday, actual)
 
 			day += 1
 			m.template = strings.Replace(m.template, fmt.Sprintf("+D%02d", day), dayData, 1)
 
 			week.Next()
-			/*
-				if err != nil {
-					panic(fmt.Errorf("unexpectedly got to the end of week %s", week.IsoWeek()))
-				}
-			*/
 		}
 
 		week = m.calendar.NextWeek()
