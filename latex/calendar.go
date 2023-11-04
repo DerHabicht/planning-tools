@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -56,13 +55,14 @@ func (ct *CalendarTemplate) LaTeX() string {
 	latex := ct.calendarTemplate
 
 	latex = strings.Replace(latex, "+PIC", coverLogoPath, 1)
-	latex = strings.Replace(latex, "+FY", strconv.Itoa(ct.calendar.FiscalYear()), 1)
+	latex = strings.Replace(latex, "+CAL_START", fmt.Sprintf("September %d", ct.calendar.FiscalYear()-1), 1)
+	latex = strings.Replace(latex, "+CAL_END", fmt.Sprintf("December %d", ct.calendar.FiscalYear()), 1)
 	latex = strings.Replace(latex, "+LCD", config.GetString("lunar_calibration_date"), 1)
 	latex = strings.Replace(latex, "+CY1", fmt.Sprintf("%d", ct.calendar.FiscalYear()-1), 2)
 	latex = strings.Replace(latex, "+CY2", fmt.Sprintf("%d", ct.calendar.FiscalYear()), 2)
 	latex = strings.Replace(latex, "+ABBVS", holidayList.LaTeX(), 1)
 
-	for month := 1; month <= 13; month++ {
+	for month := 1; month <= 16; month++ {
 		mt := NewMonthTemplate(ct.calendar, ct.monthTemplate)
 
 		latex = strings.Replace(latex, fmt.Sprintf("+M%02d", month), mt.LaTeX(), 1)

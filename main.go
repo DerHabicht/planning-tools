@@ -15,7 +15,7 @@ func main() {
 
 	fiscalYear, err := strconv.Atoi(os.Args[1])
 	if err != nil {
-		panic(fmt.Errorf("%s is not a valid fiscal year", os.Args[1]))
+		panic(fmt.Errorf("%s is not a valid year", os.Args[1]))
 	}
 	outputFile := os.Args[2]
 
