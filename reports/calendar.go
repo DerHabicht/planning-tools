@@ -1,4 +1,4 @@
-package latex
+package reports
 
 import (
 	"fmt"
@@ -9,41 +9,41 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/derhabicht/planning-calendar/calendar"
-	"github.com/derhabicht/planning-calendar/config"
+	"github.com/derhabicht/planning-calendar/internal/config"
 )
 
-type CalendarTemplate struct {
+type Calendar struct {
 	calendar         calendar.Calendar
 	calendarTemplate string
 	monthTemplate    string
 }
 
-func NewCalendarTemplate(cal calendar.Calendar) (CalendarTemplate, error) {
+func NewCalendar(cal calendar.Calendar) (Calendar, error) {
 	cfgDir, err := config.ConfigDir()
 	if err != nil {
-		return CalendarTemplate{}, errors.WithStack(err)
+		return Calendar{}, errors.WithStack(err)
 	}
 
 	raw, err := os.ReadFile(filepath.Join(cfgDir, "assets", "calendar.tex"))
 	if err != nil {
-		return CalendarTemplate{}, errors.WithStack(err)
+		return Calendar{}, errors.WithStack(err)
 	}
 	calendarTemplate := string(raw)
 
 	raw, err = os.ReadFile(filepath.Join(cfgDir, "assets", "month.tex"))
 	if err != nil {
-		return CalendarTemplate{}, errors.WithStack(err)
+		return Calendar{}, errors.WithStack(err)
 	}
 	monthTemplate := string(raw)
 
-	return CalendarTemplate{
+	return Calendar{
 		calendar:         cal,
 		calendarTemplate: calendarTemplate,
 		monthTemplate:    monthTemplate,
 	}, nil
 }
 
-func (ct *CalendarTemplate) LaTeX() string {
+func (ct Calendar) LaTeX() string {
 	cfgDir, err := config.ConfigDir()
 	if err != nil {
 		panic(err)

@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/derhabicht/planning-calendar/logging"
+	"github.com/derhabicht/planning-calendar/internal/logging"
 )
 
 func InitConfig() {

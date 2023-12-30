@@ -1,4 +1,4 @@
-package latex
+package reports
 
 import (
 	"fmt"

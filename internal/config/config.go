@@ -20,6 +20,16 @@ func ConfigDir() (string, error) {
 	return filepath.Join(hd, "planning-calendar"), nil
 }
 
+// CacheDir returns the directory where LaTeX files are built.
+func CacheDir() (string, error) {
+	cd, err := os.UserCacheDir()
+	if err != nil {
+		return "", errors.WithMessage(err, "failed to find user cache directory")
+	}
+
+	return filepath.Join(cd, "planning-calendar"), nil
+}
+
 // Config setup functions
 
 // SetConfigType wraps Viper's SetConfigType function

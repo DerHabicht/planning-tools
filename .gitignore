@@ -323,3 +323,4 @@ TSWLatexianTemp*
 
 # Project Ignores
 .env
+bin/
