@@ -2,6 +2,7 @@ package calendar
 
 import (
 	"fmt"
+	"time"
 )
 
 type Suit int
@@ -269,10 +270,56 @@ func computeAg7ifQuarter(isoWeek int) Ag7ifQuarter {
 		return Ag7ifQ2
 	case (27 <= isoWeek) && (isoWeek <= 39):
 		return Ag7ifQ3
-	case (39 <= isoWeek) && (isoWeek <= 53):
+	case (40 <= isoWeek) && (isoWeek <= 53):
 		return Ag7ifQ4
 	default:
 		panic(fmt.Errorf("%d is not a valid week number", isoWeek))
+	}
+}
+
+func (a Ag7ifQuarter) StartWeek() int {
+	switch a {
+	case Ag7ifQ1:
+		return 1
+	case Ag7ifQ2:
+		return 14
+	case Ag7ifQ3:
+		return 27
+	case Ag7ifQ4:
+		return 40
+	default:
+		panic(fmt.Errorf("%d is not a valid AG7IF quarter", a))
+	}
+}
+
+func (a Ag7ifQuarter) StartMonth() time.Month {
+	switch a {
+	case Ag7ifQ1:
+		return time.January
+	case Ag7ifQ2:
+		return time.April
+	case Ag7ifQ3:
+		return time.June
+	case Ag7ifQ4:
+		return time.October
+	default:
+		panic(fmt.Errorf("%d is not a valid AG7IF quarter", a))
+	}
+}
+
+func (a Ag7ifQuarter) FullName(fy int) string {
+	year := fmt.Sprintf("CY%d", fy)
+	switch a {
+	case Ag7ifQ1:
+		return fmt.Sprintf("%s, 1st Quarter", year)
+	case Ag7ifQ2:
+		return fmt.Sprintf("%s, 2nd Quarter", year)
+	case Ag7ifQ3:
+		return fmt.Sprintf("%s, 3rd Quarter", year)
+	case Ag7ifQ4:
+		return fmt.Sprintf("%s, 4th Quarter", year)
+	default:
+		panic(fmt.Errorf("%d is not a valid trimester", a))
 	}
 }
 
