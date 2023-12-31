@@ -13,9 +13,11 @@ import (
 )
 
 type Calendar struct {
-	calendar         calendar.Calendar
-	calendarTemplate string
-	monthTemplate    string
+	calendar          calendar.Calendar
+	calendarTemplate  string
+	trimesterTemplate string
+	quarterTemplate   string
+	monthTemplate     string
 }
 
 func NewCalendar(cal calendar.Calendar) (Calendar, error) {
@@ -30,6 +32,18 @@ func NewCalendar(cal calendar.Calendar) (Calendar, error) {
 	}
 	calendarTemplate := string(raw)
 
+	raw, err = os.ReadFile(filepath.Join(cfgDir, "assets", "trimester.tex"))
+	if err != nil {
+		return Calendar{}, errors.WithStack(err)
+	}
+	trimesterTemplate := string(raw)
+
+	raw, err = os.ReadFile(filepath.Join(cfgDir, "assets", "quarter.tex"))
+	if err != nil {
+		return Calendar{}, errors.WithStack(err)
+	}
+	quarterTemplate := string(raw)
+
 	raw, err = os.ReadFile(filepath.Join(cfgDir, "assets", "month.tex"))
 	if err != nil {
 		return Calendar{}, errors.WithStack(err)
@@ -37,9 +51,11 @@ func NewCalendar(cal calendar.Calendar) (Calendar, error) {
 	monthTemplate := string(raw)
 
 	return Calendar{
-		calendar:         cal,
-		calendarTemplate: calendarTemplate,
-		monthTemplate:    monthTemplate,
+		calendar:          cal,
+		calendarTemplate:  calendarTemplate,
+		trimesterTemplate: trimesterTemplate,
+		quarterTemplate:   quarterTemplate,
+		monthTemplate:     monthTemplate,
 	}, nil
 }
 
@@ -62,7 +78,27 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+CY2", fmt.Sprintf("%d", ct.calendar.FiscalYear()), 2)
 	latex = strings.Replace(latex, "+ABBVS", holidayList.LaTeX(), 1)
 
-	for month := 1; month <= 16; month++ {
+	fy := ct.calendar.FiscalYear() - 1
+	tri := calendar.FyT3
+	for trimester := 0; trimester <= 4; trimester++ {
+		tt := NewTrimesterTemplate(tri, fy, ct.trimesterTemplate)
+
+		latex = strings.Replace(latex, fmt.Sprintf("+T%d", trimester), tt.LaTeX(), 1)
+
+		fy, tri = tri.NextTrimester(fy)
+	}
+
+	fy = ct.calendar.FiscalYear() - 1
+	fyQtr := calendar.FyQ4
+	for quarter := 0; quarter <= 5; quarter++ {
+		qt := NewQuarterTemplate(fyQtr, fy, ct.quarterTemplate)
+
+		latex = strings.Replace(latex, fmt.Sprintf("+Q%d", quarter), qt.LaTeX(), 1)
+
+		fy, fyQtr = fyQtr.NextQuarter(fy)
+	}
+
+	for month := 0; month <= 15; month++ {
 		mt := NewMonthTemplate(ct.calendar, ct.monthTemplate)
 
 		latex = strings.Replace(latex, fmt.Sprintf("+M%02d", month), mt.LaTeX(), 1)

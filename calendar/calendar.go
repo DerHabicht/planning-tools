@@ -7,6 +7,7 @@ import (
 
 	"github.com/fxtlabs/date"
 	"github.com/nathan-osman/go-sunrise"
+	"github.com/pkg/errors"
 
 	"github.com/derhabicht/planning-calendar/internal/config"
 )
@@ -31,6 +32,23 @@ func computeNearestMonday(d date.Date) date.Date {
 func computerNearestThursday(d date.Date) date.Date {
 	monday := computeNearestMonday(d)
 	return monday.Add(3)
+}
+
+func ComputeLastDayOfMonth(d date.Date) int {
+	switch d.Month() {
+	case time.January, time.March, time.May, time.July, time.August, time.October, time.December:
+		return 31
+	case time.April, time.June, time.September, time.November:
+		return 30
+	case time.February:
+		if date.New(d.Year(), time.December, 31).YearDay() == 366 {
+			return 29
+		}
+
+		return 28
+	default:
+		panic(errors.Errorf("not a valid time.Month value: %d", d.Month()))
+	}
 }
 
 type EndOfWeekError struct{}

@@ -87,6 +87,22 @@ func CopyAssets(projectPath string) error {
 		logging.Warn().Err(err).Str("file", "calendar.tex").Msg("failed to copy asset")
 	}
 
+	logging.Info().Str("file", "trimester.tex").Msg("copying asset")
+	triLaTeX, err := files.NewFile(filepath.Join(texDir, "trimester.tex"), logging.DefaultLogger())
+	_, err = triLaTeX.Copy(destAssetDir)
+	err = ClearFileExistsError(err)
+
+	logging.Info().Str("file", "quarter.tex").Msg("copying asset")
+	qtrLaTeX, err := files.NewFile(filepath.Join(texDir, "quarter.tex"), logging.DefaultLogger())
+	_, err = qtrLaTeX.Copy(destAssetDir)
+	err = ClearFileExistsError(err)
+	if err != nil {
+		logging.Warn().Err(err).Str("file", "calendar.tex").Msg("failed to copy asset")
+	}
+
+	if err != nil {
+		logging.Warn().Err(err).Str("file", "calendar.tex").Msg("failed to copy asset")
+	}
 	logging.Info().Str("file", "month.tex").Msg("copying asset")
 	monthLaTeX, err := files.NewFile(filepath.Join(texDir, "month.tex"), logging.DefaultLogger())
 	_, err = monthLaTeX.Copy(destAssetDir)
