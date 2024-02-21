@@ -73,6 +73,8 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+PIC", coverLogoPath, 1)
 	latex = strings.Replace(latex, "+CAL_START", fmt.Sprintf("September %d", ct.calendar.FiscalYear()-1), 1)
 	latex = strings.Replace(latex, "+CAL_END", fmt.Sprintf("December %d", ct.calendar.FiscalYear()), 1)
+	latex = strings.Replace(latex, "+JP_START", fmt.Sprintf("%d", ct.calendar.StartingJulianPeriod()), 1)
+	latex = strings.Replace(latex, "+JP_END", fmt.Sprintf("%d", ct.calendar.StartingJulianPeriod()+1), 1)
 	latex = strings.Replace(latex, "+LCD", config.GetString("lunar_calibration_date"), 1)
 	latex = strings.Replace(latex, "+CY1", fmt.Sprintf("%d", ct.calendar.FiscalYear()-1), 2)
 	latex = strings.Replace(latex, "+CY2", fmt.Sprintf("%d", ct.calendar.FiscalYear()), 2)

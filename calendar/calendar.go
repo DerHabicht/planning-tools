@@ -186,6 +186,7 @@ func (w *Week) IsCurrentDayHoliday() (bool, bool, *Holiday) {
 
 type Calendar struct {
 	fiscalYear          int
+	startJulianPeriod   int
 	currentCalendarYear int
 	currentMonth        time.Month
 	currentWeek         Week
@@ -203,6 +204,7 @@ func NewCalendar(fiscalYear int) Calendar {
 
 	return Calendar{
 		fiscalYear:          fiscalYear,
+		startJulianPeriod:   (fiscalYear - 1) + 4713,
 		currentCalendarYear: fiscalYear - 1,
 		currentMonth:        time.September,
 		currentWeek:         NewWeek(date.New(fiscalYear-1, time.September, 1), loc, &hc),
@@ -217,6 +219,10 @@ func (c *Calendar) CurrentWeek() Week {
 
 func (c *Calendar) FiscalYear() int {
 	return c.fiscalYear
+}
+
+func (c *Calendar) StartingJulianPeriod() int {
+	return c.startJulianPeriod
 }
 
 func (c *Calendar) NextWeek() Week {
