@@ -13,6 +13,42 @@ import (
 // TODO: Break this out into a config file
 
 var Ag7ifHolidays map[string]*cal.Holiday = map[string]*cal.Holiday{
+	"USDST": {
+		Name:      "Start of Daylight Saving Time (US)",
+		Type:      cal.ObservanceOther,
+		StartYear: 2007,
+		Month:     time.March,
+		Weekday:   time.Sunday,
+		Offset:    2,
+		Func:      cal.CalcWeekdayOffset,
+	},
+	"USSTD": {
+		Name:      "End of Daylight Saving Time (US)",
+		Type:      cal.ObservanceOther,
+		StartYear: 2007,
+		Month:     time.November,
+		Weekday:   time.Sunday,
+		Offset:    1,
+		Func:      cal.CalcWeekdayOffset,
+	},
+	"EUDST": {
+		Name:      "Start of Summer Time (Europe)",
+		Type:      cal.ObservanceOther,
+		StartYear: 1981,
+		Month:     time.March,
+		Weekday:   time.Sunday,
+		Offset:    -1,
+		Func:      cal.CalcWeekdayOffset,
+	},
+	"EUSTD": {
+		Name:      "End of Summer (Europe)",
+		Type:      cal.ObservanceOther,
+		StartYear: 1981,
+		Month:     time.October,
+		Weekday:   time.Sunday,
+		Offset:    -1,
+		Func:      cal.CalcWeekdayOffset,
+	},
 	"NYD": us.NewYear,
 	"CHHBD": {
 		Name:      "Chilton Hawk's Birthday",
