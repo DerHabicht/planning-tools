@@ -30,12 +30,19 @@ func NewMonthTemplate(cal calendar.Calendar, template string) MonthTemplate {
 func (m *MonthTemplate) fillDayData(dayStr string, sunrise, sunset time.Time, dt date.Date) string {
 	mjd := int(cal.ModifiedJulianDate(dt.Local()))
 
-	data := strings.Replace(dayDataTemplate, "+DY", dayStr, 1)
-	data = strings.Replace(data, "+SR", sunrise.Format("1504"), 1)
+	data := strings.Replace(dayDataTemplate, "+SR", sunrise.Format("1504"), 1)
 	data = strings.Replace(data, "+SS", sunset.Format("1504"), 1)
 	data = strings.Replace(data, "+FD", dt.FormatISO(4), 1)
 	data = strings.Replace(data, "+YD", fmt.Sprintf("%03d", dt.YearDay()), 1)
 	data = strings.Replace(data, "+MJD", fmt.Sprintf("%d", mjd), 1)
+
+	isSolstice, solstice := m.calendar.SolsticeTable().IsSolstice(dt)
+	if isSolstice {
+		solsticeSymbol := SolsticeSymbolFromSolstice(solstice)
+		data = strings.Replace(data, "+DY", fmt.Sprintf("%s\\hfill{}%s", solsticeSymbol.LaTeX(), dayStr), 1)
+	} else {
+		data = strings.Replace(data, "+DY", dayStr, 1)
+	}
 
 	return data
 }
@@ -56,7 +63,7 @@ func (m *MonthTemplate) fillHolidayData(dayStr string, holiday *calendar.Holiday
 	return data
 }
 
-func (m *MonthTemplate) fillWeekData(weekNum int, week calendar.Week) {
+func (m *MonthTemplate) fillWeekData(weekNum int, week *calendar.Week) {
 	isoWeekString, weekCard := week.IsoWeek()
 	isoWeekString = fmt.Sprintf("%s%s", MarshallCard(weekCard), isoWeekString)
 
@@ -105,6 +112,7 @@ func (m *MonthTemplate) LaTeX() string {
 			dayData = m.fillHolidayData(dayData, holiday, actual)
 
 			day += 1
+
 			m.template = strings.Replace(m.template, fmt.Sprintf("+D%02d", day), dayData, 1)
 
 			week.Next()

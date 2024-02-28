@@ -32,7 +32,7 @@ func NewHoliday(holiday calendar.Holiday, fy int) Holiday {
 }
 
 func (h Holiday) LaTeX() string {
-	layout := "02 Jan"
+	const layout = "02 Jan"
 
 	cy1Act := h.cy1ActDate.Format(layout)
 	cy2Act := h.cy2ActDate.Format(layout)

@@ -14,6 +14,7 @@ import (
 
 type Calendar struct {
 	calendar          calendar.Calendar
+	solsticeTable     SolsticeTable
 	calendarTemplate  string
 	trimesterTemplate string
 	quarterTemplate   string
@@ -52,6 +53,7 @@ func NewCalendar(cal calendar.Calendar) (Calendar, error) {
 
 	return Calendar{
 		calendar:          cal,
+		solsticeTable:     NewSolsticeTable(cal.SolsticeTable()),
 		calendarTemplate:  calendarTemplate,
 		trimesterTemplate: trimesterTemplate,
 		quarterTemplate:   quarterTemplate,
@@ -71,7 +73,7 @@ func (ct Calendar) LaTeX() string {
 	latex := ct.calendarTemplate
 
 	latex = strings.Replace(latex, "+PIC", coverLogoPath, 1)
-	latex = strings.Replace(latex, "+CAL_START", fmt.Sprintf("September %d", ct.calendar.FiscalYear()-1), 1)
+	latex = strings.Replace(latex, "+CAL_START", fmt.Sprintf("October %d", ct.calendar.FiscalYear()-1), 1)
 	latex = strings.Replace(latex, "+CAL_END", fmt.Sprintf("December %d", ct.calendar.FiscalYear()), 1)
 	latex = strings.Replace(latex, "+JP_START", fmt.Sprintf("%d", ct.calendar.StartingJulianPeriod()), 1)
 	latex = strings.Replace(latex, "+JP_END", fmt.Sprintf("%d", ct.calendar.StartingJulianPeriod()+1), 1)
@@ -79,6 +81,7 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+CY1", fmt.Sprintf("%d", ct.calendar.FiscalYear()-1), 2)
 	latex = strings.Replace(latex, "+CY2", fmt.Sprintf("%d", ct.calendar.FiscalYear()), 2)
 	latex = strings.Replace(latex, "+ABBVS", holidayList.LaTeX(), 1)
+	latex = strings.Replace(latex, "+SOLSTICES", ct.solsticeTable.LaTeX(), 1)
 
 	fy := ct.calendar.FiscalYear() - 1
 	tri := calendar.FyT3
@@ -100,7 +103,7 @@ func (ct Calendar) LaTeX() string {
 		fy, fyQtr = fyQtr.NextQuarter(fy)
 	}
 
-	for month := 0; month <= 15; month++ {
+	for month := 1; month <= 15; month++ {
 		mt := NewMonthTemplate(ct.calendar, ct.monthTemplate)
 
 		latex = strings.Replace(latex, fmt.Sprintf("+M%02d", month), mt.LaTeX(), 1)

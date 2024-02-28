@@ -69,9 +69,10 @@ type Week struct {
 	currentDay      date.Date
 	location        *time.Location
 	holidayCalendar *HolidayCalendar
+	solsticeTable   SolsticeTable
 }
 
-func NewWeek(d date.Date, loc *time.Location, hc *HolidayCalendar) Week {
+func NewWeek(d date.Date, loc *time.Location, hc *HolidayCalendar, st SolsticeTable) *Week {
 	_, isoWeek := d.ISOWeek()
 
 	fiscalYear := FiscalYearFromDate(d)
@@ -90,7 +91,7 @@ func NewWeek(d date.Date, loc *time.Location, hc *HolidayCalendar) Week {
 	ag7ifQuarter := computeAg7ifQuarter(isoWeek)
 	ag7ifSprint := computeAg7ifSprint(isoWeek)
 
-	return Week{
+	return &Week{
 		monday:          monday,
 		fiscalYear:      fiscalYear,
 		fyTrimester:     fyTrimester,
@@ -101,6 +102,7 @@ func NewWeek(d date.Date, loc *time.Location, hc *HolidayCalendar) Week {
 		card:            GetWeekCard(isoWeek),
 		location:        loc,
 		holidayCalendar: hc,
+		solsticeTable:   st,
 	}
 }
 
@@ -134,6 +136,10 @@ func (w *Week) CurrentDaySunriseSunset() (time.Time, time.Time, error) {
 	sr, ss := sunrise.SunriseSunset(homeLat, homeLong, w.currentDay.Year(), w.currentDay.Month(), w.currentDay.Day())
 
 	return sr.In(w.location), ss.In(w.location), nil
+}
+
+func (w *Week) IsCurrentDaySolstice() (bool, Solstice) {
+	return w.solsticeTable.IsSolstice(w.currentDay)
 }
 
 func (w *Week) Next() (date.Date, error) {
@@ -189,9 +195,10 @@ type Calendar struct {
 	startJulianPeriod   int
 	currentCalendarYear int
 	currentMonth        time.Month
-	currentWeek         Week
+	currentWeek         *Week
 	location            *time.Location
 	holidayCalendar     *HolidayCalendar
+	solsticeTable       SolsticeTable
 }
 
 func NewCalendar(fiscalYear int) Calendar {
@@ -202,18 +209,27 @@ func NewCalendar(fiscalYear int) Calendar {
 
 	hc := NewHolidayCalendar()
 
-	return Calendar{
+	c := Calendar{
 		fiscalYear:          fiscalYear,
 		startJulianPeriod:   (fiscalYear - 1) + 4713,
 		currentCalendarYear: fiscalYear - 1,
-		currentMonth:        time.September,
-		currentWeek:         NewWeek(date.New(fiscalYear-1, time.September, 1), loc, &hc),
 		location:            loc,
 		holidayCalendar:     &hc,
+		solsticeTable:       NewSolsticeTable(fiscalYear),
 	}
+
+	c.initMonthAndWeek()
+
+	return c
 }
 
-func (c *Calendar) CurrentWeek() Week {
+func (c *Calendar) initMonthAndWeek() {
+	c.currentCalendarYear = c.fiscalYear - 1
+	c.currentMonth = time.October
+	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.October, 1), c.location, c.holidayCalendar, c.solsticeTable)
+}
+
+func (c *Calendar) CurrentWeek() *Week {
 	return c.currentWeek
 }
 
@@ -221,14 +237,18 @@ func (c *Calendar) FiscalYear() int {
 	return c.fiscalYear
 }
 
+func (c *Calendar) SolsticeTable() SolsticeTable {
+	return c.solsticeTable
+}
+
 func (c *Calendar) StartingJulianPeriod() int {
 	return c.startJulianPeriod
 }
 
-func (c *Calendar) NextWeek() Week {
+func (c *Calendar) NextWeek() *Week {
 	d := c.currentWeek.Reset()
 
-	c.currentWeek = NewWeek(d.Add(7), c.location, c.holidayCalendar)
+	c.currentWeek = NewWeek(d.Add(7), c.location, c.holidayCalendar, c.solsticeTable)
 
 	return c.currentWeek
 }
@@ -237,7 +257,7 @@ func (c *Calendar) CurrentMonth() string {
 	return fmt.Sprintf("%s %d", c.currentMonth, c.currentCalendarYear)
 }
 
-func (c *Calendar) NextMonth() (string, Week) {
+func (c *Calendar) NextMonth() (string, *Week) {
 	switch {
 	case c.currentMonth == time.December:
 		c.currentMonth = time.January
@@ -246,14 +266,12 @@ func (c *Calendar) NextMonth() (string, Week) {
 		c.currentMonth += 1
 	}
 
-	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1), c.location, c.holidayCalendar)
+	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1), c.location, c.holidayCalendar, c.solsticeTable)
 	return c.CurrentMonth(), c.currentWeek
 }
 
-func (c *Calendar) Reset() (string, Week) {
-	c.currentCalendarYear = c.fiscalYear - 1
-	c.currentMonth = time.September
-	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.September, 1), c.location, c.holidayCalendar)
+func (c *Calendar) Reset() (string, *Week) {
+	c.initMonthAndWeek()
 
 	return c.CurrentMonth(), c.currentWeek
 }

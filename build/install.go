@@ -59,6 +59,56 @@ func CreateCacheDirectory() error {
 	return nil
 }
 
+func RemoveTeXAssets() error {
+	cfgDir, err := config.ConfigDir()
+	assetDir := filepath.Join(cfgDir, "assets")
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	calendar, err := files.NewFile(filepath.Join(assetDir, "calendar.tex"), logging.DefaultLogger())
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	err = calendar.Remove()
+	err = ClearFileDoesNotExistError(err)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	month, err := files.NewFile(filepath.Join(assetDir, "month.tex"), logging.DefaultLogger())
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	err = month.Remove()
+	err = ClearFileDoesNotExistError(err)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	quarter, err := files.NewFile(filepath.Join(assetDir, "quarter.tex"), logging.DefaultLogger())
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	err = quarter.Remove()
+	err = ClearFileDoesNotExistError(err)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	trimester, err := files.NewFile(filepath.Join(assetDir, "trimester.tex"), logging.DefaultLogger())
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	err = trimester.Remove()
+	err = ClearFileDoesNotExistError(err)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	return nil
+}
+
 func CopyAssets(projectPath string) error {
 	defaultCfgDir := filepath.Join(projectPath, "config")
 	imgDir := filepath.Join(projectPath, "assets", "logos", "personal_symbols", "personal_achievement")
@@ -135,6 +185,19 @@ func ClearFileExistsError(err error) error {
 	return err
 }
 
+func ClearFileDoesNotExistError(err error) error {
+	if err == nil {
+		return nil
+	}
+
+	msg := err.Error()
+	if strings.Contains(msg, "no such file or directory") {
+		return nil
+	}
+
+	return err
+}
+
 func main() {
 	logging.InitLogging("info", true)
 
@@ -147,6 +210,12 @@ func main() {
 	err = CreateCacheDirectory()
 	if err != nil {
 		logging.Error().Err(err).Msg("failed to create cache directories")
+		os.Exit(1)
+	}
+
+	err = RemoveTeXAssets()
+	if err != nil {
+		logging.Error().Err(err).Msg("failed to remove TeX assets")
 		os.Exit(1)
 	}
 
