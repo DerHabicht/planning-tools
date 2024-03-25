@@ -253,7 +253,11 @@ func (c *Calendar) NextWeek() *Week {
 	return c.currentWeek
 }
 
-func (c *Calendar) CurrentMonth() string {
+func (c *Calendar) CurrentMonth() (int, time.Month) {
+	return c.currentCalendarYear, c.currentMonth
+}
+
+func (c *Calendar) CurrentMonthStr() string {
 	return fmt.Sprintf("%s %d", c.currentMonth, c.currentCalendarYear)
 }
 
@@ -267,13 +271,13 @@ func (c *Calendar) NextMonth() (string, *Week) {
 	}
 
 	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, c.currentMonth, 1), c.location, c.holidayCalendar, c.solsticeTable)
-	return c.CurrentMonth(), c.currentWeek
+	return c.CurrentMonthStr(), c.currentWeek
 }
 
 func (c *Calendar) Reset() (string, *Week) {
 	c.initMonthAndWeek()
 
-	return c.CurrentMonth(), c.currentWeek
+	return c.CurrentMonthStr(), c.currentWeek
 }
 
 func (c *Calendar) Holidays() []Holiday {

@@ -13,24 +13,26 @@ import (
 const okrHeaderTemplate = `Objectives & Key Results & +W01 & +W02 & +W03 & +W04 & +W05 & +W06 & +W07 & +W08 & +W09 & +W10 & +W11 & +W12 & +W13`
 
 type QuarterTemplate struct {
-	fiscalYear    int
-	calendarYear  int
-	fiscalQuarter calendar.FyQuarter
-	calQuarter    calendar.Ag7ifQuarter
-	startDate     date.Date
-	template      string
+	fiscalYear         int
+	calendarYear       int
+	fiscalQuarter      calendar.FyQuarter
+	calQuarter         calendar.Ag7ifQuarter
+	startDate          date.Date
+	miniMonthTemplates []miniMonthTemplate
+	template           string
 }
 
-func NewQuarterTemplate(quarter calendar.FyQuarter, fy int, template string) QuarterTemplate {
+func NewQuarterTemplate(quarter calendar.FyQuarter, fy int, template string, miniMonthTemplates []miniMonthTemplate) QuarterTemplate {
 	calendarYear, calQuarter := quarter.CyQuarter(fy)
 
 	return QuarterTemplate{
-		fiscalYear:    fy,
-		calendarYear:  calendarYear,
-		fiscalQuarter: quarter,
-		calQuarter:    calQuarter,
-		startDate:     quarter.StartDate(fy),
-		template:      template,
+		fiscalYear:         fy,
+		calendarYear:       calendarYear,
+		fiscalQuarter:      quarter,
+		calQuarter:         calQuarter,
+		startDate:          quarter.StartDate(fy),
+		miniMonthTemplates: miniMonthTemplates,
+		template:           template,
 	}
 }
 
@@ -48,10 +50,12 @@ func (q QuarterTemplate) setOKRHeader(template string) string {
 func (q QuarterTemplate) LaTeX() string {
 	template := strings.Replace(q.template, "+CYQ", q.calQuarter.FullName(q.calendarYear), 1)
 	template = strings.Replace(template, "+FYQ", q.fiscalQuarter.FullName(q.fiscalYear), 1)
-
-	template = fillMiniCalMonthNames(template, q.startDate, 3)
-	template = fillMiniCalMonths(template, q.startDate, 3)
 	template = q.setOKRHeader(template)
+
+	for i, v := range q.miniMonthTemplates {
+		key := fmt.Sprintf("+M%dCMD", i+1)
+		template = strings.Replace(template, key, v.LaTeXCommand(), 1)
+	}
 
 	return template
 }

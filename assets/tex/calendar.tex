@@ -11,6 +11,7 @@
 \usepackage{textcomp}
 \usepackage{tikz}
 \usepackage{titlepic}
+\usepackage{titlesec}
 \usepackage{units}
 
 \title{\Huge{}AG7IF Planning Calendar \\ +CAL_START to +CAL_END \\ Julian Period A +JP_START to +JP_END}
@@ -23,6 +24,9 @@
 
 \fancypagestyle{plain}{\fancyhf{}}
 \pagestyle{plain}
+
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+\titleformat{\chapter}[display]{\normalfont\huge}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
 
 \usetikzlibrary{calendar,fpu}
 
@@ -79,6 +83,24 @@
 \newcommand{\thirdquartermoon}{\moon{6*\synodicmonth/8}}
 \newcommand{\waningcrescent}{\moon{7*\synodicmonth/8}}
 \makeatother
+
+\newcommand{\minifirstseptember}{+MMSEP1}
+\newcommand{\minifirstoctober}{+MMOCT1}
+\newcommand{\minifirstnovember}{+MMNOV1}
+\newcommand{\minifirstdecember}{+MMDEC1}
+\newcommand{\minifirstjanuary}{+MMJAN1}
+\newcommand{\minifebruary}{+MMFEB}
+\newcommand{\minimarch}{+MMMAR}
+\newcommand{\miniapril}{+MMAPR}
+\newcommand{\minimay}{+MMMAY}
+\newcommand{\minijune}{+MMJUN}
+\newcommand{\minijuly}{+MMJUL}
+\newcommand{\miniaugust}{+MMAUG}
+\newcommand{\minisecondseptember}{+MMSEP2}
+\newcommand{\minisecondoctober}{+MMOCT2}
+\newcommand{\minisecondnovember}{+MMNOV2}
+\newcommand{\miniseconddecember}{+MMDEC2}
+\newcommand{\minisecondjanuary}{+MMJAN2}
 
 \begin{document}
 

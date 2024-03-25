@@ -13,12 +13,13 @@ import (
 )
 
 type Calendar struct {
-	calendar          calendar.Calendar
-	solsticeTable     SolsticeTable
-	calendarTemplate  string
-	trimesterTemplate string
-	quarterTemplate   string
-	monthTemplate     string
+	calendar           calendar.Calendar
+	solsticeTable      SolsticeTable
+	miniMonthTemplates []miniMonthTemplate
+	calendarTemplate   string
+	trimesterTemplate  string
+	quarterTemplate    string
+	monthTemplate      string
 }
 
 func NewCalendar(cal calendar.Calendar) (Calendar, error) {
@@ -51,13 +52,16 @@ func NewCalendar(cal calendar.Calendar) (Calendar, error) {
 	}
 	monthTemplate := string(raw)
 
+	miniMonthTemplates := generateTemplates(cal.FiscalYear())
+
 	return Calendar{
-		calendar:          cal,
-		solsticeTable:     NewSolsticeTable(cal.SolsticeTable()),
-		calendarTemplate:  calendarTemplate,
-		trimesterTemplate: trimesterTemplate,
-		quarterTemplate:   quarterTemplate,
-		monthTemplate:     monthTemplate,
+		calendar:           cal,
+		solsticeTable:      NewSolsticeTable(cal.SolsticeTable()),
+		miniMonthTemplates: miniMonthTemplates,
+		calendarTemplate:   calendarTemplate,
+		trimesterTemplate:  trimesterTemplate,
+		quarterTemplate:    quarterTemplate,
+		monthTemplate:      monthTemplate,
 	}, nil
 }
 
@@ -83,30 +87,38 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+ABBVS", holidayList.LaTeX(), 1)
 	latex = strings.Replace(latex, "+SOLSTICES", ct.solsticeTable.LaTeX(), 1)
 
-	fy := ct.calendar.FiscalYear() - 1
-	tri := calendar.FyT3
-	for trimester := 0; trimester <= 4; trimester++ {
-		tt := NewTrimesterTemplate(tri, fy, ct.trimesterTemplate)
-
-		latex = strings.Replace(latex, fmt.Sprintf("+T%d", trimester), tt.LaTeX(), 1)
-
-		fy, tri = tri.NextTrimester(fy)
+	for _, v := range ct.miniMonthTemplates {
+		latex = strings.Replace(latex, v.TemplateKey(), v.LaTeX(), 1)
 	}
 
-	fy = ct.calendar.FiscalYear() - 1
-	fyQtr := calendar.FyQ4
-	for quarter := 0; quarter <= 5; quarter++ {
-		qt := NewQuarterTemplate(fyQtr, fy, ct.quarterTemplate)
+	tri := calendar.FyT1
+	for trimester := 0; trimester < 4; trimester++ {
+		startMonthIdx := (trimester * 4) + 1
+		endMonthIdx := (trimester * 4) + 5
+		tt := NewTrimesterTemplate(tri, ct.calendar.FiscalYear(), ct.trimesterTemplate, ct.miniMonthTemplates[startMonthIdx:endMonthIdx])
 
-		latex = strings.Replace(latex, fmt.Sprintf("+Q%d", quarter), qt.LaTeX(), 1)
+		latex = strings.Replace(latex, fmt.Sprintf("+T%d", trimester+1), tt.LaTeX(), 1)
 
-		fy, fyQtr = fyQtr.NextQuarter(fy)
+		_, tri = tri.NextTrimester(ct.calendar.FiscalYear())
+	}
+
+	fyQtr := calendar.FyQ1
+	for quarter := 0; quarter < 5; quarter++ {
+		startMonthIdx := (quarter * 3) + 1
+		endMonthIdx := (quarter * 3) + 4
+		qt := NewQuarterTemplate(fyQtr, ct.calendar.FiscalYear(), ct.quarterTemplate, ct.miniMonthTemplates[startMonthIdx:endMonthIdx])
+
+		latex = strings.Replace(latex, fmt.Sprintf("+Q%d", quarter+1), qt.LaTeX(), 1)
+
+		_, fyQtr = fyQtr.NextQuarter(ct.calendar.FiscalYear())
 	}
 
 	for month := 1; month <= 15; month++ {
 		mt := NewMonthTemplate(ct.calendar, ct.monthTemplate)
 
 		latex = strings.Replace(latex, fmt.Sprintf("+M%02d", month), mt.LaTeX(), 1)
+		latex = strings.Replace(latex, "+PREVCMD", ct.miniMonthTemplates[month-1].LaTeXCommand(), 1)
+		latex = strings.Replace(latex, "+NEXTCMD", ct.miniMonthTemplates[month+1].LaTeXCommand(), 1)
 
 		ct.calendar.NextMonth()
 	}

@@ -14,15 +14,16 @@ import (
 const dayDataTemplate = `+DY\\+HD\moon{+FD}\\\vspace{1em}\hspace{1em}+YD\hfill{}+SR\\+MJD\hfill{}+SS`
 
 type MonthTemplate struct {
-	calendar calendar.Calendar
-	month    string
-	template string
+	calendar  calendar.Calendar
+	miniMonth miniMonthTemplate
+	month     string
+	template  string
 }
 
 func NewMonthTemplate(cal calendar.Calendar, template string) MonthTemplate {
 	return MonthTemplate{
 		calendar: cal,
-		month:    cal.CurrentMonth(),
+		month:    cal.CurrentMonthStr(),
 		template: template,
 	}
 }
@@ -76,7 +77,7 @@ func (m *MonthTemplate) fillWeekData(weekNum int, week *calendar.Week) {
 }
 
 func (m *MonthTemplate) LaTeX() string {
-	m.template = strings.Replace(m.template, "+M", m.calendar.CurrentMonth(), 1)
+	m.template = strings.Replace(m.template, "+M", m.calendar.CurrentMonthStr(), 1)
 
 	day := 0
 	week := m.calendar.CurrentWeek()
