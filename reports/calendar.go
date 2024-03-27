@@ -65,6 +65,28 @@ func NewCalendar(cal calendar.Calendar) (Calendar, error) {
 	}, nil
 }
 
+func (ct Calendar) generateDoomsdayContextTable() string {
+	latex := `\begin{tabular}{rc}
+\toprule
+\textbf{Year} & \textbf{Doomsday} \\
+\midrule
+`
+
+	for y := ct.calendar.FiscalYear() - 2; y < ct.calendar.FiscalYear()+3; y++ {
+		doomsday := calendar.WeekdayLetters[calendar.ComputeDoomsday(y)]
+
+		if y == ct.calendar.FiscalYear() {
+			latex += fmt.Sprintf("\\textbf{%d} & \\textbf{%s} \\\\\n", y, doomsday)
+		} else {
+			latex += fmt.Sprintf("%d & %s \\\\\n", y, doomsday)
+		}
+	}
+
+	latex += `\bottomrule\end{tabular}`
+
+	return latex
+}
+
 func (ct Calendar) LaTeX() string {
 	cfgDir, err := config.ConfigDir()
 	if err != nil {
@@ -85,6 +107,7 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+CY1", fmt.Sprintf("%d", ct.calendar.FiscalYear()-1), 2)
 	latex = strings.Replace(latex, "+CY2", fmt.Sprintf("%d", ct.calendar.FiscalYear()), 2)
 	latex = strings.Replace(latex, "+ABBVS", holidayList.LaTeX(), 1)
+	latex = strings.Replace(latex, "+DOOMSDAYS", ct.generateDoomsdayContextTable(), 1)
 	latex = strings.Replace(latex, "+SOLSTICES", ct.solsticeTable.LaTeX(), 1)
 
 	for _, v := range ct.miniMonthTemplates {

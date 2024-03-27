@@ -7,14 +7,18 @@ import (
 	"time"
 
 	"github.com/fxtlabs/date"
+
+	"github.com/derhabicht/planning-calendar/calendar"
 )
+
+const miniCalWeekHeaderTemplate = `W & +M & +T & +W & +H & +F & +S & +U \\`
 
 const miniCalMonthTemplate = `\fbox{\begin{minipage}{0.24\textwidth}
           \centering
           {\Large\textbf{+MONTH}}\vspace{\baselineskip}
           \begin{tabularx}{\textwidth}{r|rrrrrrr}
               \toprule
-              W & M &  T &  W &  H &  F &  S &  U \\
+ 			  +WEEKHEADER
               \midrule
               +W1
               +W2
@@ -67,6 +71,7 @@ func generateTemplates(fy int) []miniMonthTemplate {
 type miniMonthTemplate struct {
 	month          time.Month
 	year           int
+	doomsday       time.Weekday
 	latexCommand   string
 	calTemplateKey string
 }
@@ -98,9 +103,27 @@ func newMiniMonthTemplate(year int, month time.Month, second bool) miniMonthTemp
 	return miniMonthTemplate{
 		month:          month,
 		year:           year,
+		doomsday:       calendar.ComputeDoomsday(year),
 		latexCommand:   latexCommand,
 		calTemplateKey: calTemplateKey,
 	}
+}
+
+func (mmt *miniMonthTemplate) generateWeekHeader() string {
+	header := miniCalWeekHeaderTemplate
+	for i := 0; i < 7; i++ {
+		weekday := time.Weekday(i)
+		weekdayLetter := calendar.WeekdayLetters[weekday]
+
+		repl := weekdayLetter
+		if weekday == mmt.doomsday {
+			repl = fmt.Sprintf("\\underline{%s}", weekdayLetter)
+		}
+
+		header = strings.Replace(header, fmt.Sprintf("+%s", weekdayLetter), repl, 1)
+	}
+
+	return header
 }
 
 func (mmt *miniMonthTemplate) fillWeeks(template string, start date.Date) string {
@@ -144,6 +167,7 @@ func (mmt *miniMonthTemplate) LaTeXCommand() string {
 func (mmt *miniMonthTemplate) LaTeX() string {
 	latex := miniCalMonthTemplate
 	latex = strings.Replace(latex, "+MONTH", fmt.Sprintf("%s %d", mmt.month, mmt.year), 1)
+	latex = strings.Replace(latex, "+WEEKHEADER", mmt.generateWeekHeader(), 1)
 	latex = mmt.fillWeeks(latex, date.New(mmt.year, mmt.month, 1))
 
 	return latex

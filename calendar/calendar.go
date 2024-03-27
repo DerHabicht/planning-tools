@@ -194,6 +194,7 @@ type Calendar struct {
 	fiscalYear          int
 	startJulianPeriod   int
 	currentCalendarYear int
+	currentDoomsday     time.Weekday
 	currentMonth        time.Month
 	currentWeek         *Week
 	location            *time.Location
@@ -225,6 +226,7 @@ func NewCalendar(fiscalYear int) Calendar {
 
 func (c *Calendar) initMonthAndWeek() {
 	c.currentCalendarYear = c.fiscalYear - 1
+	c.currentDoomsday = ComputeDoomsday(c.currentCalendarYear)
 	c.currentMonth = time.October
 	c.currentWeek = NewWeek(date.New(c.currentCalendarYear, time.October, 1), c.location, c.holidayCalendar, c.solsticeTable)
 }
@@ -266,6 +268,7 @@ func (c *Calendar) NextMonth() (string, *Week) {
 	case c.currentMonth == time.December:
 		c.currentMonth = time.January
 		c.currentCalendarYear += 1
+		c.currentDoomsday = ComputeDoomsday(c.currentCalendarYear)
 	default:
 		c.currentMonth += 1
 	}

@@ -11,6 +11,7 @@ import (
 	"github.com/derhabicht/planning-calendar/calendar"
 )
 
+const weekDayHdrTemplate = `KFM & & & +MON & +TUE & +WED & +THU & +FRI & +SAT & +SUN \\`
 const dayDataTemplate = `+DY\\+HD\moon{+FD}\\\vspace{1em}\hspace{1em}+YD\hfill{}+SR\\+MJD\hfill{}+SS`
 
 type MonthTemplate struct {
@@ -26,6 +27,27 @@ func NewMonthTemplate(cal calendar.Calendar, template string) MonthTemplate {
 		month:    cal.CurrentMonthStr(),
 		template: template,
 	}
+}
+
+func (m *MonthTemplate) generateWeekdayHeader() string {
+	header := weekDayHdrTemplate
+
+	year, _ := m.calendar.CurrentMonth()
+	doomsday := calendar.ComputeDoomsday(year)
+
+	for i := 0; i < 7; i++ {
+		weekday := time.Weekday(i)
+		abbv := strings.ToUpper(weekday.String())[:3]
+
+		repl := abbv
+		if weekday == doomsday {
+			repl = fmt.Sprintf("<%s>", abbv)
+		}
+
+		header = strings.Replace(header, fmt.Sprintf("+%s", abbv), repl, 1)
+	}
+
+	return header
 }
 
 func (m *MonthTemplate) fillDayData(dayStr string, sunrise, sunset time.Time, dt date.Date) string {
@@ -78,6 +100,7 @@ func (m *MonthTemplate) fillWeekData(weekNum int, week *calendar.Week) {
 
 func (m *MonthTemplate) LaTeX() string {
 	m.template = strings.Replace(m.template, "+M", m.calendar.CurrentMonthStr(), 1)
+	m.template = strings.Replace(m.template, "+WEEKDAYS", m.generateWeekdayHeader(), 1)
 
 	day := 0
 	week := m.calendar.CurrentWeek()
