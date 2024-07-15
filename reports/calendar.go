@@ -110,9 +110,12 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+DOOMSDAYS", ct.generateDoomsdayContextTable(), 1)
 	latex = strings.Replace(latex, "+SOLSTICES", ct.solsticeTable.LaTeX(), 1)
 
+	miniMonthCmds := ""
 	for _, v := range ct.miniMonthTemplates {
-		latex = strings.Replace(latex, v.TemplateKey(), v.LaTeX(), 1)
+		miniMonthCmds += v.LaTeX()
 	}
+
+	latex = strings.Replace(latex, "+MINIMONTHCMDS", miniMonthCmds, 1)
 
 	tri := calendar.FyT1
 	for trimester := 0; trimester < 4; trimester++ {

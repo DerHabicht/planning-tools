@@ -13,7 +13,7 @@ import (
 
 const miniCalWeekHeaderTemplate = `W & +M & +T & +W & +H & +F & +S & +U \\`
 
-const miniCalMonthTemplate = `\fbox{\begin{minipage}{0.24\textwidth}
+const miniCalMonthTemplate = `\newcommand{+COMMAND}{\fbox{\begin{minipage}{0.24\textwidth}
           \centering
           {\Large\textbf{+MONTH}}\vspace{\baselineskip}
           \begin{tabularx}{\textwidth}{r|rrrrrrr}
@@ -27,38 +27,17 @@ const miniCalMonthTemplate = `\fbox{\begin{minipage}{0.24\textwidth}
               +W5
               +W6
           \end{tabularx}
-\end{minipage}}
+\end{minipage}}}
 `
 const miniCalWeekTemplate = `+W & +D1 & +D2 & +D3 & +D4 & +D5 & +D6 & +D7 \\`
 
-func isSecondMonth(fy int, d date.Date) bool {
-	prevYearDoubledMonth := map[time.Month]bool{
-		time.September: true,
-		time.October:   true,
-		time.November:  true,
-		time.December:  true,
-	}
-
-	if d.Year() == fy {
-		_, ok := prevYearDoubledMonth[d.Month()]
-		return ok
-	}
-
-	if d.Year() == fy+1 {
-		return d.Month() == time.January
-	}
-
-	return false
-}
-
 func generateTemplates(fy int) []miniMonthTemplate {
 	d := date.New(fy-1, time.September, 1)
-	endDate := date.New(fy+1, time.February, 1)
+	endDate := date.New(fy+2, time.June, 1)
 
 	var templates []miniMonthTemplate
 	for d.Before(endDate) {
-		second := isSecondMonth(fy, d)
-		t := newMiniMonthTemplate(d.Year(), d.Month(), second)
+		t := newMiniMonthTemplate(fy, d.Year(), d.Month())
 
 		templates = append(templates, t)
 
@@ -69,43 +48,43 @@ func generateTemplates(fy int) []miniMonthTemplate {
 }
 
 type miniMonthTemplate struct {
-	month          time.Month
-	year           int
-	doomsday       time.Weekday
-	latexCommand   string
-	calTemplateKey string
+	month        time.Month
+	year         int
+	doomsday     time.Weekday
+	latexCommand string
 }
 
-func newMiniMonthTemplate(year int, month time.Month, second bool) miniMonthTemplate {
-	doubledMonth := map[time.Month]bool{
-		time.January:   true,
-		time.September: true,
-		time.October:   true,
-		time.November:  true,
-		time.December:  true,
-	}
-
+func newMiniMonthTemplate(fy, year int, month time.Month) miniMonthTemplate {
 	latexCommand := `\mini`
-	calTemplateKey := `+MM`
-	if _, ok := doubledMonth[month]; ok {
-		if second {
-			latexCommand = fmt.Sprintf("%ssecond%s", latexCommand, strings.ToLower(month.String()))
-			calTemplateKey = fmt.Sprintf("%s%s2", calTemplateKey, strings.ToUpper(month.String()[:3]))
-		} else {
-			latexCommand = fmt.Sprintf("%sfirst%s", latexCommand, strings.ToLower(month.String()))
-			calTemplateKey = fmt.Sprintf("%s%s1", calTemplateKey, strings.ToUpper(month.String()[:3]))
-		}
-	} else {
+
+	// Work out the LaTeX command and template keys for the current year/month combo.
+	if (year == fy-1) || (year == fy && month == time.January) {
+		// Case 1: Oct-Dec of FY-1 and Jan of FY
+		latexCommand = fmt.Sprintf("%sfirst%s", latexCommand, strings.ToLower(month.String()))
+	} else if year == fy && (month >= time.February && month <= time.August) {
+		// Case 2: Feb-Aug of FY
 		latexCommand = fmt.Sprintf("%s%s", latexCommand, strings.ToLower(month.String()))
-		calTemplateKey = fmt.Sprintf("%s%s", calTemplateKey, strings.ToUpper(month.String()[:3]))
+	} else if (year == fy && month >= time.September) || (year == fy+1 && month == time.January) {
+		// Case 3: Sep-Dec of FY, and Jan of FY+1
+		latexCommand = fmt.Sprintf("%ssecond%s", latexCommand, strings.ToLower(month.String()))
+	} else if year == fy+1 && (month >= time.February && month <= time.May) {
+		// Case 4: Feb-May of FY+1
+		latexCommand = fmt.Sprintf("%sfirstext%s", latexCommand, strings.ToLower(month.String()))
+	} else if (year == fy+1 && month >= time.June) || (year == fy+2 && month == time.January) {
+		// Case 5: Jun-Dec of FY+1, and Jan of FY+2
+		latexCommand = fmt.Sprintf("%sext%s", latexCommand, strings.ToLower(month.String()))
+	} else if year == fy+2 && (month >= time.February && month <= time.May) {
+		// Case 6: Feb-May of FY+2
+		latexCommand = fmt.Sprintf("%ssecondext%s", latexCommand, strings.ToLower(month.String()))
+	} else {
+		return miniMonthTemplate{}
 	}
 
 	return miniMonthTemplate{
-		month:          month,
-		year:           year,
-		doomsday:       calendar.ComputeDoomsday(year),
-		latexCommand:   latexCommand,
-		calTemplateKey: calTemplateKey,
+		month:        month,
+		year:         year,
+		doomsday:     calendar.ComputeDoomsday(year),
+		latexCommand: latexCommand,
 	}
 }
 
@@ -156,16 +135,13 @@ func (mmt *miniMonthTemplate) MonthStr() string {
 	return fmt.Sprintf("%s %d", mmt.month, mmt.year)
 }
 
-func (mmt *miniMonthTemplate) TemplateKey() string {
-	return mmt.calTemplateKey
-}
-
 func (mmt *miniMonthTemplate) LaTeXCommand() string {
 	return mmt.latexCommand
 }
 
 func (mmt *miniMonthTemplate) LaTeX() string {
 	latex := miniCalMonthTemplate
+	latex = strings.Replace(latex, "+COMMAND", mmt.latexCommand, 1)
 	latex = strings.Replace(latex, "+MONTH", fmt.Sprintf("%s %d", mmt.month, mmt.year), 1)
 	latex = strings.Replace(latex, "+WEEKHEADER", mmt.generateWeekHeader(), 1)
 	latex = mmt.fillWeeks(latex, date.New(mmt.year, mmt.month, 1))
