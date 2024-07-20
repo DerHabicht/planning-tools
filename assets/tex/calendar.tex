@@ -13,11 +13,7 @@
 \usepackage{titlepic}
 \usepackage{titlesec}
 \usepackage{units}
-
-\title{\Huge{}AG7IF Planning Calendar \\ +CAL_START to +CAL_END \\ Julian Period A +JP_START to +JP_END}
-\author{}
-\date{}
-\titlepic{\includegraphics[height=4.5in]{+PIC}}
+\usepackage{xcolor}
 
 \renewcommand{\multirowsetup}{\raggedleft}
 \renewcommand{\headrulewidth}{0pt}
@@ -88,13 +84,40 @@
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+    \setlength{\fboxrule}{10pt}
+    \begin{center}
+        \Huge%
 
-\newpage
+        \vspace*{0.25in}
 
-\
+        \fcolorbox{+TITLECOLOR}{white}{%
+            \begin{minipage}{0.5\textwidth}
+                \begin{center}
+                    AG7IF Planning Calendar
 
-\newpage
+                    +CAL_START to +CAL_END
+
+                    Julian Period A +JP_START to +JP_END
+                \end{center}
+            \end{minipage}
+        }
+
+        \vfill
+
+        \includegraphics[height=4.5in]{+PIC}
+
+        \vspace*{0.25in}
+
+    \end{center}
+
+    \newpage
+
+    \
+
+    \newpage
+
+\end{titlepage}
 
 \section*{Reference Tables}
 \begin{center}

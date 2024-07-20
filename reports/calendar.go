@@ -110,6 +110,12 @@ func (ct Calendar) LaTeX() string {
 	latex = strings.Replace(latex, "+DOOMSDAYS", ct.generateDoomsdayContextTable(), 1)
 	latex = strings.Replace(latex, "+SOLSTICES", ct.solsticeTable.LaTeX(), 1)
 
+	if ct.calendar.FiscalYear()%2 == 0 {
+		latex = strings.Replace(latex, "+TITLECOLOR", "blue", 1)
+	} else {
+		latex = strings.Replace(latex, "+TITLECOLOR", "red", 1)
+	}
+
 	miniMonthCmds := ""
 	for _, v := range ct.miniMonthTemplates {
 		miniMonthCmds += v.LaTeX()
