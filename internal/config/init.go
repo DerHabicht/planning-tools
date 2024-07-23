@@ -12,7 +12,6 @@ func InitConfig() {
 	SetDefault("home_location.long", 0.0)
 	SetDefault("home_location.tz", "UTC")
 	SetDefault("cover_logo", "")
-	SetDefault("lunar_calibration_date", "2010-01-15") // Date of a New Moon for calibrating the LaTeX code that paints the moon in the calendar.
 
 	cwd, _ := os.Getwd()
 	logging.Trace().Str("cwd", cwd).Msg("")
