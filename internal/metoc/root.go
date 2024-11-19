@@ -1,34 +1,31 @@
-package plancal
+package metoc
 
 import (
 	"fmt"
 	"os"
-	"strconv"
+	"path/filepath"
 
 	"github.com/ag7if/go-files"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
-	"github.com/derhabicht/planning-tools/internal/calendar"
 	"github.com/derhabicht/planning-tools/internal/config"
 	"github.com/derhabicht/planning-tools/internal/logging"
+	"github.com/derhabicht/planning-tools/internal/planwx"
 )
 
 var logLevel string
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Version: viper.GetString("version"),
-	Use:     "plancal <fiscal_year> [output_file]",
-	Short:   "Generate an AG7IF Planning Calendar for the given fiscal year",
-	Long:    ``,
-	Args:    cobra.RangeArgs(1, 2),
+	Use:   "metoc_report <PLAN YAML> [OUTPUT TEX]",
+	Short: "Generate METOC reports for operational planning",
+	Long:  ``,
+	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		logger := logging.Logger{}
 
-		year, err := strconv.Atoi(args[0])
+		planFile, err := files.NewFile(args[0], logger.DefaultLogger())
 		if err != nil {
-			logger.Error().Err(err).Str("fy", args[0]).Msg("specified value is not a valid fiscal year")
+			logger.Error().Err(err).Str("filename", args[0]).Msg("failed to create reference to plan file")
 			os.Exit(1)
 		}
 
@@ -36,7 +33,7 @@ var rootCmd = &cobra.Command{
 		if len(args) == 2 {
 			outputFilePath = args[1]
 		} else {
-			outputFilePath = fmt.Sprintf("PlanningCalendar-FY%d.pdf", year)
+			outputFilePath = filepath.Join(planFile.Dir(), fmt.Sprintf("%s.%s", planFile.Base(), "pdf"))
 		}
 		outputFile, err := files.NewFile(outputFilePath, logger.DefaultLogger())
 		if err != nil {
@@ -44,16 +41,13 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		err = calendar.BuildCalendar(year, outputFile, logger)
+		err = planwx.Generate(planFile, outputFile, logger)
 		if err != nil {
-			logger.Error().Err(err).Msg("failed to generate planning_calendar")
-			os.Exit(1)
+			logger.Error().Err(err).Msg("failed to generate planning weather report")
 		}
 	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute(version string) {
 	rootCmd.Version = version
 	err := rootCmd.Execute()

@@ -1,14 +1,14 @@
-module github.com/derhabicht/planning-calendar
+module github.com/derhabicht/planning-tools
 
 go 1.21.1
 
 require (
-	github.com/IvanMenshykov/MoonPhase v0.0.0-20210411203237-6c61017953a8
 	github.com/ag7if/go-files v0.2.1
 	github.com/ag7if/go-latex v0.2.0
 	github.com/ag7if/playing-cards v0.1.2
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fxtlabs/date v0.0.0-20150819233934-d9ab6e2a88a9
+	github.com/golang/geo v0.0.0-20230421003525-6adc56603217
 	github.com/nathan-osman/go-sunrise v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/rickar/cal/v2 v2.1.17
@@ -17,6 +17,8 @@ require (
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
+	github.com/tzneal/coordconv v0.1.2
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -43,5 +45,4 @@ require (
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

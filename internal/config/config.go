@@ -17,7 +17,7 @@ func ConfigDir() (string, error) {
 		return "", errors.WithMessage(err, "failed to find user home directory")
 	}
 
-	return filepath.Join(hd, "planning-calendar"), nil
+	return filepath.Join(hd, "planning-tools"), nil
 }
 
 // CacheDir returns the directory where LaTeX files are built.
@@ -27,7 +27,7 @@ func CacheDir() (string, error) {
 		return "", errors.WithMessage(err, "failed to find user cache directory")
 	}
 
-	return filepath.Join(cd, "planning-calendar"), nil
+	return filepath.Join(cd, "planning-tools"), nil
 }
 
 // Config setup functions

@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/derhabicht/planning-calendar/internal/logging"
+	"github.com/derhabicht/planning-tools/internal/logging"
 )
 
 func InitConfig() {
@@ -12,6 +12,7 @@ func InitConfig() {
 	SetDefault("home_location.long", 0.0)
 	SetDefault("home_location.tz", "UTC")
 	SetDefault("cover_logo", "")
+	SetDefault("visual_crossing.api_key", "")
 
 	cwd, _ := os.Getwd()
 	logging.Trace().Str("cwd", cwd).Msg("")

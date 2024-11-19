@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/derhabicht/planning-tools/internal/plancal"
+	"github.com/derhabicht/planning-tools/internal/metoc"
 )
 
-// BaseVersion is the SemVer-formatted string that defines the current version of plancal.
+// BaseVersion is the SemVer-formatted string that defines the current version of metoc.
 // Build information will be added at compile-time.
-const BaseVersion = "1.10.0"
+const BaseVersion = "1.0.0"
 
 // BuildTime is a timestamp of when the build is run. This variable is set at compile-time.
 var BuildTime string
@@ -28,5 +28,5 @@ func main() {
 		GitRevision,
 		BuildTime,
 	)
-	plancal.Execute(version)
+	metoc.Execute(version)
 }

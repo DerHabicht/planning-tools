@@ -9,8 +9,8 @@ import (
 
 	"github.com/ag7if/go-files"
 
-	"github.com/derhabicht/planning-calendar/internal/config"
-	"github.com/derhabicht/planning-calendar/internal/logging"
+	"github.com/derhabicht/planning-tools/internal/config"
+	"github.com/derhabicht/planning-tools/internal/logging"
 )
 
 func CreateConfigDirectories() error {

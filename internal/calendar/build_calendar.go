@@ -7,11 +7,11 @@ import (
 	"github.com/ag7if/go-latex"
 	"github.com/pkg/errors"
 
-	"github.com/derhabicht/planning-calendar/calendar"
-	"github.com/derhabicht/planning-calendar/calendar/plancal"
-	"github.com/derhabicht/planning-calendar/internal/config"
-	"github.com/derhabicht/planning-calendar/internal/logging"
-	"github.com/derhabicht/planning-calendar/reports"
+	"github.com/derhabicht/planning-tools/internal/config"
+	"github.com/derhabicht/planning-tools/internal/logging"
+	"github.com/derhabicht/planning-tools/pkg/calendar"
+	"github.com/derhabicht/planning-tools/pkg/calendar/plancal"
+	"github.com/derhabicht/planning-tools/reports/planning_calendar"
 )
 
 func configureLaTeXCompiler(logger logging.Logger) (*latex.Compiler, error) {
@@ -33,7 +33,7 @@ func configureLaTeXCompiler(logger logging.Logger) (*latex.Compiler, error) {
 }
 
 func generateLaTeX(cal calendar.Calendar, compiler *latex.Compiler, outputFile files.File) error {
-	planningCal := reports.NewCalendar(cal)
+	planningCal := planning_calendar.NewCalendar(cal)
 
 	assets := []string{config.GetString("cover_logo")}
 
