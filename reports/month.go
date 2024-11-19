@@ -74,7 +74,13 @@ func (m *Month) generateWeekData(latex string) string {
 		latex = strings.Replace(latex, fmt.Sprintf(templates.FiscalWeek, i), fmt.Sprintf("W%02d", fyWeek), 1)
 		latex = strings.Replace(latex, fmt.Sprintf(templates.CalendarQuarter, i), week.CalendarQuarter().Short(), 1)
 		latex = strings.Replace(latex, fmt.Sprintf(templates.Sprint, i), week.Sprint().Short(), 1)
-		latex = strings.Replace(latex, fmt.Sprintf(templates.ISOWeek, i), fmt.Sprintf("%sW%02d", card.LaTeX(), cyWeek), 1)
+
+		cyWeekStr := `\colorbox{%s}{\textcolor{white}{%sW%02d}}`
+		if cyWeek%2 == 0 {
+			latex = strings.Replace(latex, fmt.Sprintf(templates.ISOWeek, i), fmt.Sprintf(cyWeekStr, "blue", card.LaTeX(), cyWeek), 1)
+		} else {
+			latex = strings.Replace(latex, fmt.Sprintf(templates.ISOWeek, i), fmt.Sprintf(cyWeekStr, "red", card.LaTeX(), cyWeek), 1)
+		}
 
 		week = week.Next()
 	}
