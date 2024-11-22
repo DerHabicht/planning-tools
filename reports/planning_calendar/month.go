@@ -117,6 +117,24 @@ func (m *Month) generateDayData(latex string) string {
 			day = strings.Replace(day, templates.Holiday, "", 1)
 		}
 
+		// This logic marks the Sunday square according to the typical second hour schedule for Sunday meetings
+		// of the Church of Jesus Christ of Latter-day Saints. 1st and 3rd Sundays are Sunday School (
+		// SS for Sontagsschule) and the 2nd and 4th Sundays are for quorum or class (
+		// KK for Kollegium/Klasse) meetings. 5th Sundays are always Bishopric discretion and, therefore,
+		// just marked as "5S" for "5. Sontag" (5th Sunday).
+		if d.Weekday() == time.Sunday {
+			switch d.WeekdayOccurrenceInMonth() {
+			case 1, 3:
+				day = strings.Replace(day, templates.Sunday, `\hfill{}SS\\`, 1)
+			case 2, 4:
+				day = strings.Replace(day, templates.Sunday, `\hfill{}KK\\`, 1)
+			default:
+				day = strings.Replace(day, templates.Sunday, `\hfill{}5S\\`, 1)
+			}
+		} else {
+			day = strings.Replace(day, templates.Sunday, `\vspace{1em}`, 1)
+		}
+
 		day = strings.Replace(day, templates.FullDate, d.ISODate(), 1)
 		day = strings.Replace(day, templates.OrdinalDay, fmt.Sprintf("%03d", d.OrdinalDay()), 1)
 		day = strings.Replace(day, templates.SunriseTime, d.Sunrise().Format(timeFormat), 1)

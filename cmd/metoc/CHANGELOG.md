@@ -19,4 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.10.0...HEAD
+## [1.0.0]
+
+### Added
+- Generating a PDF weather report based on locations and dates fed in via  YAML file.
+
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/metoc-v1.1.0...HEAD
+[1.0.0]: https://github.com/DerHabicht/planning-tools/releases/tag/metoc-v1.0.0

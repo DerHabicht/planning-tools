@@ -50,6 +50,7 @@ const (
 	QuarterPage                = `+Q%d`
 	SolsticeTable              = `+SOLSTICES`
 	Sprint                     = `+AS%d`
+	Sunday                     = `+SUN`
 	SummerSolstice             = `+SS`
 	SunriseTime                = `+SR`
 	SunsetTime                 = `+SS`

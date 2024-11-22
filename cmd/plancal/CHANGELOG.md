@@ -1,6 +1,7 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. Note that this changelog was started after 
+v[1.10.0]. Refer to the Git history to see what has been done before this (links below).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -19,7 +20,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.10.0...HEAD
+## [1.11.0]
+
+### Added
+- Marking Sundays based on the standard 2nd-hour meeting schedule for the Church of Jesus Christ of Latter-day Saints.
+
+## Versions Predating this Changelog
+- [1.10.0]
+- [1.9.0]
+- [1.8.1]
+- [1.8.0]
+- [1.7.0]
+- [1.6.0]
+- [1.5.1]
+- [1.5.0]
+- [1.4.0]
+- [1.3.0]
+- [1.2.0]
+- [1.1.0]
+- [1.0.0]
+
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...HEAD
+[1.11.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.10.0...plancal-v1.11.0
 [1.10.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.9.0...plancal-v1.10.0
 [1.9.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.8.1...plancal-v1.9.0
 [1.8.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.8.0...plancal-v1.8.1

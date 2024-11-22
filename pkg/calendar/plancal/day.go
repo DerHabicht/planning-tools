@@ -52,6 +52,14 @@ func (d Day) OrdinalDay() int {
 	return d.date.YearDay()
 }
 
+func (d Day) Weekday() time.Weekday {
+	return d.date.Weekday()
+}
+
+func (d Day) WeekdayOccurrenceInMonth() int {
+	return (d.date.Day() / 7) + 1
+}
+
 func (d Day) MJD() int {
 	return int(cal.ModifiedJulianDate(calendar.DateToLocalTime(d.date)))
 }

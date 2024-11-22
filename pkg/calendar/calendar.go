@@ -76,6 +76,8 @@ type Day interface {
 	IsHoliday() (bool, bool, Holiday)
 	IsSolstice() Solstice
 	OrdinalDay() int
+	Weekday() time.Weekday
+	WeekdayOccurrenceInMonth() int
 	MJD() int
 	Sunrise() time.Time
 	Sunset() time.Time

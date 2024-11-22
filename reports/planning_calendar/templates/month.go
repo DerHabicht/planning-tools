@@ -15,7 +15,7 @@ const MonthWeekdayHeaderTemplate = `KFM & & & +MON & +TUE & +WED & +THU & +FRI &
 //	+SR					the sunrise time for the configured location
 //	+MJD				the Modified Julian Day number
 //	+SS					the sunset time for the configured location
-const MonthDayTemplate = `+DY\\+HD\moon{+FD}\\\vspace{1em}\hspace{1em}+YD\hfill{}+SR\\+MJD\hfill{}+SS`
+const MonthDayTemplate = `+DY\\+HD\moon{+FD}\\+SUN\hspace{1em}+YD\hfill{}+SR\\+MJD\hfill{}+SS`
 
 // MonthTemplate is the LaTeX code for generating a month page.
 // Template placeholders are:
