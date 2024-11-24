@@ -19,8 +19,8 @@ type Day struct {
 }
 
 func NewDay(cal calendar.Calendar, d date.Date) Day {
-	lat := config.GetFloat64("home_location.lat")
-	long := config.GetFloat64("home_location.long")
+	lat := config.GetFloat64(config.HomeLocationLat)
+	long := config.GetFloat64(config.HomeLocationLong)
 	loc := calendar.GetLocation()
 	sr, ss := sunrise.SunriseSunset(lat, long, d.Year(), d.Month(), d.Day())
 
@@ -57,7 +57,10 @@ func (d Day) Weekday() time.Weekday {
 }
 
 func (d Day) WeekdayOccurrenceInMonth() int {
-	return (d.date.Day() / 7) + 1
+	// You can find the occurrence of the weekday by performing an integer division by 7 and adding 1.
+	// If the current day is the 7th of the month, it is the first occurrence of that weekday, but the above method
+	// mistakenly identifies it as the 2nd. So, we zero-index the day first (subtract 1).
+	return ((d.date.Day() - 1) / 7) + 1
 }
 
 func (d Day) MJD() int {

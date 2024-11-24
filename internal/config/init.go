@@ -7,12 +7,12 @@ import (
 	"github.com/derhabicht/planning-tools/internal/logging"
 )
 
-func InitConfig() {
-	SetDefault("home_location.lat", 0.0)
-	SetDefault("home_location.long", 0.0)
-	SetDefault("home_location.tz", "UTC")
-	SetDefault("cover_logo", "")
-	SetDefault("visual_crossing.api_key", "")
+func init() {
+	SetDefault(HomeLocationLat, 0.0)
+	SetDefault(HomeLocationLong, 0.0)
+	SetDefault(HomeLocationTz, "UTC")
+	SetDefault(CoverLogo, "")
+	SetDefault(VisualCrossingAPIKey, "")
 
 	cwd, _ := os.Getwd()
 	logging.Trace().Str("cwd", cwd).Msg("")

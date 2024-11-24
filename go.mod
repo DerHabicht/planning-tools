@@ -18,6 +18,7 @@ require (
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	github.com/tzneal/coordconv v0.1.2
+	golang.org/x/mod v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 

@@ -8,6 +8,16 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Configuration keys
+const (
+	HomeLocationLat      = "home_location.lat"
+	HomeLocationLong     = "home_location.long"
+	HomeLocationTz       = "home_location.tz"
+	CoverLogo            = "cover_logo"
+	Version              = "version"
+	VisualCrossingAPIKey = "visual_crossing.api_key"
+)
+
 // Directory functions
 
 // ConfigDir returns the directory where configuration files and assets are stored.
@@ -63,6 +73,10 @@ func WriteConfigAs(path string) error {
 }
 
 // Configuration access functions
+
+func Set(key string, value interface{}) {
+	viper.Set(key, value)
+}
 
 // GetFloat64 wraps Viper's GetFloat64 function.
 func GetFloat64(key string) float64 {

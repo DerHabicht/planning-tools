@@ -20,6 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.11.1]
+
+### Added
+- Version string added to calendar title page.
+
+### Fixed
+- Corrected off-by-one error on 2nd-hour schedule for months when the Sundays are multiples of seven.
+
 ## [1.11.0]
 
 ### Added
@@ -40,7 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.1...HEAD
+[1.11.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...plancal-v1.11.1
 [1.11.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.10.0...plancal-v1.11.0
 [1.10.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.9.0...plancal-v1.10.0
 [1.9.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.8.1...plancal-v1.9.0

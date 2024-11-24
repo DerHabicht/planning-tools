@@ -8,7 +8,6 @@ import (
 	"github.com/ag7if/go-files"
 	"github.com/spf13/cobra"
 
-	"github.com/derhabicht/planning-tools/internal/config"
 	"github.com/derhabicht/planning-tools/internal/logging"
 	"github.com/derhabicht/planning-tools/internal/planwx"
 )
@@ -60,5 +59,4 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&logLevel, "loglevel", "info", "")
 
 	logging.InitLogging(logLevel, true)
-	config.InitConfig()
 }

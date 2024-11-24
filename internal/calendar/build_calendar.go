@@ -35,7 +35,7 @@ func configureLaTeXCompiler(logger logging.Logger) (*latex.Compiler, error) {
 func generateLaTeX(cal calendar.Calendar, compiler *latex.Compiler, outputFile files.File) error {
 	planningCal := planning_calendar.NewCalendar(cal)
 
-	assets := []string{config.GetString("cover_logo")}
+	assets := []string{config.GetString(config.CoverLogo)}
 
 	err := compiler.GenerateLaTeX(planningCal, outputFile, assets)
 	if err != nil {

@@ -47,6 +47,7 @@ const (
 	OKRHeader                  = `+OKR_HDR`
 	OKRHeaderWeekNumber        = `+W%02d`
 	OrdinalDay                 = `+YD`
+	PlanCalV                   = `+PLANCALV`
 	QuarterPage                = `+Q%d`
 	SolsticeTable              = `+SOLSTICES`
 	Sprint                     = `+AS%d`

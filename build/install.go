@@ -135,6 +135,4 @@ func main() {
 		logging.Error().Err(err).Msg("failed to copy assets")
 		os.Exit(1)
 	}
-
-	config.InitConfig()
 }

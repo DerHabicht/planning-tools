@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-
-	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
+	"golang.org/x/mod/semver"
 
 	"github.com/derhabicht/planning-tools/internal/config"
 	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/pkg/calendar/doomsday"
+	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
 const calendarMonthCount = 15
@@ -52,11 +52,13 @@ func (c *Calendar) fillCalParams(latex string) string {
 	//	Set the ending year of this planning_calendar, expressed as the year of Julian Period A
 	latex = strings.Replace(latex, templates.JulianPeriodEnd, strconv.Itoa(c.calendar.JulianPeriod()), 1)
 	//	Set the picture to typeset on the title page of the planning_calendar
-	latex = strings.Replace(latex, templates.TitlePicture, filepath.Join(c.cfgDir, "assets", config.GetString("cover_logo")), 1)
+	latex = strings.Replace(latex, templates.TitlePicture, filepath.Join(c.cfgDir, "assets", config.GetString(config.CoverLogo)), 1)
 	//	Set the first planning_calendar year covered in this planning_calendar (i.e. FY-1)
 	latex = strings.Replace(latex, templates.CalendarYear1, strconv.Itoa(c.calendar.FiscalYear()-1), -1)
 	//	Set the second planning_calendar year covered in this planning_calendar (i.e. FY)
 	latex = strings.Replace(latex, templates.CalendarYear2, strconv.Itoa(c.calendar.FiscalYear()), -1)
+	//	Set the current version of plancal
+	latex = strings.Replace(latex, templates.PlanCalV, semver.Canonical(fmt.Sprintf("v%s", config.GetString(config.Version))), -1)
 
 	//	Set the color to use for the title box outline on the planning_calendar's title page
 	if c.calendar.FiscalYear()%2 == 0 {

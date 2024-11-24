@@ -71,9 +71,10 @@ func ComputeLastDayOfMonth(d date.Date) int {
 }
 
 func GetLocation() *time.Location {
-	loc, err := time.LoadLocation(config.GetString("home_location.tz"))
+	loc, err := time.LoadLocation(config.GetString(config.HomeLocationTz))
 	if err != nil {
-		log.Warn().Str("tz", config.GetString("home_location.tz")).Msg("Unable to load time zone from config, defaulting to local system time")
+		log.Warn().Str("tz", config.GetString(config.HomeLocationTz)).Msg("Unable to load time zone from config, " +
+			"defaulting to local system time")
 		loc = time.Local
 	}
 

@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
 
 	"github.com/derhabicht/planning-tools/internal/clients"
+	"github.com/derhabicht/planning-tools/internal/config"
 	"github.com/derhabicht/planning-tools/pkg/metoc"
 )
 
@@ -88,7 +88,7 @@ func ParseDailyForecast(raw clients.VisualCrossingDailyData, day metoc.Dtg, tzof
 
 func FetchWeatherDataForReport(report *metoc.MetocReport) error {
 	data, err := clients.FetchVisualCrossingData(
-		viper.GetString("visual_crossing.api_key"),
+		config.GetString(config.VisualCrossingAPIKey),
 		report.Location,
 		report.Dates[0],
 		report.Dates[len(report.Dates)-1],
