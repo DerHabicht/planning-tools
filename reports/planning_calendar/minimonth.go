@@ -100,13 +100,18 @@ func (mm *Minimonth) generateWeeks(latex string) string {
 		templ := templates.MinimonthWeekTemplate
 
 		_, isoWeek := d.ISOWeek()
-		templ = strings.Replace(templ, templates.MinimonthWeekNumber, strconv.Itoa(isoWeek), 1)
+		if d.Month() == mm.month {
+			templ = strings.Replace(templ, templates.MinimonthWeekNumber, strconv.Itoa(isoWeek), 1)
+		} else {
+			templ = strings.Replace(templ, templates.MinimonthWeekNumber, "", 1)
+		}
 
 		for weekDay := 1; weekDay <= 7; weekDay++ {
 			if (int(d.Weekday()) != weekDay%7) || d.Month() != mm.month {
 				templ = strings.Replace(templ, fmt.Sprintf(templates.MinimonthDay, weekDay), "", 1)
 				continue
 			}
+
 			templ = strings.Replace(templ, fmt.Sprintf(templates.MinimonthDay, weekDay), strconv.Itoa(d.Day()), 1)
 			d = d.Add(1)
 		}

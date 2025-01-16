@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.11.2]
+
+### Fixed
+- Corrected week numbers printing on blank weeks in mini calendars.
+
 ## [1.11.1]
 
 ### Added
