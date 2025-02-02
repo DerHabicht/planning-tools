@@ -19,6 +19,7 @@ type Calendar interface {
 	FirstMonth() Month
 	FirstSprint() Sprint
 	FirstWeek() Week
+	FetchWeek(year, week int) (Week, error)
 }
 
 type Period interface {

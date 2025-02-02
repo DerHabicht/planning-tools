@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/fxtlabs/date"
+	"github.com/pkg/errors"
 	"github.com/soniakeys/meeus/v3/julian"
 	"github.com/soniakeys/meeus/v3/moonphase"
 
@@ -86,5 +87,24 @@ func (c *Calendar) FirstSprint() calendar.Sprint {
 }
 
 func (c *Calendar) FirstWeek() calendar.Week {
-	panic("implement me")
+	return c.FirstMonth().FirstWeek()
+}
+
+func (c *Calendar) FetchWeek(year, week int) (calendar.Week, error) {
+	wk := c.FirstWeek()
+
+	y, w, _ := wk.ISOWeek()
+
+	if year < y {
+		return nil, errors.Errorf("%dW%02d occurse before the start of FY%d", year, week, c.fiscalYear)
+	} else if year == y && week < w {
+		return nil, errors.Errorf("%dW%02d occurse before the start of FY%d", year, week, c.fiscalYear)
+	}
+
+	for !(y == year && w == week) {
+		wk = wk.Next()
+		y, w, _ = wk.ISOWeek()
+	}
+
+	return wk, nil
 }

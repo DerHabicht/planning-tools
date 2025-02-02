@@ -1,7 +1,6 @@
 package planning_calendar
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -41,7 +40,7 @@ func (q *Quarter) generateOKRHeader(latex string) string {
 	w := q.calendarQuarter.FirstMonth().FirstWeek()
 	for i := 1; i <= quarterWeekCount; i++ {
 		_, wk, _ := w.ISOWeek()
-		hdr = strings.Replace(hdr, fmt.Sprintf(templates.OKRHeaderWeekNumber, i), strconv.Itoa(wk), 1)
+		hdr = strings.Replace(hdr, templates.OKRHeaderWeekNumber(i), strconv.Itoa(wk), 1)
 		w = w.Next()
 	}
 
@@ -57,7 +56,7 @@ func (q *Quarter) LaTeX() string {
 	latex = strings.Replace(latex, templates.FullCalendarQuarter, q.calendarQuarter.Full(), 1)
 
 	for i, mm := range q.minimonths {
-		latex = strings.Replace(latex, fmt.Sprintf(templates.MinimonthMacro, i+1), mm.LatexCommand(), 1)
+		latex = strings.Replace(latex, templates.MinimonthMacro(i+1), mm.LatexCommand(), 1)
 	}
 
 	latex = q.generateOKRHeader(latex)

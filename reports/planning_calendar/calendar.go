@@ -136,7 +136,7 @@ func (c *Calendar) generateTrimesterPages(latex string) string {
 	for i := 1; i <= trimesterCount; i++ {
 		tr := NewTrimester(trimester, c.minimonths)
 
-		latex = strings.Replace(latex, fmt.Sprintf(templates.TrimesterPage, i), tr.LaTeX(), 1)
+		latex = strings.Replace(latex, templates.TrimesterPage(i), tr.LaTeX(), 1)
 
 		trimester = trimester.Next()
 	}
@@ -150,7 +150,7 @@ func (c *Calendar) generateQuarterPages(latex string) string {
 	for i := 1; i <= quarterCount; i++ {
 		qt := NewQuarter(calQtr, fyQtr, c.minimonths)
 
-		latex = strings.Replace(latex, fmt.Sprintf(templates.QuarterPage, i), qt.LaTeX(), 1)
+		latex = strings.Replace(latex, templates.QuarterPage(i), qt.LaTeX(), 1)
 
 		calQtr = calQtr.Next()
 		fyQtr = fyQtr.Next()
@@ -163,7 +163,7 @@ func (c *Calendar) generateMonthPages(latex string) string {
 	month := c.calendar.FirstMonth()
 	for i := 1; i <= calendarMonthCount; i++ {
 		mo := NewMonth(c.calendar, month, c.minimonths)
-		latex = strings.Replace(latex, fmt.Sprintf(templates.MonthPage, i), mo.LaTeX(), 1)
+		latex = strings.Replace(latex, templates.MonthPage(i), mo.LaTeX(), 1)
 		month = month.Next()
 	}
 

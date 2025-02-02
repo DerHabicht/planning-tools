@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Creating labels with the planning calendar weekly/daily information that can be attached to Ugmonk Analog cards.
 
 ### Changed
 

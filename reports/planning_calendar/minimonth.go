@@ -108,15 +108,15 @@ func (mm *Minimonth) generateWeeks(latex string) string {
 
 		for weekDay := 1; weekDay <= 7; weekDay++ {
 			if (int(d.Weekday()) != weekDay%7) || d.Month() != mm.month {
-				templ = strings.Replace(templ, fmt.Sprintf(templates.MinimonthDay, weekDay), "", 1)
+				templ = strings.Replace(templ, templates.MinimonthDay(weekDay), "", 1)
 				continue
 			}
 
-			templ = strings.Replace(templ, fmt.Sprintf(templates.MinimonthDay, weekDay), strconv.Itoa(d.Day()), 1)
+			templ = strings.Replace(templ, templates.MinimonthDay(weekDay), strconv.Itoa(d.Day()), 1)
 			d = d.Add(1)
 		}
 
-		latex = strings.Replace(latex, fmt.Sprintf(templates.MinimonthWeek, week), templ, 1)
+		latex = strings.Replace(latex, templates.MinimonthWeek(week), templ, 1)
 	}
 
 	return latex

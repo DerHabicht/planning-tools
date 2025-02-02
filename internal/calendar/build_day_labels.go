@@ -5,19 +5,19 @@ import (
 	"github.com/ag7if/go-latex"
 	"github.com/pkg/errors"
 
-	"github.com/derhabicht/planning-tools/internal/config"
 	"github.com/derhabicht/planning-tools/internal/logging"
 	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/pkg/calendar/plancal"
 	"github.com/derhabicht/planning-tools/reports/planning_calendar"
 )
 
-func generateCalendarLaTeX(cal calendar.Calendar, compiler *latex.Compiler, outputFile files.File) error {
-	planningCal := planning_calendar.NewCalendar(cal)
+func generateLabelLaTeX(cal calendar.Calendar, year, week int, compiler *latex.Compiler, outputFile files.File) error {
+	labels, err := planning_calendar.NewDayLabels(cal, year, week)
+	if err != nil {
+		return errors.WithStack(err)
+	}
 
-	assets := []string{config.GetString(config.CoverLogo)}
-
-	err := compiler.GenerateLaTeX(planningCal, outputFile, assets)
+	err = compiler.GenerateLaTeX(labels, outputFile, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -25,7 +25,7 @@ func generateCalendarLaTeX(cal calendar.Calendar, compiler *latex.Compiler, outp
 	return nil
 }
 
-func BuildCalendar(year int, outputFile files.File, logger logging.Logger) error {
+func BuildLabels(year, week int, outputFile files.File, logger logging.Logger) error {
 	cal := plancal.NewCalendar(year)
 
 	compiler, err := configureLaTeXCompiler(logger)
@@ -33,7 +33,7 @@ func BuildCalendar(year int, outputFile files.File, logger logging.Logger) error
 		return errors.WithStack(err)
 	}
 
-	err = generateCalendarLaTeX(cal, compiler, outputFile)
+	err = generateLabelLaTeX(cal, year, week, compiler, outputFile)
 	if err != nil {
 		return errors.WithStack(err)
 	}

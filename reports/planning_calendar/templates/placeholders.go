@@ -1,18 +1,18 @@
 package templates
 
+import (
+	"fmt"
+)
+
 const (
 	AutumnalEquinox            = `+AE`
 	CalendarEnd                = `+CAL_END`
-	CalendarQuarter            = `+AQ%d`
 	CalendarStart              = `+CAL_START`
 	CalendarYear1              = `+CY1`
 	CalendarYear2              = `+CY2`
 	Doomsday                   = `+DD`
 	DoomsdayTable              = `+DOOMSDAYS`
 	DoomsdayTableRows          = `+DD_TABLE_ROWS`
-	FiscalQuarter              = `+FQ%d`
-	FiscalTrimester            = `+FT%d`
-	FiscalWeek                 = `+FW%d`
 	FullCalendarQuarter        = `+CYQ`
 	FullDate                   = `+FD`
 	FullFiscalQuarter          = `+FYQ`
@@ -26,42 +26,102 @@ const (
 	HolidayObserved2           = `+CY2Obs`
 	HolidayTableByAbbreviation = `+ABBVS`
 	HolidayTableByOccurrence   = `+HOLIDAYS`
-	ISOWeek                    = `+IW%d`
 	JulianPeriodEnd            = `+JP_END`
 	JulianPeriodStart          = `+JP_START`
 	LunarCalibrationDate       = `+LCD`
 	MJD                        = `+MJD`
 	MinimonthCommand           = `+COMMAND`
 	MinimonthCommands          = `+MINIMONTH_CMDS`
-	MinimonthDay               = `+D%d`
-	MinimonthMacro             = `+M%dCMD`
 	MinimonthNext              = `+NEXT_CMD`
 	MinimonthPrevious          = `+PREV_CMD`
-	MinimonthWeek              = `+W%d`
 	MinimonthWeekNumber        = `+W`
 	MonthDay                   = `+DY`
-	MonthDayData               = `+D%02d`
 	MonthName                  = `+MONTH`
 	MonthNameFull              = `+M`
-	MonthPage                  = `+M%02d`
 	OKRHeader                  = `+OKR_HDR`
-	OKRHeaderWeekNumber        = `+W%02d`
 	OrdinalDay                 = `+YD`
 	PlanCalV                   = `+PLANCALV`
-	QuarterPage                = `+Q%d`
 	SolsticeTable              = `+SOLSTICES`
-	Sprint                     = `+AS%d`
-	Sunday                     = `+SUN`
 	SummerSolstice             = `+SS`
+	Sunday                     = `+SUN`
 	SunriseTime                = `+SR`
 	SunsetTime                 = `+SS`
 	TitleColor                 = `+TITLE_COLOR`
 	TitlePicture               = `+PIC`
-	TrimesterPage              = `+T%d`
 	VernalEquinox              = `+VE`
 	WeekHeader                 = `+WEEK_HEADER`
 	WeekdayHeader              = `+WEEKDAYS`
 	WinterSolstice1            = `+WS1`
 	WinterSolstice2            = `+WS2`
 	Year                       = `+Y`
+	calendarQuarter            = `+AQ%d`
+	fiscalQuarter              = `+FQ%d`
+	fiscalTrimester            = `+FT%d`
+	fiscalWeek                 = `+FW%d`
+	isoWeek                    = `+IW%d`
+	minimonthDay               = `+D%d`
+	minimonthMacro             = `+M%dCMD`
+	minimonthWeek              = `+W%d`
+	monthDayData               = `+D%02d`
+	monthPage                  = `+M%02d`
+	okrHeaderWeekNumber        = `+W%02d`
+	quarterPage                = `+Q%d`
+	sprint                     = `+AS%d`
+	trimesterPage              = `+T%d`
 )
+
+func CalendarQuarter(qtr int) string {
+	return fmt.Sprintf(calendarQuarter, qtr)
+}
+
+func FiscalQuarter(qtr int) string {
+	return fmt.Sprintf(fiscalQuarter, qtr)
+}
+
+func FiscalTrimester(trimester int) string {
+	return fmt.Sprintf(fiscalTrimester, trimester)
+}
+
+func FiscalWeek(week int) string {
+	return fmt.Sprintf(fiscalWeek, week)
+}
+
+func ISOWeek(week int) string {
+	return fmt.Sprintf(isoWeek, week)
+}
+
+func MinimonthDay(day int) string {
+	return fmt.Sprintf(minimonthDay, day)
+}
+
+func MinimonthMacro(month int) string {
+	return fmt.Sprintf(minimonthMacro, month)
+}
+
+func MinimonthWeek(week int) string {
+	return fmt.Sprintf(minimonthWeek, week)
+}
+
+func MonthDayData(day int) string {
+	return fmt.Sprintf(monthDayData, day)
+}
+
+func MonthPage(page int) string {
+	return fmt.Sprintf(monthPage, page)
+}
+
+func OKRHeaderWeekNumber(week int) string {
+	return fmt.Sprintf(okrHeaderWeekNumber, week)
+}
+
+func QuarterPage(page int) string {
+	return fmt.Sprintf(quarterPage, page)
+}
+
+func Sprint(s int) string {
+	return fmt.Sprintf(sprint, s)
+}
+
+func TrimesterPage(page int) string {
+	return fmt.Sprintf(trimesterPage, page)
+}

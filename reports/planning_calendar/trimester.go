@@ -1,7 +1,6 @@
 package planning_calendar
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
@@ -37,7 +36,7 @@ func (t *Trimester) LaTeX() string {
 	latex = strings.Replace(latex, templates.FullTrimester, t.trimester.Full(), 1)
 
 	for i, mm := range t.minimonths {
-		latex = strings.Replace(latex, fmt.Sprintf(templates.MinimonthMacro, i+1), mm.LatexCommand(), 1)
+		latex = strings.Replace(latex, templates.MinimonthMacro(i+1), mm.LatexCommand(), 1)
 	}
 
 	return latex

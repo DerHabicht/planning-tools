@@ -22,11 +22,11 @@ type Month struct {
 	nextMonth Minimonth
 }
 
-func NewMonth(calendar calendar.Calendar, month calendar.Month, minimonths map[string]Minimonth) Month {
+func NewMonth(calendar calendar.Calendar, month calendar.Month, minimonths map[string]Minimonth) *Month {
 	prev := month.Prev()
 	next := month.Next()
 
-	return Month{
+	return &Month{
 		calendar:  calendar,
 		month:     month,
 		prevMonth: minimonths[prev.Full()],
@@ -70,17 +70,17 @@ func (m *Month) generateWeekData(latex string) string {
 		_, fyWeek := week.FyWeek()
 		_, cyWeek, card := week.ISOWeek()
 
-		latex = strings.Replace(latex, fmt.Sprintf(templates.FiscalTrimester, i), week.Trimester().Short(), 1)
-		latex = strings.Replace(latex, fmt.Sprintf(templates.FiscalQuarter, i), week.FiscalQuarter().Short(), 1)
-		latex = strings.Replace(latex, fmt.Sprintf(templates.FiscalWeek, i), fmt.Sprintf("W%02d", fyWeek), 1)
-		latex = strings.Replace(latex, fmt.Sprintf(templates.CalendarQuarter, i), week.CalendarQuarter().Short(), 1)
-		latex = strings.Replace(latex, fmt.Sprintf(templates.Sprint, i), week.Sprint().Short(), 1)
+		latex = strings.Replace(latex, templates.FiscalTrimester(i), week.Trimester().Short(), 1)
+		latex = strings.Replace(latex, templates.FiscalQuarter(i), week.FiscalQuarter().Short(), 1)
+		latex = strings.Replace(latex, templates.FiscalWeek(i), fmt.Sprintf("W%02d", fyWeek), 1)
+		latex = strings.Replace(latex, templates.CalendarQuarter(i), week.CalendarQuarter().Short(), 1)
+		latex = strings.Replace(latex, templates.Sprint(i), week.Sprint().Short(), 1)
 
 		cyWeekStr := `\colorbox{%s}{\textcolor{white}{%sW%02d}}`
 		if cyWeek%2 == 0 {
-			latex = strings.Replace(latex, fmt.Sprintf(templates.ISOWeek, i), fmt.Sprintf(cyWeekStr, "blue", card.LaTeX(), cyWeek), 1)
+			latex = strings.Replace(latex, templates.ISOWeek(i), fmt.Sprintf(cyWeekStr, "blue", card.LaTeX(), cyWeek), 1)
 		} else {
-			latex = strings.Replace(latex, fmt.Sprintf(templates.ISOWeek, i), fmt.Sprintf(cyWeekStr, "red", card.LaTeX(), cyWeek), 1)
+			latex = strings.Replace(latex, templates.ISOWeek(i), fmt.Sprintf(cyWeekStr, "red", card.LaTeX(), cyWeek), 1)
 		}
 
 		week = week.Next()
@@ -141,7 +141,7 @@ func (m *Month) generateDayData(latex string) string {
 		day = strings.Replace(day, templates.MJD, strconv.Itoa(d.MJD()), 1)
 		day = strings.Replace(day, templates.SunsetTime, d.Sunset().Format(timeFormat), 1)
 
-		latex = strings.Replace(latex, fmt.Sprintf(templates.MonthDayData, i), day, 1)
+		latex = strings.Replace(latex, templates.MonthDayData(i), day, 1)
 
 		d = d.Next()
 	}
