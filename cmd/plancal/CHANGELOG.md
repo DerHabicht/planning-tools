@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Creating labels with the planning calendar weekly/daily information that can be attached to Ugmonk Analog cards.
 
 ### Changed
 
@@ -20,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [1.12.0]
+
+### Added
+- Creating labels with the planning calendar weekly/daily information that can be attached to Ugmonk Analog cards.
 
 ## [1.11.2]
 
@@ -54,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.1...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.12.0...HEAD
+[1.11.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...plancal-v1.12.0
 [1.11.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...plancal-v1.11.1
 [1.11.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.10.0...plancal-v1.11.0
 [1.10.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.9.0...plancal-v1.10.0
