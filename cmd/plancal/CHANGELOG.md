@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.13.0]
+
+### Added
+- Added a week label for Ugmonk Analog Week Cards.
+
 ## [1.12.0]
 
 ### Added
@@ -58,8 +63,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.12.0...HEAD
-[1.11.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...plancal-v1.12.0
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.13.0...HEAD
+[1.13.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.12.0...plancal-v1.13.0
+[1.12.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.1...plancal-v1.12.0
 [1.11.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.11.0...plancal-v1.11.1
 [1.11.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.10.0...plancal-v1.11.0
 [1.10.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.9.0...plancal-v1.10.0

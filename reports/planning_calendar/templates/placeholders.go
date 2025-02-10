@@ -49,6 +49,7 @@ const (
 	TitleColor                 = `+TITLE_COLOR`
 	TitlePicture               = `+PIC`
 	VernalEquinox              = `+VE`
+	WeekData                   = `+WK`
 	WeekHeader                 = `+WEEK_HEADER`
 	WeekdayHeader              = `+WEEKDAYS`
 	WinterSolstice1            = `+WS1`
