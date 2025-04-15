@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.14.0]
+
+### Changed
+- Updated day labels to use the Dymo 30336 labels to fit better on Ugmonk cards. Labels are shorter, so they can still
+  printed on the 30252.
+
 ## [1.13.0]
 
 ### Added

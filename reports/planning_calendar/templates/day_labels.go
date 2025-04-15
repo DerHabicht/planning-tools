@@ -1,11 +1,14 @@
 package templates
 
-const WeekLabels = `\documentclass[8pt]{scrarticle}
+const WeekLabels = `\documentclass[6pt]{scrarticle}
 
 \usepackage[
-    paperwidth=3.5in,
-    paperheight=1.125in,
-    margin=0.2in
+    paperwidth=2.125in,
+    paperheight=1.0in,
+	top=0.2in,
+	left=0.0in,
+	right=0.0in,
+	bottom=0.0in
 ]{geometry}
 \usepackage{tabularx}
 
@@ -14,6 +17,8 @@ const WeekLabels = `\documentclass[8pt]{scrarticle}
 \begin{document}
 \noindent
 +WK
+
+\pagebreak
 
 \noindent
 +D01
