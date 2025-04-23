@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/derhabicht/planning-tools/blob/main/docs/schemas/disposition_instructions.json",
+  "title": "Disposition Instructions",
+  "description": "YAML definition of CAP file disposition instructions per the tables in CAPR 10-2",
+  "$defs": {
+    "table": {
+      "type": "object",
+      "properties": {
+        "table_number": { "type":  "integer", "minimum":  0 },
+        "name": { "type":  "string", "minLength": 1 },
+        "rules": { "type": "array", "items": { "$ref": "#/$defs/rule" } }
+      },
+      "required": [ "table_number", "title", "rules"]
+    },
+    "rule": {
+      "type": "object",
+      "properties": {
+        "rule_number": { "type": "integer", "minimum":  0},
+        "record_type": { "type": "string", "minLength": 1 },
+        "auto_cutoff": { "type": "boolean" },
+        "cutoff": { "enum": ["", "30 Sep", "31 Dec"] },
+        "dispose_after": { "type":  "integer" },
+        "disposition": { "type": "string", "minLength": 1 }
+      },
+      "required": [ "rule_number", "record_type", "cutoff", "dispose_after", "disposition" ]
+    }
+  },
+  "type": "array",
+  "items": { "$ref":  "#/$defs/table" }
+}

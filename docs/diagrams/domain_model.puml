@@ -1,0 +1,72 @@
+@startuml
+!theme spacelab
+skinparam linetype ortho
+
+/'
+    Org Package
+
+    This package is the core pkg model.
+'/
+class DutyAssignment {
+    +DutyTitle: string
+    +Assistant: bool
+    +OfficeSymbol: string
+    +MinGrade: *Grade
+    +MaxGrade: *Grade
+    +Assignee: *Member
+}
+
+class Element {
+    +ElementLeader: DutyAssignment
+    +AsstElementLeader: DutyAssignment
+    +Members: Members[]
+}
+
+class Flight {
+    +Name: string
+    +Abbreviation: string
+    +FlightCommander: DutyAssignment
+    +FlightSergeant: DutyAssignment
+    +Elements: Element[]
+}
+
+class Member {
+    +CAPID: int
+    +LastName: string
+    +FirstName: string
+    +MemberType: MemberType
+    +Grade: Grade
+    +String(): string
+    +FullName(): string
+}
+
+class StaffGroup {
+    +Name string
+    +SubGroups: StaffSubGroup[]
+}
+
+class StaffSubGroup {
+    +Name: string
+    +Leader: DutyAssignment
+    +DirectReports: DutyAssignments[]
+}
+
+enum Grade
+enum MemberType
+
+DutyAssignment *-- Grade
+DutyAssignment *-- Member
+
+Element *-- DutyAssignment
+Element o-- Member
+
+Flight *-- DutyAssignment
+Flight o-- Element
+
+Member *-- MemberType
+Member *-- Grade
+
+StaffGroup o-- StaffSubGroup
+StaffSubGroup o-- DutyAssignment
+
+@enduml

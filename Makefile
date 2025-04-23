@@ -17,11 +17,15 @@ bin/plancal: $(foreach f, $(SRC), $(f))
 bin/metoc: $(foreach f, $(SRC), $(f))
 	go build ${LDFLAGS} -o bin/metoc cmd/metoc/main.go
 
+bin/fp: $(foreach f, $(SRC), $(f))
+	go build ${LDFLAGS} -o bin/fp cmd/fp/main.go
+
 .PHONY: install
-install: bin/plancal bin/metoc
+install: bin/plancal bin/metoc bin/fp
 	go run build/install.go $(CURDIR)
 	cp bin/plancal ${HOME}/.local/bin/
 	cp bin/metoc ${HOME}/.local/bin/
+	cp bin/fp ${HOME}/.local/bin/
 
 .PHONY: test
 test:
