@@ -17,9 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
-- Fixed case sensitivity when designating a week for `plancal dl`
 
 ### Security
+
+## [1.14.1]
+
+### Fixed
+- Fixed case sensitivity when designating a week for `plancal dl`
 
 ## [1.14.0]
 
