@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/derhabicht/planning-tools/internal/metoc"
+	"github.com/derhabicht/planning-tools/internal/cmd/metoc"
 )
 
 // BaseVersion is the SemVer-formatted string that defines the current version of metoc.
