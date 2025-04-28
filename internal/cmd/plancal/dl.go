@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ag7if/go-files"
@@ -33,7 +34,7 @@ func runDLCmd(cmd *cobra.Command, args []string) {
 			panic(err)
 		}
 
-		res := re.FindStringSubmatch(args[0])
+		res := re.FindStringSubmatch(strings.ToUpper(args[0]))
 
 		year, err = strconv.Atoi(res[1])
 		if err != nil {
