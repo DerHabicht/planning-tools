@@ -71,7 +71,7 @@ func ComputeSprint(date date.Date) (int, S) {
 	case 24, 25:
 		return year, S12
 	case 26:
-		return year, SP3
+		return year, SP2
 	case 27, 28:
 		return year, S13
 	case 29, 30:
