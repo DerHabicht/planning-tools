@@ -125,10 +125,10 @@ func (lv *PlanWxReport) AddWxData(locationKey string, date metoc.Dtg, data metoc
 	row = strings.Replace(row, "%{DATE}", date.Date(), -1)
 	row = strings.Replace(row, "%{CONDITIONS}", data.Conditions, -1)
 	row = strings.Replace(row, "%{DESCRIPTION}", data.Description, -1)
-	row = strings.Replace(row, "%{HIGH_TEMP}", fmt.Sprintf("%.1f\\textdegree{}C", data.HighTemp), -1)
-	row = strings.Replace(row, "%{LOW_TEMP}", fmt.Sprintf("%.1f\\textdegree{}C", data.LowTemp), -1)
-	row = strings.Replace(row, "%{HEAT_RISK}", string(metoc.CalculateHeatCategory(data.FeelsLikeMax)), -1)
-	row = strings.Replace(row, "%{COLD_RISK}", string(metoc.CalculateColdCategory(data.FeelsLikeMin)), -1)
+	row = strings.Replace(row, "%{HIGH_TEMP}", fmt.Sprintf("%.1f\\textdegree{}C (%.1f\\textdegree{}F)", data.HighTemp, metoc.ToF(data.HighTemp)), -1)
+	row = strings.Replace(row, "%{LOW_TEMP}", fmt.Sprintf("%.1f\\textdegree{}C (%.1f\\textdegree{}F)", data.LowTemp, metoc.ToF(data.LowTemp)), -1)
+	row = strings.Replace(row, "%{HEAT_RISK}", fmt.Sprintf("%s (%.1f\\textdegree{}C/%.1f\\textdegree{}F)", metoc.CalculateHeatCategory(data.FeelsLikeMax), data.FeelsLikeMax, metoc.ToF(data.FeelsLikeMax)), -1)
+	row = strings.Replace(row, "%{COLD_RISK}", fmt.Sprintf("%s (%.1f\\textdegree{}C/%.1f\\textdegree{}F)", metoc.CalculateColdCategory(data.FeelsLikeMin), data.FeelsLikeMin, metoc.ToF(data.FeelsLikeMin)), -1)
 	row = strings.Replace(row, "%{FORECAST_DETAIL}", apf, -1)
 
 	lv.wxDataRows[locationKey] += row

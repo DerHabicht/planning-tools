@@ -1,5 +1,9 @@
 package metoc
 
+func ToF(c float64) float64 {
+	return (c * 1.8) + 32
+}
+
 type PrecipitationType int
 
 const (

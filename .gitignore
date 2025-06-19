@@ -324,3 +324,4 @@ TSWLatexianTemp*
 # Project Ignores
 .env
 bin/
+.vscode/
