@@ -20,6 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.15.0]
+
+### Added
+- Guide mark for punching a hole to hang the calendar on.
+
+### Changed
+- Moved reference pages to end of calendar to make it easier to look at them when it is hanging on a wall.
+- Re-ordered week data on month pages because I was expecting to see AG7IF data at the top, not CAP FY.
+
 ## [1.14.2]
 
 ### Fixed
@@ -34,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Updated day labels to use the Dymo 30336 labels to fit better on Ugmonk cards. Labels are shorter, so they can still
-  printed on the 30252.
+  be printed on the 30252.
 
 ## [1.13.0]
 
@@ -79,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.2...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.15.0...HEAD
+[1.15.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.2...plancal-v1.15.0
 [1.14.2]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.1...plancal-v1.14.2
 [1.14.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.0...plancal-v1.14.1
 [1.14.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.13.0...plancal-v1.14.0

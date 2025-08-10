@@ -99,7 +99,10 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 \renewcommand{\multirowsetup}{\raggedleft}
 \renewcommand{\headrulewidth}{0pt}
 
-\fancypagestyle{plain}{\fancyhf{}}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[CO]{\raisebox{0.5in}{$\circ$}}
+}
 \pagestyle{plain}
 
 \titlespacing*{\chapter}{0pt}{0pt}{20pt}
@@ -197,14 +200,58 @@ const CalendarTemplate = `\documentclass[10pt]{book}
     \end{center}
 \end{titlepage}
 
-\section*{+CY1/+CY2 Holidays}
-\begin{tabularx}{\textwidth}{lXrrrr}
-    \toprule
-    Abbreviation & Holiday & +CY1 Occurrence & +CY1 Observed & +CY2 Occurrence & +CY2 Observed \\
-    \midrule
-    +HOLIDAYS
-    \bottomrule
-\end{tabularx}
+
+\newpage
+
++T1
+
++Q1
+
++M01
+
++M02
+
++M03
+
++Q2
+
++M04
+
++T2
+
++M05
+
++M06
+
++Q3
+
++M07
+
++M08
+
++T3
+
++M09
+
++Q4
+
++M10
+
++M11
+
++M12
+
++T4
+
++Q5
+
++M13
+
++M14
+
++M15
+
+\cleardoublepage
 
 \section*{Reference Tables}
 \begin{center}
@@ -302,6 +349,28 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 
 \pagebreak
 
+\section*{+CY1/+CY2 Holidays}
+\begin{tabularx}{\textwidth}{lXrrrr}
+    \toprule
+    Abbreviation & Holiday & +CY1 Occurrence & +CY1 Observed & +CY2 Occurrence & +CY2 Observed \\
+    \midrule
+    +HOLIDAYS
+    \bottomrule
+\end{tabularx}
+
+\pagebreak
+
+\section*{Holiday Abbreviations}
+\begin{tabularx}{\textwidth}{lXrrrr}
+    \toprule
+    Abbreviation & Holiday & +CY1 Occurrence & +CY1 Observed & +CY2 Occurrence & +CY2 Observed \\
+    \midrule
+    +ABBVS
+    \bottomrule
+\end{tabularx}
+
+\pagebreak
+
 \noindent
 \begin{tabularx}{\textwidth}{XXXX}
     \minifirstoctober      &
@@ -349,67 +418,6 @@ const CalendarTemplate = `\documentclass[10pt]{book}
     \minisecondextapril        &
     \minisecondextmay         \\
 \end{tabularx}
-
-\pagebreak
-
-\section*{Holiday Abbreviations}
-\begin{tabularx}{\textwidth}{lXrrrr}
-    \toprule
-    Abbreviation & Holiday & +CY1 Occurrence & +CY1 Observed & +CY2 Occurrence & +CY2 Observed \\
-    \midrule
-    +ABBVS
-    \bottomrule
-\end{tabularx}
-
-\newpage
-
-+T1
-
-+Q1
-
-+M01
-
-+M02
-
-+M03
-
-+Q2
-
-+M04
-
-+T2
-
-+M05
-
-+M06
-
-+Q3
-
-+M07
-
-+M08
-
-+T3
-
-+M09
-
-+Q4
-
-+M10
-
-+M11
-
-+M12
-
-+T4
-
-+Q5
-
-+M13
-
-+M14
-
-+M15
 
 \end{document}
 `

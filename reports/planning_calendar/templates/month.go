@@ -17,6 +17,61 @@ const MonthWeekdayHeaderTemplate = `KFM & & & +MON & +TUE & +WED & +THU & +FRI &
 //	+SS					the sunset time for the configured location
 const MonthDayTemplate = `+DY\\+HD\moon{+FD}\\+SUN\hspace{1em}+YD\hfill{}+SR\\+MJD\hfill{}+SS`
 
+const MonthWeekTemplate = `
+\multirow{5}{0.5in}{} & 
+	AG7IF &
+	+AQ &
+	\multirow[t]{5}{1in}{+D1} & 
+	\multirow[t]{5}{1in}{+D2} & 
+	\multirow[t]{5}{1in}{+D3} & 
+	\multirow[t]{5}{1in}{+D4} & 
+	\multirow[t]{5}{1in}{+D5} & 
+	\multirow[t]{5}{1in}{+D6} & 
+	\multirow[t]{5}{1in}{+D7} 
+\\
+	&       
+	&      
+	+AS 
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+\\
+	& 
+	ISO &      
+	+IW &                            
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+\\
+	&       
+	FY &      
+	+FT/+FQ &                            
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+	&                            
+\\
+	& 
+	&      
+	+FW &                            
+	&
+	&                           
+	&                            
+	&                            
+	&                            
+	&                            
+\\
+`
+
 // MonthTemplate is the LaTeX code for generating a month page.
 // Template placeholders are:
 //
@@ -38,41 +93,17 @@ const MonthTemplate = `\chapter*{\textbf{+M}\hfill{\footnotesize+PREV_CMD+NEXT_C
 \hline
     +WEEKDAYS
 \hline
-    \multirow{5}{0.5in}{} & FY    & +FT1/+FQ1 & \multirow[t]{5}{1in}{+D01} & \multirow[t]{5}{1in}{+D02} & \multirow[t]{5}{1in}{+D03} & \multirow[t]{5}{1in}{+D04} & \multirow[t]{5}{1in}{+D05} & \multirow[t]{5}{1in}{+D06} & \multirow[t]{5}{1in}{+D07} \\
-                        &       &      +FW1 &                            &                            &                            &                            &                            &                            &                            \\
-                        & AG7IF &      +AQ1 &                            &                            &                            &                            &                            &                            &                            \\
-                        &       &      +AS1 &                            &                            &                            &                            &                            &                            &                            \\
-                        & ISO   &      +IW1 &                            &                            &                            &                            &                            &                            &                            \\
+	+W1
 \hline
-    \multirow{5}{0.5in}{} & FY    & +FT2/+FQ2 & \multirow[t]{5}{1in}{+D08} & \multirow[t]{5}{1in}{+D09} & \multirow[t]{5}{1in}{+D10} & \multirow[t]{5}{1in}{+D11} & \multirow[t]{5}{1in}{+D12} & \multirow[t]{5}{1in}{+D13} & \multirow[t]{5}{1in}{+D14} \\
-                        &       &      +FW2 &                            &                            &                            &                            &                            &                            &                            \\
-                        & AG7IF &      +AQ2 &                            &                            &                            &                            &                            &                            &                            \\
-                        &       &      +AS2 &                            &                            &                            &                            &                            &                            &                            \\
-                        & ISO   &      +IW2 &                            &                            &                            &                            &                            &                            &                            \\
+	+W2
 \hline
-    \multirow{5}{0.5in}{} & FY    & +FT3/+FQ3 & \multirow[t]{5}{1in}{+D15} & \multirow[t]{5}{1in}{+D16} & \multirow[t]{5}{1in}{+D17} & \multirow[t]{5}{1in}{+D18} & \multirow[t]{5}{1in}{+D19} & \multirow[t]{5}{1in}{+D20} & \multirow[t]{5}{1in}{+D21} \\
-                        &       &      +FW3 &                            &                            &                            &                            &                            &                            &                            \\
-                        & AG7IF &      +AQ3 &                            &                            &                            &                            &                            &                            &                            \\
-                        &       &      +AS3 &                            &                            &                            &                            &                            &                            &                            \\
-                        & ISO   &      +IW3 &                            &                            &                            &                            &                            &                            &                            \\
+	+W3
 \hline
-    \multirow{5}{0.5in}{} & FY    & +FT4/+FQ4 & \multirow[t]{5}{1in}{+D22} & \multirow[t]{5}{1in}{+D23} & \multirow[t]{5}{1in}{+D24} & \multirow[t]{5}{1in}{+D25} & \multirow[t]{5}{1in}{+D26} & \multirow[t]{5}{1in}{+D27} & \multirow[t]{5}{1in}{+D28} \\
-                        &       &      +FW4 &                            &                            &                            &                            &                            &                            &                            \\
-                        & AG7IF &      +AQ4 &                            &                            &                            &                            &                            &                            &                            \\
-                        &       &      +AS4 &                            &                            &                            &                            &                            &                            &                            \\
-                        & ISO   &      +IW4 &                            &                            &                            &                            &                            &                            &                            \\
+	+W4
 \hline
-    \multirow{5}{0.5in}{} & FY    & +FT5/+FQ5 & \multirow[t]{5}{1in}{+D29} & \multirow[t]{5}{1in}{+D30} & \multirow[t]{5}{1in}{+D31} & \multirow[t]{5}{1in}{+D32} & \multirow[t]{5}{1in}{+D33} & \multirow[t]{5}{1in}{+D34} & \multirow[t]{5}{1in}{+D35} \\
-                        &       &      +FW5 &                            &                            &                            &                            &                            &                            &                            \\
-                        & AG7IF &      +AQ5 &                            &                            &                            &                            &                            &                            &                            \\
-                        &       &      +AS5 &                            &                            &                            &                            &                            &                            &                            \\
-                        & ISO   &      +IW5 &                            &                            &                            &                            &                            &                            &                            \\
+	+W5
 \hline
-    \multirow{5}{0.5in}{} & FY    & +FT6/+FQ6 & \multirow[t]{5}{1in}{+D36} & \multirow[t]{5}{1in}{+D37} & \multirow[t]{5}{1in}{+D38} & \multirow[t]{5}{1in}{+D39} & \multirow[t]{5}{1in}{+D40} & \multirow[t]{5}{1in}{+D41} & \multirow[t]{5}{1in}{+D42} \\
-                        &       &      +FW6 &                            &                            &                            &                            &                            &                            &                            \\
-                        & AG7IF &      +AQ6 &                            &                            &                            &                            &                            &                            &                            \\
-                        &       &      +AS6 &                            &                            &                            &                            &                            &                            &                            \\
-                        & ISO   &      +IW6 &                            &                            &                            &                            &                            &                            &                            \\
+	+W6
 \hline
 \end{tabular}
 }
