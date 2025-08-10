@@ -21,56 +21,56 @@ const WeekLabels = `\documentclass[6pt]{scrarticle}
 \pagebreak
 
 \noindent
-+D01
++D1
 
 \pagebreak
 
 \noindent
-+D02
++D2
 
 \pagebreak
 
 \noindent
-+D03
++D3
 
 \pagebreak
 
 \noindent
-+D04
++D4
 
 \pagebreak
 
 \noindent
-+D05
++D5
 
 \pagebreak
 
 \noindent
-+D06
++D6
 
 
 \pagebreak
 
 \noindent
-+D07
++D7
 
 \end{document}
 `
 
 const WeekLabelTemplate = `\begin{tabularx}{\textwidth}{YY}
-	\multicolumn{2}{c}{\LARGE +IW1} \\ 
+	\multicolumn{2}{c}{\LARGE +IW} \\ 
 		 & 		  \\
 	FY+Y & CY+CY1 \\ 
- 	+FT1 & +AQ1   \\
-	+FQ1 & +AS1   \\
+ 	+FT & +AQ   \\
+	+FQ & +AS   \\
 \end{tabularx}
 `
 
 const DayLabelTemplate = `\begin{tabularx}{\textwidth}{lrXrr}
     \multicolumn{5}{c}{+FD}                       \\
-    FY+Y   &          +FT1/+FQ1  & & ORD: &   +YD \\
-           &               +FW1  & & MJD: &  +MJD \\
-    CY+CY1 &          +AQ1/+AS1  & &  SR: &   +SR \\
-           &               +IW1  & &  SS: &   +SS
+    FY+Y   &          +FT/+FQ  & & ORD: &   +YD \\
+           &               +FW  & & MJD: &  +MJD \\
+    CY+CY1 &          +AQ/+AS  & &  SR: &   +SR \\
+           &               +IW  & &  SS: &   +SS
 \end{tabularx}
 `

@@ -13,7 +13,7 @@ import (
 )
 
 const monthWeekCount = 6
-const dayCount = monthWeekCount * 7
+const dayCount = 7
 
 type Month struct {
 	calendar  calendar.Calendar
@@ -64,40 +64,40 @@ func (m *Month) generateWeekdayHeader(latex string) string {
 	return latex
 }
 
-func (m *Month) generateWeekData(latex string) string {
-	week := m.month.FirstWeek()
-	for i := 1; i <= monthWeekCount; i++ {
-		_, fyWeek := week.FyWeek()
-		_, cyWeek, card := week.ISOWeek()
+func (m *Month) generateWeekData(week calendar.Week, latex string) string {
+	_, fyWeek := week.FyWeek()
+	_, cyWeek, card := week.ISOWeek()
 
-		latex = strings.Replace(latex, templates.FiscalTrimester(i), week.Trimester().Short(), 1)
-		latex = strings.Replace(latex, templates.FiscalQuarter(i), week.FiscalQuarter().Short(), 1)
-		latex = strings.Replace(latex, templates.FiscalWeek(i), fmt.Sprintf("W%02d", fyWeek), 1)
-		latex = strings.Replace(latex, templates.CalendarQuarter(i), week.CalendarQuarter().Short(), 1)
-		latex = strings.Replace(latex, templates.Sprint(i), week.Sprint().Short(), 1)
+	latex = strings.Replace(latex, templates.FiscalTrimester, week.Trimester().Short(), 1)
+	latex = strings.Replace(latex, templates.FiscalQuarter, week.FiscalQuarter().Short(), 1)
+	latex = strings.Replace(latex, templates.FiscalWeek, fmt.Sprintf("W%02d", fyWeek), 1)
+	latex = strings.Replace(latex, templates.CalendarQuarter, week.CalendarQuarter().Short(), 1)
+	latex = strings.Replace(latex, templates.Sprint, week.Sprint().Short(), 1)
 
-		cyWeekStr := `\colorbox{%s}{\textcolor{white}{%sW%02d}}`
-		if cyWeek%2 == 0 {
-			latex = strings.Replace(latex, templates.ISOWeek(i), fmt.Sprintf(cyWeekStr, "blue", card.LaTeX(), cyWeek), 1)
-		} else {
-			latex = strings.Replace(latex, templates.ISOWeek(i), fmt.Sprintf(cyWeekStr, "red", card.LaTeX(), cyWeek), 1)
-		}
-
-		week = week.Next()
+	cyWeekStr := `\colorbox{%s}{\textcolor{white}{%sW%02d}}`
+	if cyWeek%2 == 0 {
+		latex = strings.Replace(latex, templates.ISOWeek, fmt.Sprintf(cyWeekStr, "blue", card.LaTeX(), cyWeek), 1)
+	} else {
+		latex = strings.Replace(latex, templates.ISOWeek, fmt.Sprintf(cyWeekStr, "red", card.LaTeX(), cyWeek), 1)
 	}
+
+	week = week.Next()
 
 	return latex
 }
 
-func (m *Month) generateDayData(latex string) string {
+func (m *Month) generateDayData(week calendar.Week, latex string, firstWeek bool) string {
 	const timeFormat = `1504`
 
-	d := m.month.FirstWeek().StartDay()
+	d := week.StartDay()
 	for i := 1; i <= dayCount; i++ {
 		day := templates.MonthDayTemplate
 
 		dayStr := strconv.Itoa(d.Date().Day())
-		if i == 1 || d.Date().Day() == 1 {
+		if firstWeek || d.Date().Day() == 1 {
+			if firstWeek {
+				firstWeek = false
+			}
 			dayStr = strings.ToUpper(d.Date().Month().String())[:3] + " " + dayStr
 		}
 
@@ -149,14 +149,26 @@ func (m *Month) generateDayData(latex string) string {
 	return latex
 }
 
+func (m *Month) generateWeeks(latex string) string {
+	week := m.month.FirstWeek()
+	for i := 1; i <= monthWeekCount; i++ {
+		s := templates.MonthWeekTemplate
+		s = m.generateWeekData(week, s)
+		s = m.generateDayData(week, s, i == 1)
+		latex = strings.Replace(latex, templates.MonthPageWeek(i), s, 1)
+		week = week.Next()
+	}
+
+	return latex
+}
+
 func (m *Month) LaTeX() string {
 	latex := templates.MonthTemplate
 
 	latex = strings.Replace(latex, templates.MonthNameFull, m.month.Full(), 1)
 	latex = m.generateMinimonths(latex)
 	latex = m.generateWeekdayHeader(latex)
-	latex = m.generateWeekData(latex)
-	latex = m.generateDayData(latex)
+	latex = m.generateWeeks(latex)
 
 	return latex
 }
