@@ -19,22 +19,22 @@ func CreateConfigDirectories() error {
 		return errors.WithStack(err)
 	}
 
-	logging.Info().Str("dir", cfgDir).Msg("creating config directory")
-	err = os.Mkdir(cfgDir, 0700)
+	logging.Info().Str("dir", cfgDir.Path()).Msg("creating config directory")
+	err = os.Mkdir(cfgDir.Path(), 0700)
 	err = ClearFileExistsError(err)
 	if err != nil {
-		logging.Warn().Err(err).Str("dir", cfgDir).Msg("failed to create config directory")
+		logging.Warn().Err(err).Str("dir", cfgDir.Path()).Msg("failed to create config directory")
 	}
 
 	logging.Info().Str("subdir", "cfg").Msg("creating subdirectory")
-	err = os.Mkdir(filepath.Join(cfgDir, "cfg"), 0700)
+	err = os.Mkdir(filepath.Join(cfgDir.Path(), "cfg"), 0700)
 	err = ClearFileExistsError(err)
 	if err != nil {
 		logging.Warn().Err(err).Str("subdir", "cfg").Msg("failed to create subdirectory")
 	}
 
 	logging.Info().Str("subidr", "assets").Msg("creating subdirectory")
-	err = os.Mkdir(filepath.Join(cfgDir, "assets"), 0700)
+	err = os.Mkdir(filepath.Join(cfgDir.Path(), "assets"), 0700)
 	err = ClearFileExistsError(err)
 	if err != nil {
 		logging.Warn().Err(err).Str("subdir", "assets").Msg("failed to create subdirectory")
@@ -49,11 +49,11 @@ func CreateCacheDirectory() error {
 		return errors.WithStack(err)
 	}
 
-	logging.Info().Str("dir", cacheDir).Msg("creating cache directory")
-	err = os.Mkdir(cacheDir, 0700)
+	logging.Info().Str("dir", cacheDir.Path()).Msg("creating cache directory")
+	err = os.Mkdir(cacheDir.Path(), 0700)
 	err = ClearFileExistsError(err)
 	if err != nil {
-		logging.Warn().Err(err).Str("dir", cacheDir).Msg("failed to create directory")
+		logging.Warn().Err(err).Str("dir", cacheDir.Path()).Msg("failed to create directory")
 	}
 
 	return nil
@@ -67,20 +67,32 @@ func CopyAssets(projectPath string) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	destAssetDir := filepath.Join(cfgDir, "assets")
-	destCfgDir := filepath.Join(cfgDir, "cfg")
+	destAssetDir := filepath.Join(cfgDir.Path(), "assets")
+	destCfgDir := filepath.Join(cfgDir.Path(), "cfg")
 
 	logging.Info().Str("file", "full_achievement-color.png").Msg("copying asset")
-	achievement, err := files.NewFile(filepath.Join(imgDir, "full_achievement-color.png"), logging.DefaultLogger())
+	achievement, err := files.NewFile(filepath.Join(imgDir, "full_achievement-color.png"))
+	if err != nil {
+		logging.Warn().Err(err).Str("file", "full_achievement-color.png").Msg("failed to copy asset")
+	}
 	_, err = achievement.Copy(destAssetDir)
+	if err != nil {
+		logging.Warn().Err(err).Str("file", "full_achievement-color.png").Msg("failed to copy asset")
+	}
 	err = ClearFileExistsError(err)
 	if err != nil {
 		logging.Warn().Err(err).Str("file", "cap_command_emblem.jpg").Msg("failed to copy asset")
 	}
 
 	logging.Info().Str("file", "default.yaml").Msg("copying config")
-	defaultCfg, err := files.NewFile(filepath.Join(defaultCfgDir, "default.yaml"), logging.DefaultLogger())
+	defaultCfg, err := files.NewFile(filepath.Join(defaultCfgDir, "default.yaml"))
+	if err != nil {
+		logging.Warn().Err(err).Str("file", "duty_assignments.yaml").Msg("failed to copy config")
+	}
 	_, err = defaultCfg.Copy(destCfgDir)
+	if err != nil {
+		logging.Warn().Err(err).Str("file", "duty_assignments.yaml").Msg("failed to copy config")
+	}
 	err = ClearFileExistsError(err)
 	if err != nil {
 		logging.Warn().Err(err).Str("file", "duty_assignments.yaml").Msg("failed to copy config")

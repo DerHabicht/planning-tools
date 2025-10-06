@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/ag7if/go-files"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 )
@@ -20,24 +21,26 @@ const (
 
 // Directory functions
 
+const progName = "planning-tools"
+
 // ConfigDir returns the directory where configuration files and assets are stored.
-func ConfigDir() (string, error) {
+func ConfigDir() (*files.Directory, error) {
 	hd, err := os.UserConfigDir()
 	if err != nil {
-		return "", errors.WithMessage(err, "failed to find user home directory")
+		return nil, errors.WithMessage(err, "failed to find user home directory")
 	}
 
-	return filepath.Join(hd, "planning-tools"), nil
+	return files.NewDirectory(filepath.Join(hd, progName)), nil
 }
 
 // CacheDir returns the directory where LaTeX files are built.
-func CacheDir() (string, error) {
+func CacheDir() (*files.Directory, error) {
 	cd, err := os.UserCacheDir()
 	if err != nil {
-		return "", errors.WithMessage(err, "failed to find user cache directory")
+		return nil, errors.WithMessage(err, "failed to find user cache directory")
 	}
 
-	return filepath.Join(cd, "planning-tools"), nil
+	return files.NewDirectory(filepath.Join(cd, progName)), nil
 }
 
 // Config setup functions

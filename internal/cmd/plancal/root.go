@@ -41,13 +41,13 @@ func runRoot(cmd *cobra.Command, args []string) {
 	} else {
 		outputFilePath = fmt.Sprintf("PlanningCalendar-FY%d.pdf", year)
 	}
-	outputFile, err := files.NewFile(outputFilePath, logger.DefaultLogger())
+	outputFile, err := files.NewFile(outputFilePath)
 	if err != nil {
 		logger.Error().Err(err).Str("filename", outputFilePath).Msg("failed to create reference to output file")
 		os.Exit(1)
 	}
 
-	err = calendar.BuildCalendar(year, outputFile, logger)
+	err = calendar.BuildCalendar(year, outputFile)
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to generate planning_calendar")
 		os.Exit(1)

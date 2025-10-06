@@ -2,11 +2,9 @@ package planning_calendar
 
 import (
 	"fmt"
-	"path/filepath"
 	"strconv"
 	"strings"
 
-	"github.com/pkg/errors"
 	"golang.org/x/mod/semver"
 
 	"github.com/derhabicht/planning-tools/internal/config"
@@ -20,21 +18,14 @@ const trimesterCount = 4 // 15/4 = 4.75, so we round up
 const quarterCount = 5   // 15/3 = 5
 
 type Calendar struct {
-	cfgDir     string
 	calendar   calendar.Calendar
 	minimonths map[string]Minimonth
 }
 
 func NewCalendar(cal calendar.Calendar) *Calendar {
-	cfgDir, err := config.ConfigDir()
-	if err != nil {
-		panic(errors.WithStack(err))
-	}
-
 	minimonths := NewMinimonthList(cal)
 
 	return &Calendar{
-		cfgDir:     cfgDir,
 		calendar:   cal,
 		minimonths: minimonths,
 	}
@@ -52,7 +43,7 @@ func (c *Calendar) fillCalParams(latex string) string {
 	//	Set the ending year of this planning_calendar, expressed as the year of Julian Period A
 	latex = strings.Replace(latex, templates.JulianPeriodEnd, strconv.Itoa(c.calendar.JulianPeriod()), 1)
 	//	Set the picture to typeset on the title page of the planning_calendar
-	latex = strings.Replace(latex, templates.TitlePicture, filepath.Join(c.cfgDir, "assets", config.GetString(config.CoverLogo)), 1)
+	latex = strings.Replace(latex, templates.TitlePicture, config.GetString(config.CoverLogo), 1)
 	//	Set the first planning_calendar year covered in this planning_calendar (i.e. FY-1)
 	latex = strings.Replace(latex, templates.CalendarYear1, strconv.Itoa(c.calendar.FiscalYear()-1), -1)
 	//	Set the second planning_calendar year covered in this planning_calendar (i.e. FY)

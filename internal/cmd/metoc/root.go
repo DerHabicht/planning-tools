@@ -3,7 +3,6 @@ package metoc
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/ag7if/go-files"
 	"github.com/spf13/cobra"
@@ -22,22 +21,25 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger := logging.Logger{}
 
-		planFile, err := files.NewFile(args[0], logger.DefaultLogger())
+		planFile, err := files.NewFile(args[0])
 		if err != nil {
 			logger.Error().Err(err).Str("filename", args[0]).Msg("failed to create reference to plan file")
 			os.Exit(1)
 		}
 
-		var outputFilePath string
+		var outputFile files.File
 		if len(args) == 2 {
-			outputFilePath = args[1]
+			outputFile, err = files.NewFile(args[1])
+			if err != nil {
+				logger.Error().Err(err).Str("filename", args[1]).Msg("failed to create reference to output file")
+				os.Exit(1)
+			}
 		} else {
-			outputFilePath = filepath.Join(planFile.Dir(), fmt.Sprintf("%s.%s", planFile.Base(), "pdf"))
-		}
-		outputFile, err := files.NewFile(outputFilePath, logger.DefaultLogger())
-		if err != nil {
-			logger.Error().Err(err).Str("filename", outputFilePath).Msg("failed to create reference to output file")
-			os.Exit(1)
+			outputFile, err = planFile.Dir().NewFile(fmt.Sprintf("%s.pdf", planFile.Base()))
+			if err != nil {
+				logger.Error().Err(err).Str("filename", args[0]).Msg("failed to create reference to output file")
+				os.Exit(1)
+			}
 		}
 
 		err = planwx.Generate(planFile, outputFile, logger)

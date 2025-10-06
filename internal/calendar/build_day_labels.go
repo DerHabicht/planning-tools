@@ -5,7 +5,6 @@ import (
 	"github.com/ag7if/go-latex"
 	"github.com/pkg/errors"
 
-	"github.com/derhabicht/planning-tools/internal/logging"
 	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/pkg/calendar/plancal"
 	"github.com/derhabicht/planning-tools/reports/planning_calendar"
@@ -25,10 +24,10 @@ func generateLabelLaTeX(cal calendar.Calendar, year, week int, compiler *latex.C
 	return nil
 }
 
-func BuildLabels(year, week int, outputFile files.File, logger logging.Logger) error {
+func BuildLabels(year, week int, outputFile files.File) error {
 	cal := plancal.NewCalendar(year)
 
-	compiler, err := configureLaTeXCompiler(logger)
+	compiler, err := configureLaTeXCompiler()
 	if err != nil {
 		return errors.WithStack(err)
 	}

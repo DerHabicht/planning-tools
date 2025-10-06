@@ -50,12 +50,12 @@ func runDLCmd(cmd *cobra.Command, args []string) {
 		year, week = now.ISOWeek()
 	}
 
-	outputFile, err := files.NewFile(fmt.Sprintf("DayLabels-%04dW%02d.pdf", year, week), logger.DefaultLogger())
+	outputFile, err := files.NewFile(fmt.Sprintf("DayLabels-%04dW%02d.pdf", year, week))
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to create output file")
 	}
 
-	err = calendar.BuildLabels(year, week, outputFile, logger)
+	err = calendar.BuildLabels(year, week, outputFile)
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to generate labels")
 	}
