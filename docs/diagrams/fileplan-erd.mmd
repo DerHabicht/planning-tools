@@ -1,0 +1,38 @@
+---
+title: Inventory ERD
+config:
+    layout: elk
+---
+erDiagram
+    FACILITY ||--|{ ROOM : comprises
+    ROOM ||--|{ CONTAINER : has
+    CONTAINER ||--o{ BOOK : contains
+    CONTAINER ||--o{ FILE : contains
+    CONTAINER ||--o{ SUPPLY : contains
+    FACILITY {
+        uuid id PK
+        string name UK
+        string address
+    }
+    ROOM {
+        uuid id PK
+        string roomNumber
+        string name
+    }
+    CONTAINER {
+        uuid id PK
+        string designator
+        string name
+    }
+    BOOK {
+        uuid id PK
+        string lcc
+        string title
+        string author
+    }
+    FILE {
+        uuid id PK
+        string identifier
+        sensitivity sensitivity
+        string name
+    }
