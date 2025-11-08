@@ -10,6 +10,17 @@ import (
 	"github.com/derhabicht/planning-tools/internal/config"
 )
 
+func ISOWeekCount(year int) int {
+	ly := year%400 == 0 || (year%100 != 0 && year%4 == 0)
+	firstDay := date.New(year, time.January, 1)
+
+	if (ly && firstDay.Weekday() == time.Wednesday) || (firstDay.Weekday() == time.Thursday) {
+		return 53
+	}
+
+	return 52
+}
+
 func WeekdayLetter(wd time.Weekday) string {
 	switch wd {
 	case time.Monday:

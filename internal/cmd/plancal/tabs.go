@@ -13,7 +13,7 @@ import (
 )
 
 var tabsCmd = &cobra.Command{
-	Use:   "tabs [fiscal_year] [start_tab]",
+	Use:   "tabs <fiscal_year> <start_tab> [output_file]",
 	Short: "Create Avery 16282 tabs for the planning calendar",
 	Long:  ``,
 	Args:  cobra.RangeArgs(2, 3),
