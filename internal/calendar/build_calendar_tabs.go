@@ -12,13 +12,10 @@ import (
 	"github.com/derhabicht/planning-tools/reports/planning_calendar"
 )
 
-func generateLabelLaTeX(cal calendar.Calendar, year, week int, compiler *latex.Compiler, outputFile files.File) error {
-	labels, err := planning_calendar.NewDayLabels(cal, year, week)
-	if err != nil {
-		return errors.WithStack(err)
-	}
+func generateTabsLaTeX(cal calendar.Calendar, startTab int, compiler *latex.Compiler, outputFile files.File) error {
+	tabs := planning_calendar.NewCalendarTabs(cal, startTab)
 
-	err = compiler.GenerateLaTeX(labels, outputFile, nil)
+	err := compiler.GenerateLaTeX(tabs, outputFile, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -26,7 +23,7 @@ func generateLabelLaTeX(cal calendar.Calendar, year, week int, compiler *latex.C
 	return nil
 }
 
-func BuildLabels(year, week int, outputFile files.File) error {
+func BuildCalendarTabs(year, startTab int, outputFile files.File) error {
 	bd, err := date.ParseISO(config.GetString(config.Birthday))
 	if err != nil {
 		return errors.WithStack(err)
@@ -38,7 +35,7 @@ func BuildLabels(year, week int, outputFile files.File) error {
 		return errors.WithStack(err)
 	}
 
-	err = generateLabelLaTeX(cal, year, week, compiler, outputFile)
+	err = generateTabsLaTeX(cal, startTab, compiler, outputFile)
 	if err != nil {
 		return errors.WithStack(err)
 	}

@@ -102,7 +102,9 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 
 \fancypagestyle{plain}{
 	\fancyhf{}
+    \fancyfoot[LO]{\raisebox{0.4in}{\framebox[1.75in][c]{}\hspace{0.87in}\framebox[1.75in][c]{}}}
 	\fancyfoot[CO]{\raisebox{0.5in}{$\circ$}}
+    \fancyfoot[RO]{\raisebox{0.4in}{\framebox[1.75in][c]{}\hspace{0.87in}\framebox[1.75in][c]{}}}
 }
 \pagestyle{plain}
 

@@ -57,6 +57,7 @@ const (
 	Sunday                     = `+SUN`
 	SunriseTime                = `+SR`
 	SunsetTime                 = `+SS`
+	TabPages                   = "+TAB_PAGES"
 	TitleColor                 = `+TITLE_COLOR`
 	TitlePicture               = `+PIC`
 	VernalEquinox              = `+VE`
@@ -74,6 +75,7 @@ const (
 	monthPageWeek              = `+W%d`
 	okrHeaderWeekNumber        = `+W%02d`
 	quarterPage                = `+Q%d`
+	tabOrd                     = `+TAB%02d`
 	trimesterPage              = `+T%d`
 )
 
@@ -111,4 +113,8 @@ func QuarterPage(page int) string {
 
 func TrimesterPage(page int) string {
 	return fmt.Sprintf(trimesterPage, page)
+}
+
+func TabOrd(idx int) string {
+	return fmt.Sprintf(tabOrd, idx)
 }

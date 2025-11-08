@@ -2,6 +2,7 @@ package plancal
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -53,6 +54,7 @@ func runDLCmd(cmd *cobra.Command, args []string) {
 	outputFile, err := files.NewFile(fmt.Sprintf("DayLabels-%04dW%02d.pdf", year, week))
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to create output file")
+		os.Exit(1)
 	}
 
 	err = calendar.BuildLabels(year, week, outputFile)
