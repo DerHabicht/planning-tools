@@ -3,8 +3,10 @@ package calendar
 import (
 	"github.com/ag7if/go-files"
 	"github.com/ag7if/go-latex"
+	"github.com/fxtlabs/date"
 	"github.com/pkg/errors"
 
+	"github.com/derhabicht/planning-tools/internal/config"
 	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/pkg/calendar/plancal"
 	"github.com/derhabicht/planning-tools/reports/planning_calendar"
@@ -25,7 +27,11 @@ func generateLabelLaTeX(cal calendar.Calendar, year, week int, compiler *latex.C
 }
 
 func BuildLabels(year, week int, outputFile files.File) error {
-	cal := plancal.NewCalendar(year)
+	bd, err := date.ParseISO(config.GetString(config.Birthday))
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	cal := plancal.NewCalendar(year, bd)
 
 	compiler, err := configureLaTeXCompiler()
 	if err != nil {

@@ -13,6 +13,7 @@ func init() {
 	SetDefault(HomeLocationTz, "UTC")
 	SetDefault(CoverLogo, "")
 	SetDefault(VisualCrossingAPIKey, "")
+	SetDefault(Birthday, "0001-01-01")
 
 	cwd, _ := os.Getwd()
 	logging.Trace().Str("cwd", cwd).Msg("")

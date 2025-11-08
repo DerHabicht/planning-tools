@@ -10,6 +10,7 @@ import (
 
 	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/pkg/calendar/holidays"
+	"github.com/derhabicht/planning-tools/pkg/calendar/natyr"
 	"github.com/derhabicht/planning-tools/pkg/calendar/solstice_table"
 )
 
@@ -17,17 +18,19 @@ const julianPeriodOffest = 4713
 
 type Calendar struct {
 	fiscalYear           int
+	naturalYear          natyr.NaturalYear
 	lunarCalibrationDate date.Date
 	solsticeTable        calendar.SolsticeTable
 	holidayCalendar      calendar.HolidayCalendar
 }
 
-func NewCalendar(fiscalYear int) *Calendar {
+func NewCalendar(fiscalYear int, birthday date.Date) *Calendar {
 	st := solstice_table.NewSolsticeTable(fiscalYear)
 	hc := holidays.NewHolidayCalendar()
 
 	return &Calendar{
 		fiscalYear:           fiscalYear,
+		naturalYear:          natyr.NewNaturalYear(birthday),
 		lunarCalibrationDate: computeLunarCalibrationDate(fiscalYear),
 		solsticeTable:        st,
 		holidayCalendar:      hc,
@@ -52,6 +55,23 @@ func (c *Calendar) FiscalYear() int {
 
 func (c *Calendar) JulianPeriod() int {
 	return c.fiscalYear + julianPeriodOffest
+}
+
+func (c *Calendar) NaturalYearDecade() int {
+	return c.naturalYear.Decade(date.New(c.fiscalYear-1, time.October, 1))
+}
+
+func (c *Calendar) NaturalYearLustrum() int {
+	return c.naturalYear.Lustrum(date.New(c.fiscalYear-1, time.October, 1))
+}
+
+func (c *Calendar) NaturalYearTriad() int {
+	return c.naturalYear.Triad(date.New(c.fiscalYear-1, time.October, 1))
+}
+
+func (c *Calendar) NaturalYear() int {
+	ny, _ := c.naturalYear.ToNYDate(date.New(c.fiscalYear-1, time.October, 1))
+	return ny
 }
 
 func (c *Calendar) LunarCalibrationDate() date.Date {

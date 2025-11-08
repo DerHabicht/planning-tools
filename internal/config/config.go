@@ -15,6 +15,7 @@ const (
 	HomeLocationLong     = "home_location.long"
 	HomeLocationTz       = "home_location.tz"
 	CoverLogo            = "cover_logo"
+	Birthday             = "birthday"
 	Version              = "version"
 	VisualCrossingAPIKey = "visual_crossing.api_key"
 )

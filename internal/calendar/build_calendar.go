@@ -5,6 +5,7 @@ import (
 
 	"github.com/ag7if/go-files"
 	"github.com/ag7if/go-latex"
+	"github.com/fxtlabs/date"
 	"github.com/pkg/errors"
 
 	"github.com/derhabicht/planning-tools/internal/config"
@@ -37,7 +38,11 @@ func generateCalendarLaTeX(cal calendar.Calendar, compiler *latex.Compiler, outp
 }
 
 func BuildCalendar(year int, outputFile files.File) error {
-	cal := plancal.NewCalendar(year)
+	bd, err := date.ParseISO(config.GetString(config.Birthday))
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	cal := plancal.NewCalendar(year, bd)
 
 	compiler, err := configureLaTeXCompiler()
 	if err != nil {

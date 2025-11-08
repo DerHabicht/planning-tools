@@ -38,6 +38,13 @@ func (c *Calendar) fillCalParams(latex string) string {
 	latex = strings.Replace(latex, templates.CalendarStart, fmt.Sprintf("October %d", c.calendar.FiscalYear()-1), 1)
 	//	Set the full name and year of the last full month page in this planning_calendar
 	latex = strings.Replace(latex, templates.CalendarEnd, fmt.Sprintf("December %d", c.calendar.FiscalYear()), 1)
+	// Set Natural Year values
+	latex = strings.Replace(latex, templates.NaturalYearStart, fmt.Sprintf("%d", c.calendar.NaturalYear()), 1)
+	latex = strings.Replace(latex, templates.NaturalYearEnd, fmt.Sprintf("%d", c.calendar.NaturalYear()+1), 1)
+	latex = strings.Replace(latex, templates.NaturalYearDecade, fmt.Sprintf("%d", c.calendar.NaturalYearDecade()), 1)
+	latex = strings.Replace(latex, templates.NaturalYearLustrum, fmt.Sprintf("%d", c.calendar.NaturalYearLustrum()), 1)
+	latex = strings.Replace(latex, templates.NaturalYearTriad, fmt.Sprintf("%d", c.calendar.NaturalYearTriad()), 1)
+
 	//	Set the starting year of this planning_calendar, expressed as the year of Julian Period A
 	latex = strings.Replace(latex, templates.JulianPeriodStart, strconv.Itoa(c.calendar.JulianPeriod()-1), 1)
 	//	Set the ending year of this planning_calendar, expressed as the year of Julian Period A

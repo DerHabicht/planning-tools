@@ -3,3 +3,4 @@ home_location:
   long: 0.0
   tz: "UTC"
 cover_logo: ""
+birthday: "0000-00-00"

@@ -10,6 +10,10 @@ import (
 type Calendar interface {
 	FiscalYear() int
 	JulianPeriod() int
+	NaturalYearDecade() int
+	NaturalYearLustrum() int
+	NaturalYearTriad() int
+	NaturalYear() int
 	LunarCalibrationDate() date.Date
 	SolsticeTable() SolsticeTable
 	HolidayCalendar() HolidayCalendar

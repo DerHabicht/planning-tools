@@ -43,6 +43,11 @@ const (
 	MonthDay                   = `+DY`
 	MonthName                  = `+MONTH`
 	MonthNameFull              = `+M`
+	NaturalYearDecade          = `+NYD`
+	NaturalYearEnd             = `+NY_END`
+	NaturalYearLustrum         = `+NYL`
+	NaturalYearStart           = `+NY_START`
+	NaturalYearTriad           = `+NYT`
 	OKRHeader                  = `+OKR_HDR`
 	OrdinalDay                 = `+YD`
 	PlanCalV                   = `+PLANCALV`

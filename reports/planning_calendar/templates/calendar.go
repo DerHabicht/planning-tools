@@ -87,6 +87,7 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 \usepackage{graphicx}
 \usepackage{marvosym}
 \usepackage{multirow}
+\usepackage{nth}
 \usepackage[autolanguage]{numprint}
 \usepackage{tabularx}
 \usepackage{textcomp}
@@ -173,18 +174,20 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 \begin{titlepage}
     \setlength{\fboxrule}{10pt}
     \begin{center}
-        \Huge%
+        \huge%
 
         \vspace*{0.25in}
 
         \fcolorbox{+TITLE_COLOR}{white}{%
-            \begin{minipage}{0.5\textwidth}
+            \begin{minipage}{0.75\textwidth}
                 \begin{center}
-                    AG7IF Planning Calendar
+                    AG7IF Planning Calendar NY+NY_START
+
+					\nth{+NYD} Decade, \nth{+NYL} Lustrum, \nth{+NYT} Triad
 
                     +CAL_START to +CAL_END
 
-                    Julian Period A +JP_START to +JP_END
+                    Julian Periods +JP_START and +JP_END
                 \end{center}
             \end{minipage}
         }
