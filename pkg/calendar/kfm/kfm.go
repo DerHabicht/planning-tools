@@ -21,8 +21,8 @@ type Lesson struct {
 }
 
 type Reading struct {
-	Book     Book  `yaml:"book"`
-	Chapters []int `yaml:"chapters"`
+	Book     Book   `yaml:"book"`
+	Chapters string `yaml:"chapters"`
 }
 
 func GenerateBlankKFM(cal calendar.Calendar) KFM {
@@ -42,7 +42,7 @@ func GenerateBlankKFM(cal calendar.Calendar) KFM {
 			Reading: []Reading{
 				{
 					Book:     Genesis,
-					Chapters: []int{0},
+					Chapters: "",
 				},
 			},
 		}
