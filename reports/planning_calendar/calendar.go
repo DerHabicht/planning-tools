@@ -68,6 +68,38 @@ func (c *Calendar) fillCalParams(latex string) string {
 	return latex
 }
 
+func (c *Calendar) generateAG7IFTables(latex string) string {
+	const layout = `02 Jan`
+
+	table1 := templates.AG7IFTable
+	table2 := templates.AG7IFTable
+
+	cy1week, _ := c.calendar.FetchWeek(c.calendar.FiscalYear()-1, 1)
+	cy2week, _ := c.calendar.FetchWeek(c.calendar.FiscalYear(), 1)
+
+	for i := 1; i <= 52; i++ {
+		cy1wkst := cy1week.StartDay().Date().Format(layout)
+		cy1wkend := cy1week.StartDay().Date().Add(6).Format(layout)
+
+		cy2wkst := cy2week.StartDay().Date().Format(layout)
+		cy2wkend := cy2week.StartDay().Date().Add(6).Format(layout)
+
+		table1 = strings.Replace(table1, templates.Ag7IFTableWeekStart(i), cy1wkst, 1)
+		table1 = strings.Replace(table1, templates.AG7IFTableWeekEnd(i), cy1wkend, 1)
+
+		table2 = strings.Replace(table2, templates.Ag7IFTableWeekStart(i), cy2wkst, 1)
+		table2 = strings.Replace(table2, templates.AG7IFTableWeekEnd(i), cy2wkend, 1)
+
+		cy1week = cy1week.Next()
+		cy2week = cy2week.Next()
+	}
+
+	latex = strings.Replace(latex, templates.AG7IFTable1, table1, 1)
+	latex = strings.Replace(latex, templates.AG7IFTable2, table2, 1)
+
+	return latex
+}
+
 func (c *Calendar) generateDoomsdayTable(latex string) string {
 	table := templates.DoomsdayTableTemplate
 
@@ -174,6 +206,7 @@ func (c *Calendar) LaTeX() string {
 	latex = c.fillCalParams(latex)
 	latex = c.generateDoomsdayTable(latex)
 	latex = c.generateSolsticeTable(latex)
+	latex = c.generateAG7IFTables(latex)
 	latex = c.generateHolidayTables(latex)
 	latex = c.generateMiniMonthCmds(latex)
 	latex = c.generateTrimesterPages(latex)

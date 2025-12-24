@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.16.0]
+
+### Added
+- Added AG7IFPOI 50-2 tables
+- 
 ## [1.15.0]
 
 ### Added

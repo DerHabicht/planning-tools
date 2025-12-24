@@ -5,6 +5,10 @@ import (
 )
 
 const (
+	AG7IFTable1                = `+AG7IFTable1`
+	AG7IFTable2                = `+AG7IFTable2`
+	ag7ifTableWeekEnd          = `+WKED%02d`
+	ag7ifTableWeekStart        = `+WKSD%02d`
 	AutumnalEquinox            = `+AE`
 	CalendarEnd                = `+CAL_END`
 	CalendarQuarter            = `+AQ`
@@ -78,6 +82,14 @@ const (
 	tabOrd                     = `+TAB%02d`
 	trimesterPage              = `+T%d`
 )
+
+func AG7IFTableWeekEnd(week int) string {
+	return fmt.Sprintf(ag7ifTableWeekEnd, week)
+}
+
+func Ag7IFTableWeekStart(week int) string {
+	return fmt.Sprintf(ag7ifTableWeekStart, week)
+}
 
 func MinimonthDay(day int) string {
 	return fmt.Sprintf(minimonthDay, day)

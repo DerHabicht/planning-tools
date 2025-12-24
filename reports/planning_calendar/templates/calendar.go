@@ -376,6 +376,18 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 
 \pagebreak
 
+\section*{+CY1 AG7IFPOI 50-2 Start/End Dates}
+
++AG7IFTable1
+
+\pagebreak
+
+\section*{+CY2 AG7IFPOI 50-2 Start/End Dates}
+
++AG7IFTable2
+
+\pagebreak
+
 \noindent
 \begin{tabularx}{\textwidth}{XXXX}
     \minifirstoctober      &
