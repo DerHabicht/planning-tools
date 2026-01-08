@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.17.1]
+
+### Fixed
+- Ordinal Date typo on day cards
+
 ## [1.17.0]
 
 ### Added
@@ -100,7 +105,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.0...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.1...HEAD
+[1.17.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.0...plancal-v1.17.1
 [1.17.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.16.0...plancal-v1.17.0
 [1.16.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.15.0...plancal-v1.16.0
 [1.15.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.2...plancal-v1.15.0

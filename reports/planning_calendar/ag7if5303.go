@@ -50,7 +50,6 @@ func (f *AG7IF5303) generateContext(latex, context string, day calendar.Day) str
 
 	templ = strings.ReplaceAll(templ, templates.FullDate, fd)
 
-	templ = strings.ReplaceAll(templ, templates.Year, strconv.Itoa(fy))
 	templ = strings.ReplaceAll(templ, templates.FiscalTrimester, ft)
 	templ = strings.ReplaceAll(templ, templates.FiscalQuarter, fq)
 	templ = strings.ReplaceAll(templ, templates.OrdinalDay, fmt.Sprintf("%03d", ord))
@@ -67,6 +66,9 @@ func (f *AG7IF5303) generateContext(latex, context string, day calendar.Day) str
 	templ = strings.ReplaceAll(templ, templates.SunsetTime, ss)
 
 	latex = strings.ReplaceAll(latex, templates.DayLabel, templ)
+
+	// Has to be executed last to avoid premature matches (e.g. w/+YD)
+	templ = strings.ReplaceAll(templ, templates.Year, strconv.Itoa(fy))
 
 	return latex
 }
