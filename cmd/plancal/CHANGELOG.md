@@ -20,11 +20,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.17.0]
+
+### Added
+- `plancal dl` interprets week and sprint designations
+- `plancal dl` now generates AG7IF 5303s with day label data
+- Flags added to `plancal dl` to select labels or cards
+
 ## [1.16.0]
 
 ### Added
 - Added AG7IFPOI 50-2 tables
-- 
+
 ## [1.15.0]
 
 ### Added
@@ -93,7 +100,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.15.0...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.0...HEAD
+[1.17.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.16.0...plancal-v1.17.0
+[1.16.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.15.0...plancal-v1.16.0
 [1.15.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.2...plancal-v1.15.0
 [1.14.2]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.1...plancal-v1.14.2
 [1.14.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.14.0...plancal-v1.14.1

@@ -15,6 +15,9 @@ const (
 	CalendarStart              = `+CAL_START`
 	CalendarYear1              = `+CY1`
 	CalendarYear2              = `+CY2`
+	Context                    = `+CONTEXT`
+	dayCard                    = `+DC%d`
+	DayLabel                   = `+DAY_LABEL`
 	Doomsday                   = `+DD`
 	DoomsdayTable              = `+DOOMSDAYS`
 	DoomsdayTableRows          = `+DD_TABLE_ROWS`
@@ -34,6 +37,7 @@ const (
 	HolidayObserved2           = `+CY2Obs`
 	HolidayTableByAbbreviation = `+ABBVS`
 	HolidayTableByOccurrence   = `+HOLIDAYS`
+	ISODate                    = `+ISODATE`
 	ISOWeek                    = `+IW`
 	JulianPeriodEnd            = `+JP_END`
 	JulianPeriodStart          = `+JP_START`
@@ -89,6 +93,10 @@ func AG7IFTableWeekEnd(week int) string {
 
 func Ag7IFTableWeekStart(week int) string {
 	return fmt.Sprintf(ag7ifTableWeekStart, week)
+}
+
+func DayCard(dayIndex int) string {
+	return fmt.Sprintf(dayCard, dayIndex)
 }
 
 func MinimonthDay(day int) string {

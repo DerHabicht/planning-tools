@@ -2,6 +2,7 @@ package ag7if
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/fxtlabs/date"
 	"github.com/pkg/errors"
@@ -39,6 +40,69 @@ const (
 	S24
 	SP4
 )
+
+func ParseSprint(s string) (S, error) {
+	switch strings.ToUpper(s) {
+	case "S01":
+		return S01, nil
+	case "S02":
+		return S02, nil
+	case "S03":
+		return S03, nil
+	case "S04":
+		return S04, nil
+	case "S05":
+		return S05, nil
+	case "S06":
+		return S06, nil
+	case "SP1":
+		return SP1, nil
+	case "S07":
+		return S07, nil
+	case "S08":
+		return S08, nil
+	case "S09":
+		return S09, nil
+	case "S10":
+		return S10, nil
+	case "S11":
+		return S11, nil
+	case "S12":
+		return S12, nil
+	case "SP2":
+		return SP2, nil
+	case "S13":
+		return S13, nil
+	case "S14":
+		return S14, nil
+	case "S15":
+		return S15, nil
+	case "S16":
+		return S16, nil
+	case "S17":
+		return S17, nil
+	case "S18":
+		return S18, nil
+	case "SP3":
+		return SP3, nil
+	case "S19":
+		return S19, nil
+	case "S20":
+		return S20, nil
+	case "S21":
+		return S21, nil
+	case "S22":
+		return S22, nil
+	case "S23":
+		return S23, nil
+	case "S24":
+		return S24, nil
+	case "SP4":
+		return SP4, nil
+	default:
+		return -1, errors.Errorf("invalid Sprint: %s", s)
+	}
+}
 
 func ComputeSprint(date date.Date) (int, S) {
 	year, isoWeek := date.ISOWeek()
