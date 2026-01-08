@@ -22,7 +22,7 @@ const (
 
 // Directory functions
 
-const progName = "planning-tools"
+const progName = "plans-tools"
 
 // ConfigDir returns the directory where configuration files and assets are stored.
 func ConfigDir() (*files.Directory, error) {

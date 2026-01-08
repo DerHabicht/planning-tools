@@ -15,7 +15,7 @@ var logLevel string
 
 var rootCmd = &cobra.Command{
 	Use:   "metoc_report <PLAN YAML> [OUTPUT TEX]",
-	Short: "Generate METOC reports for operational planning",
+	Short: "Generate METOC reports for operational plans",
 	Long:  ``,
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -44,7 +44,7 @@ var rootCmd = &cobra.Command{
 
 		err = planwx.Generate(planFile, outputFile, logger)
 		if err != nil {
-			logger.Error().Err(err).Msg("failed to generate planning weather report")
+			logger.Error().Err(err).Msg("failed to generate plans weather report")
 		}
 	},
 }

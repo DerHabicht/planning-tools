@@ -9,6 +9,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fxtlabs/date v0.0.0-20150819233934-d9ab6e2a88a9
 	github.com/golang/geo v0.0.0-20250929211357-dcefb4abe9c7
+	github.com/google/uuid v1.6.0
 	github.com/nathan-osman/go-sunrise v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/rickar/cal/v2 v2.1.25

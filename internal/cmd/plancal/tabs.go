@@ -14,7 +14,7 @@ import (
 
 var tabsCmd = &cobra.Command{
 	Use:   "tabs [fiscal_year] [start_tab]",
-	Short: "Create Avery 16282 tabs for the planning calendar",
+	Short: "Create Avery 16282 tabs for the plans calendar",
 	Long:  ``,
 	Args:  cobra.RangeArgs(2, 3),
 	Run:   runTabsCmd,
