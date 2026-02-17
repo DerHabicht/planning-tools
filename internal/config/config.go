@@ -18,6 +18,7 @@ const (
 	Birthday             = "birthday"
 	Version              = "version"
 	VisualCrossingAPIKey = "visual_crossing.api_key"
+	DefaultContexts      = "default_contexts"
 )
 
 // Directory functions
@@ -95,4 +96,14 @@ func GetInt(key string) int {
 // GetString wraps Viper's GetString function.
 func GetString(key string) string {
 	return viper.GetString(key)
+}
+
+// GetStringSlice wraps Viper's GetStringSlice function.
+func GetStringSlice(key string) []string {
+	return viper.GetStringSlice(key)
+}
+
+// GetStringMapString wraps Viper's GetStringMapString function.
+func GetStringMapString(key string) map[string]string {
+	return viper.GetStringMapString(key)
 }

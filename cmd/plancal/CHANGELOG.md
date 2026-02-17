@@ -20,6 +20,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.18.0]
+
+### Added
+- POI 50-1 pages added to calendar tabs
+- Added Fibonacci Estimate numbers to reference page
+- Default contexts key in config file
+
+### Changed
+- No longer rotating the "back" side of printed tabs
+- Updated week playing card identifiers to comply with new 50-1 definitions
+- Specify contexts for day cards using context codes instead of the full LaTeX string
+
+### Removed
+- OKR trackers from Quarter pages
+
+### Fixed
+- When generating day cards w/o specifying contexts no longer fails inexplicably. Now either the default contexts
+  in the config are used or an explicit error is thrown (if no default contexts are defined).
+
 ## [1.17.1]
 
 ### Fixed
@@ -105,7 +124,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.1...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.0...HEAD
+[1.17.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.1...plancal-v1.18.0
 [1.17.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.0...plancal-v1.17.1
 [1.17.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.16.0...plancal-v1.17.0
 [1.16.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.15.0...plancal-v1.16.0

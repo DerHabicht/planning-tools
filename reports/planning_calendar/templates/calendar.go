@@ -40,8 +40,7 @@ const SolsticeTableTemplate = `\begin{tabular}{llr}
 \Libra      & Autumnal Equinox        & +AE  \\
 \Capricorn  & Winter Solstice (+CY2)  & +WS2 \\
 \bottomrule
-\end{tabular}
-`
+\end{tabular}`
 
 // HolidayAbbvRowTemplate is the LaTeX code for a row in the holiday abbreviations table.
 // The placeholders are:
@@ -261,21 +260,33 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 \section*{Reference Tables}
 \begin{center}
     \vfill
-    \hfill
     \begin{tabular}{rc}
-        \toprule
+	\toprule
         \textbf{Century} & \textbf{Doomsday} \\
-        \midrule
+	\midrule
         1700 & U \\
         1800 & F \\
         1900 & W \\
         2000 & T \\
-        \bottomrule
+	\bottomrule
     \end{tabular}
     \hfill
     +DOOMSDAYS
     \hfill
     +SOLSTICES
+	\hfill
+	\begin{tabular}{rr}
+	\toprule
+		\textbf{Fibonacci} & \textbf{Estimates} \\
+	\midrule
+		1 & 13 \\
+		2 & 21 \\
+		3 & 34 \\
+		5 & 55 \\
+		8 & 89 \\
+	\bottomrule
+	\end{tabular}
+
     \vfill
     \hfill
     \begin{tabular}{rrr}
@@ -376,13 +387,13 @@ const CalendarTemplate = `\documentclass[10pt]{book}
 
 \pagebreak
 
-\section*{+CY1 AG7IFPOI 50-2 Start/End Dates}
+\section*{+CY1 AG7IFPOI 50-1 Start/End Dates}
 
 +AG7IFTable1
 
 \pagebreak
 
-\section*{+CY2 AG7IFPOI 50-2 Start/End Dates}
+\section*{+CY2 AG7IFPOI 50-1 Start/End Dates}
 
 +AG7IFTable2
 

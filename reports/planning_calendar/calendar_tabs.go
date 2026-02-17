@@ -2,6 +2,7 @@ package planning_calendar
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/derhabicht/planning-tools/pkg/calendar"
@@ -35,6 +36,8 @@ var tabValues = []string{
 	templates.MonthPage(15),
 	"Reference Tables",
 	"Holidays",
+	fmt.Sprintf("%s POI 50-1", templates.CalendarYear1),
+	fmt.Sprintf("%s POI 50-1", templates.CalendarYear2),
 	"Extended Calendars",
 }
 
@@ -73,6 +76,19 @@ func (c *CalendarTabs) GeneratePages() string {
 }
 
 func (c *CalendarTabs) FillPages(pages string) string {
+	pages = strings.Replace(
+		pages,
+		templates.CalendarYear1,
+		strconv.Itoa(c.calendar.FirstMonth().Year()),
+		1,
+	)
+	pages = strings.Replace(
+		pages,
+		templates.CalendarYear2,
+		strconv.Itoa(c.calendar.FiscalYear()),
+		1,
+	)
+
 	tri := c.calendar.FirstTrimester()
 	for i := 1; i <= trimesterCount; i++ {
 		pages = strings.Replace(pages, templates.TrimesterPage(i), tri.String(), 1)

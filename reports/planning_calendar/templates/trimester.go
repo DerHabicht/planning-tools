@@ -9,5 +9,7 @@ const TrimesterTemplate = `\chapter*{\textbf{+T}}
 
 \vspace{1.5in}
 
+\begin{center}
 +M1CMD+M2CMD+M3CMD+M4CMD
+\end{center}
 `

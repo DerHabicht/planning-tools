@@ -8,6 +8,7 @@ require (
 	github.com/ag7if/playing-cards v0.1.2
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fxtlabs/date v0.0.0-20150819233934-d9ab6e2a88a9
+	github.com/goccy/go-yaml v1.19.2
 	github.com/golang/geo v0.0.0-20250929211357-dcefb4abe9c7
 	github.com/nathan-osman/go-sunrise v1.1.0
 	github.com/pkg/errors v0.9.1

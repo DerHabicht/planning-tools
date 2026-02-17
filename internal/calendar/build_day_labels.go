@@ -30,7 +30,24 @@ func generateLabelLaTeX(cal calendar.Calendar, year, week int, compiler *latex.C
 }
 
 func generateCardLaTeX(cal calendar.Calendar, year, week int, contexts []string, compiler *latex.Compiler, outputFile files.File) error {
-	cards, err := planning_calendar.NewAG7IF5303(cal, year, week, contexts)
+	if len(contexts) == 0 {
+		contexts = config.GetStringSlice(config.DefaultContexts)
+		if len(contexts) == 0 {
+			return errors.New("no default contexts defined, cannot generate cards w/o specifying contexts")
+		}
+	}
+
+	ctxDefs, err := config.GetContextDefs()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	var ctx []string
+	for _, c := range contexts {
+		ctx = append(ctx, fmt.Sprintf("%s: %s", c, ctxDefs[c]))
+	}
+
+	cards, err := planning_calendar.NewAG7IF5303(cal, year, week, ctx)
 	if err != nil {
 		return errors.WithStack(err)
 	}

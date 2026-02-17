@@ -1,7 +1,6 @@
 package planning_calendar
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
@@ -34,21 +33,6 @@ func NewQuarter(calendar, fiscal calendar.Quarter, minimonths map[string]Minimon
 	}
 }
 
-func (q *Quarter) generateOKRHeader(latex string) string {
-	hdr := templates.OKRHeaderTemplate
-
-	w := q.calendarQuarter.FirstMonth().FirstWeek()
-	for i := 1; i <= quarterWeekCount; i++ {
-		_, wk, _ := w.ISOWeek()
-		hdr = strings.Replace(hdr, templates.OKRHeaderWeekNumber(i), strconv.Itoa(wk), 1)
-		w = w.Next()
-	}
-
-	latex = strings.Replace(latex, templates.OKRHeader, hdr, -1)
-
-	return latex
-}
-
 func (q *Quarter) LaTeX() string {
 	latex := templates.QuarterTemplate
 
@@ -58,8 +42,6 @@ func (q *Quarter) LaTeX() string {
 	for i, mm := range q.minimonths {
 		latex = strings.Replace(latex, templates.MinimonthMacro(i+1), mm.LatexCommand(), 1)
 	}
-
-	latex = q.generateOKRHeader(latex)
 
 	return latex
 }

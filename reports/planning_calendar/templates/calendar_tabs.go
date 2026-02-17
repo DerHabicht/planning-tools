@@ -22,7 +22,7 @@ const CalendarTabsTemplate = `\documentclass{minimal}
         \centering
         \parbox[c][0.4in][c]{1.5in}{\centering#1}
 
-        \rotatebox[origin=c]{180}{\parbox[c][0.4in][c]{1.5in}{\centering#1}}
+        \parbox[c][0.4in][c]{1.5in}{\centering#1}
     \end{minipage}
 }
 
