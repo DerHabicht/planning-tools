@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.18.1]
+
+### Fixed
+- Fiscal Year not filling in on AG7IF 5303 card generator
+
 ## [1.18.0]
 
 ### Added
@@ -124,8 +129,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.0...HEAD
-[1.17.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.1...plancal-v1.18.0
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.1...HEAD
+[1.18.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.0...plancal-v1.18.1
+[1.18.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.1...plancal-v1.18.0
 [1.17.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.0...plancal-v1.17.1
 [1.17.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.16.0...plancal-v1.17.0
 [1.16.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.15.0...plancal-v1.16.0

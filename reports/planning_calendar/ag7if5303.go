@@ -29,7 +29,6 @@ func (f *AG7IF5303) generateContext(latex, context string, day calendar.Day) str
 	const fullDateFormat = `Monday, 2 January 2006`
 	const dateFormat = "2006-01-02"
 	const timeFormat = "1504"
-	templ := templates.DayCardData
 
 	fd := day.Date().Format(fullDateFormat)
 	isodate := day.Date().Format(dateFormat)
@@ -48,6 +47,7 @@ func (f *AG7IF5303) generateContext(latex, context string, day calendar.Day) str
 	latex = strings.ReplaceAll(latex, templates.Context, context)
 	latex = strings.ReplaceAll(latex, templates.ISODate, isodate)
 
+	templ := templates.DayCardData
 	templ = strings.ReplaceAll(templ, templates.FullDate, fd)
 
 	templ = strings.ReplaceAll(templ, templates.FiscalTrimester, ft)
@@ -65,10 +65,10 @@ func (f *AG7IF5303) generateContext(latex, context string, day calendar.Day) str
 	templ = strings.ReplaceAll(templ, templates.ISOWeek, cyWeek)
 	templ = strings.ReplaceAll(templ, templates.SunsetTime, ss)
 
-	latex = strings.ReplaceAll(latex, templates.DayLabel, templ)
-
 	// Has to be executed last to avoid premature matches (e.g. w/+YD)
 	templ = strings.ReplaceAll(templ, templates.Year, strconv.Itoa(fy))
+
+	latex = strings.ReplaceAll(latex, templates.DayLabel, templ)
 
 	return latex
 }
