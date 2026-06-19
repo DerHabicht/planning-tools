@@ -3,10 +3,9 @@ package plancal
 import (
 	"fmt"
 
+	"github.com/ag7if/calendar/ag7if"
+	"github.com/ag7if/calendar/calendar"
 	"github.com/fxtlabs/date"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/ag7if"
 )
 
 type Sprint struct {

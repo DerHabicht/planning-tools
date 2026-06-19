@@ -5,7 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/derhabicht/planning-tools/pkg/calendar"
+	"github.com/ag7if/calendar/calendar"
+
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
@@ -113,9 +114,11 @@ func (c *CalendarTabs) FillPages(pages string) string {
 	return pages
 }
 
-func (c *CalendarTabs) LaTeX() string {
+func (c *CalendarTabs) LaTeX() []byte {
 	pages := c.GeneratePages()
 	pages = c.FillPages(pages)
 
-	return strings.Replace(templates.CalendarTabsTemplate, templates.TabPages, pages, 1)
+	tabs := strings.Replace(templates.CalendarTabsTemplate, templates.TabPages, pages, 1)
+
+	return []byte(tabs)
 }

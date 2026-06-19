@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ag7if/calendar/ag7if"
+	"github.com/ag7if/calendar/calendar"
+	"github.com/ag7if/calendar/cap"
 	cards "github.com/ag7if/playing-cards"
 	"github.com/fxtlabs/date"
 	"github.com/pkg/errors"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/ag7if"
-	"github.com/derhabicht/planning-tools/pkg/calendar/cap"
 )
 
 type Week struct {

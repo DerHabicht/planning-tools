@@ -3,12 +3,12 @@ package plancal
 import (
 	"time"
 
+	"github.com/ag7if/calendar/astro"
+	"github.com/ag7if/calendar/calc"
+	"github.com/ag7if/calendar/calendar"
 	"github.com/fxtlabs/date"
 	"github.com/nathan-osman/go-sunrise"
 	"github.com/rickar/cal/v2"
-
-	"github.com/derhabicht/planning-tools/internal/config"
-	"github.com/derhabicht/planning-tools/pkg/calendar"
 )
 
 type Day struct {
@@ -19,16 +19,15 @@ type Day struct {
 }
 
 func NewDay(cal calendar.Calendar, d date.Date) Day {
-	lat := config.GetFloat64(config.HomeLocationLat)
-	long := config.GetFloat64(config.HomeLocationLong)
-	loc := calendar.GetLocation()
+	lat := cal.Location().Latitude().Deg()
+	long := cal.Location().Longitude().Deg()
 	sr, ss := sunrise.SunriseSunset(lat, long, d.Year(), d.Month(), d.Day())
 
 	return Day{
 		calendar: cal,
 		date:     d,
-		sunrise:  sr.In(loc),
-		sunset:   ss.In(loc),
+		sunrise:  sr.In(cal.Location().Timezone()),
+		sunset:   ss.In(cal.Location().Timezone()),
 	}
 }
 
@@ -44,7 +43,7 @@ func (d Day) IsHoliday() (bool, bool, calendar.Holiday) {
 	return d.calendar.HolidayCalendar().IsHoliday(d.date)
 }
 
-func (d Day) IsSolstice() calendar.Solstice {
+func (d Day) IsSolstice() astro.Solstice {
 	return d.calendar.SolsticeTable().IsSolstice(d.date)
 }
 
@@ -64,7 +63,7 @@ func (d Day) WeekdayOccurrenceInMonth() int {
 }
 
 func (d Day) MJD() int {
-	return int(cal.ModifiedJulianDate(calendar.DateToLocalTime(d.date)))
+	return int(cal.ModifiedJulianDate(calc.DateToLocalTime(d.date, d.calendar.Location().Timezone())))
 }
 
 func (d Day) Sunrise() time.Time {

@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ag7if/calendar/calendar"
 	"github.com/pkg/errors"
 
-	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
@@ -29,7 +29,7 @@ func (dl *DayLabels) generateWeekLabel(latex string) string {
 
 	fy, fw := dl.week.FyWeek()
 	cy, cw, cc := dl.week.ISOWeek()
-	cyWeek := fmt.Sprintf("%sW%02d", cc.LaTeX(), cw)
+	cyWeek := fmt.Sprintf("%sW%02d", string(cc.LaTeX()), cw)
 	ft := dl.week.Trimester().Short()
 	fq := dl.week.FiscalQuarter().Short()
 	aq := dl.week.CalendarQuarter().Short()
@@ -57,7 +57,7 @@ func (dl *DayLabels) generateDayLabels(latex string, day calendar.Day, idx int) 
 	fd := day.Date().Format(fullDateFormat)
 	fy, fw := dl.week.FyWeek()
 	cy, cw, cc := dl.week.ISOWeek()
-	cyWeek := fmt.Sprintf("%sW%02d", cc.LaTeX(), cw)
+	cyWeek := fmt.Sprintf("%sW%02d", string(cc.LaTeX()), cw)
 	ft := dl.week.Trimester().Short()
 	fq := dl.week.FiscalQuarter().Short()
 	aq := dl.week.CalendarQuarter().Short()
@@ -86,7 +86,7 @@ func (dl *DayLabels) generateDayLabels(latex string, day calendar.Day, idx int) 
 	return latex
 }
 
-func (dl *DayLabels) LaTeX() string {
+func (dl *DayLabels) LaTeX() []byte {
 	latex := templates.WeekLabels
 
 	latex = dl.generateWeekLabel(latex)
@@ -97,5 +97,5 @@ func (dl *DayLabels) LaTeX() string {
 		day = day.Next()
 	}
 
-	return latex
+	return []byte(latex)
 }

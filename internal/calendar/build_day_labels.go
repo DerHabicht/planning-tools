@@ -3,15 +3,15 @@ package calendar
 import (
 	"fmt"
 
+	"github.com/ag7if/calendar/ag7if"
+	"github.com/ag7if/calendar/calendar"
 	"github.com/ag7if/go-files"
 	"github.com/ag7if/go-latex"
 	"github.com/fxtlabs/date"
 	"github.com/pkg/errors"
 
 	"github.com/derhabicht/planning-tools/internal/config"
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/ag7if"
-	"github.com/derhabicht/planning-tools/pkg/calendar/plancal"
+	"github.com/derhabicht/planning-tools/pkg/plancal"
 	"github.com/derhabicht/planning-tools/reports/planning_calendar"
 )
 
@@ -60,13 +60,7 @@ func generateCardLaTeX(cal calendar.Calendar, year, week int, contexts []string,
 	return nil
 }
 
-func buildLabels(year, week int, outputFile files.File) error {
-	bd, err := date.ParseISO(config.GetString(config.Birthday))
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	cal := plancal.NewCalendar(year, bd)
-
+func buildLabels(cal *plancal.Calendar, year, week int, outputFile files.File) error {
 	compiler, err := configureLaTeXCompiler()
 	if err != nil {
 		return errors.WithStack(err)
@@ -85,13 +79,7 @@ func buildLabels(year, week int, outputFile files.File) error {
 	return nil
 }
 
-func buildCards(year, week int, contexts []string, outputFile files.File) error {
-	bd, err := date.ParseISO(config.GetString(config.Birthday))
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	cal := plancal.NewCalendar(year, bd)
-
+func buildCards(cal *plancal.Calendar, year, week int, contexts []string, outputFile files.File) error {
 	compiler, err := configureLaTeXCompiler()
 	if err != nil {
 		return errors.WithStack(err)
@@ -111,6 +99,16 @@ func buildCards(year, week int, contexts []string, outputFile files.File) error 
 }
 
 func BuildDL(year, period int, sprint, cards, labels bool, contexts []string) error {
+	loc, err := config.GetLocation(config.HomeLocation)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	bd, err := date.ParseISO(config.GetString(config.Birthday))
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	cal := plancal.NewCalendar(year, loc, bd)
+
 	var weeks []int
 
 	if sprint {
@@ -128,7 +126,7 @@ func BuildDL(year, period int, sprint, cards, labels bool, contexts []string) er
 				return errors.WithMessage(err, "failed to create output file")
 			}
 
-			err = buildCards(year, w, contexts, outputFile)
+			err = buildCards(cal, year, w, contexts, outputFile)
 			if err != nil {
 				return errors.WithMessage(err, "failed to build cards")
 			}
@@ -142,7 +140,7 @@ func BuildDL(year, period int, sprint, cards, labels bool, contexts []string) er
 				return errors.WithMessage(err, "failed to create output file")
 			}
 
-			err = buildLabels(year, w, outputFile)
+			err = buildLabels(cal, year, w, outputFile)
 			if err != nil {
 				return errors.WithMessage(err, "failed to build labels")
 			}

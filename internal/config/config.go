@@ -1,9 +1,12 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
+	"github.com/ag7if/calendar/location"
 	"github.com/ag7if/go-files"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
@@ -11,8 +14,8 @@ import (
 
 // Configuration keys
 const (
-	HomeLocationLat      = "home_location.lat"
-	HomeLocationLong     = "home_location.long"
+	HomeLocation         = "home_location"
+	HomeLocationMGRS     = "home_location.mgrs"
 	HomeLocationTz       = "home_location.tz"
 	CoverLogo            = "cover_logo"
 	Birthday             = "birthday"
@@ -106,4 +109,26 @@ func GetStringSlice(key string) []string {
 // GetStringMapString wraps Viper's GetStringMapString function.
 func GetStringMapString(key string) map[string]string {
 	return viper.GetStringMapString(key)
+}
+
+func GetLocation(key string) (location.Location, error) {
+	const nameSubKey = "name"
+	const mgrsSubKey = "mgrs"
+	const tzSubKey = "tz"
+
+	name := GetString(fmt.Sprintf("%s.%s", key, nameSubKey))
+	mgrs := GetString(fmt.Sprintf("%s.%s", key, mgrsSubKey))
+	tz := GetString(fmt.Sprintf("%s.%s", key, tzSubKey))
+
+	timezone, err := time.LoadLocation(tz)
+	if err != nil {
+		return location.Location{}, errors.WithMessage(err, "failed to load timezone")
+	}
+
+	loc, err := location.FromMGRS(name, mgrs, timezone)
+	if err != nil {
+		return location.Location{}, errors.WithMessage(err, "failed to load location")
+	}
+
+	return loc, nil
 }

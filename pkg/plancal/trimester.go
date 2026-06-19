@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ag7if/calendar/calendar"
+	"github.com/ag7if/calendar/cap"
 	"github.com/dustin/go-humanize"
 	"github.com/fxtlabs/date"
 	"github.com/pkg/errors"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/cap"
 )
 
 type Trimester struct {

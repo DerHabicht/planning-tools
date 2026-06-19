@@ -4,12 +4,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ag7if/calendar/location"
 	"github.com/fxtlabs/date"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCalendar_FetchWeek(t *testing.T) {
-	cal := NewCalendar(2025, date.New(1988, time.September, 27))
+	loc, err := location.FromMGRS("KSLC", "12TVL1750415720", location.AcpT)
+	assert.NoError(t, err)
+
+	cal := NewCalendar(2025, loc, date.New(1988, time.September, 27))
 
 	wk, err := cal.FetchWeek(2025, 27)
 	assert.NoError(t, err)

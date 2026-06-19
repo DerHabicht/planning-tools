@@ -3,9 +3,9 @@ package planning_calendar
 import (
 	"strings"
 
-	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
+	"github.com/ag7if/calendar/calendar"
 
-	"github.com/derhabicht/planning-tools/pkg/calendar"
+	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
 const quarterMonthCount = 3
@@ -33,7 +33,7 @@ func NewQuarter(calendar, fiscal calendar.Quarter, minimonths map[string]Minimon
 	}
 }
 
-func (q *Quarter) LaTeX() string {
+func (q *Quarter) LaTeX() []byte {
 	latex := templates.QuarterTemplate
 
 	latex = strings.Replace(latex, templates.FullFiscalQuarter, q.fiscalQuarter.Full(), 1)
@@ -43,5 +43,5 @@ func (q *Quarter) LaTeX() string {
 		latex = strings.Replace(latex, templates.MinimonthMacro(i+1), mm.LatexCommand(), 1)
 	}
 
-	return latex
+	return []byte(latex)
 }

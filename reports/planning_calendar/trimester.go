@@ -3,9 +3,9 @@ package planning_calendar
 import (
 	"strings"
 
-	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
+	"github.com/ag7if/calendar/calendar"
 
-	"github.com/derhabicht/planning-tools/pkg/calendar"
+	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
 const trimesterMonthCount = 4
@@ -30,7 +30,7 @@ func NewTrimester(trimester calendar.Trimester, minimonths map[string]Minimonth)
 	}
 }
 
-func (t *Trimester) LaTeX() string {
+func (t *Trimester) LaTeX() []byte {
 	latex := templates.TrimesterTemplate
 
 	latex = strings.Replace(latex, templates.FullTrimester, t.trimester.Full(), 1)
@@ -39,5 +39,5 @@ func (t *Trimester) LaTeX() string {
 		latex = strings.Replace(latex, templates.MinimonthMacro(i+1), mm.LatexCommand(), 1)
 	}
 
-	return latex
+	return []byte(latex)
 }

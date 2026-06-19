@@ -5,9 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ag7if/calendar/calendar"
 	"github.com/fxtlabs/date"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
 )
 
 type Month struct {

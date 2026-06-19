@@ -6,10 +6,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
+	"github.com/ag7if/calendar/astro"
+	"github.com/ag7if/calendar/calendar"
+	"github.com/ag7if/calendar/doomsday"
 
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/doomsday"
+	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
 const monthWeekCount = 6
@@ -76,9 +77,9 @@ func (m *Month) generateWeekData(week calendar.Week, latex string) string {
 
 	cyWeekStr := `\colorbox{%s}{\textcolor{white}{%sW%02d}}`
 	if cyWeek%2 == 0 {
-		latex = strings.Replace(latex, templates.ISOWeek, fmt.Sprintf(cyWeekStr, "blue", card.LaTeX(), cyWeek), 1)
+		latex = strings.Replace(latex, templates.ISOWeek, fmt.Sprintf(cyWeekStr, "blue", string(card.LaTeX()), cyWeek), 1)
 	} else {
-		latex = strings.Replace(latex, templates.ISOWeek, fmt.Sprintf(cyWeekStr, "red", card.LaTeX(), cyWeek), 1)
+		latex = strings.Replace(latex, templates.ISOWeek, fmt.Sprintf(cyWeekStr, "red", string(card.LaTeX()), cyWeek), 1)
 	}
 
 	week = week.Next()
@@ -102,8 +103,8 @@ func (m *Month) generateDayData(week calendar.Week, latex string, firstWeek bool
 		}
 
 		solstice := d.IsSolstice()
-		if solstice != calendar.NoSolstice {
-			dayStr = fmt.Sprintf(`%s\hfill{}%s`, solstice.LaTeX(), dayStr)
+		if solstice != astro.NoSolstice {
+			dayStr = fmt.Sprintf(`%s\hfill{}%s`, string(solstice.LaTeX()), dayStr)
 		}
 
 		day = strings.Replace(day, templates.MonthDay, dayStr, 1)
@@ -162,7 +163,7 @@ func (m *Month) generateWeeks(latex string) string {
 	return latex
 }
 
-func (m *Month) LaTeX() string {
+func (m *Month) LaTeX() []byte {
 	latex := templates.MonthTemplate
 
 	latex = strings.Replace(latex, templates.MonthNameFull, m.month.Full(), 1)
@@ -170,5 +171,5 @@ func (m *Month) LaTeX() string {
 	latex = m.generateWeekdayHeader(latex)
 	latex = m.generateWeeks(latex)
 
-	return latex
+	return []byte(latex)
 }

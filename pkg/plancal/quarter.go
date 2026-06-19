@@ -3,12 +3,11 @@ package plancal
 import (
 	"fmt"
 
+	"github.com/ag7if/calendar/ag7if"
+	"github.com/ag7if/calendar/calendar"
+	"github.com/ag7if/calendar/cap"
 	"github.com/dustin/go-humanize"
 	"github.com/pkg/errors"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/ag7if"
-	"github.com/derhabicht/planning-tools/pkg/calendar/cap"
 )
 
 type QT int

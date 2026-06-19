@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ag7if/calendar/calendar"
 	"github.com/pkg/errors"
 
-	"github.com/derhabicht/planning-tools/pkg/calendar"
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
 )
 
@@ -34,7 +34,7 @@ func (f *AG7IF5303) generateContext(latex, context string, day calendar.Day) str
 	isodate := day.Date().Format(dateFormat)
 	fy, fw := f.week.FyWeek()
 	cy, cw, cc := f.week.ISOWeek()
-	cyWeek := fmt.Sprintf("%sW%02d", cc.LaTeX(), cw)
+	cyWeek := fmt.Sprintf("%sW%02d", string(cc.LaTeX()), cw)
 	ft := f.week.Trimester().Short()
 	fq := f.week.FiscalQuarter().Short()
 	aq := f.week.CalendarQuarter().Short()
@@ -96,7 +96,7 @@ func (f *AG7IF5303) generateDayCard(latex string, day calendar.Day, idx int) str
 	return latex
 }
 
-func (f *AG7IF5303) LaTeX() string {
+func (f *AG7IF5303) LaTeX() []byte {
 	latex := templates.DayCards
 
 	day := f.week.StartDay()
@@ -105,5 +105,5 @@ func (f *AG7IF5303) LaTeX() string {
 		day = day.Next()
 	}
 
-	return latex
+	return []byte(latex)
 }

@@ -1,4 +1,4 @@
-package holidays
+package plancal
 
 import (
 	"time"
@@ -12,7 +12,7 @@ import (
 
 // TODO: Break this out into a config file
 
-var Ag7ifHolidays map[string]*cal.Holiday = map[string]*cal.Holiday{
+var ag7ifHolidays map[string]*cal.Holiday = map[string]*cal.Holiday{
 	"NYD": us.NewYear,
 	"CHHBD": {
 		Name:      "Chilton Hawk's Birthday",

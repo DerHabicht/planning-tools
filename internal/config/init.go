@@ -8,8 +8,7 @@ import (
 )
 
 func init() {
-	SetDefault(HomeLocationLat, 0.0)
-	SetDefault(HomeLocationLong, 0.0)
+	SetDefault(HomeLocationMGRS, "31NAA6602100000")
 	SetDefault(HomeLocationTz, "UTC")
 	SetDefault(CoverLogo, "")
 	SetDefault(VisualCrossingAPIKey, "")

@@ -3,15 +3,15 @@ package plancal
 import (
 	"time"
 
+	"github.com/ag7if/calendar/astro"
+	"github.com/ag7if/calendar/calendar"
+	"github.com/ag7if/calendar/holidays"
+	"github.com/ag7if/calendar/location"
+	"github.com/ag7if/calendar/natyr"
 	"github.com/fxtlabs/date"
 	"github.com/snabb/isoweek"
 	"github.com/soniakeys/meeus/v3/julian"
 	"github.com/soniakeys/meeus/v3/moonphase"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/holidays"
-	"github.com/derhabicht/planning-tools/pkg/calendar/natyr"
-	"github.com/derhabicht/planning-tools/pkg/calendar/solstice_table"
 )
 
 const julianPeriodOffest = 4713
@@ -22,11 +22,12 @@ type Calendar struct {
 	lunarCalibrationDate date.Date
 	solsticeTable        calendar.SolsticeTable
 	holidayCalendar      calendar.HolidayCalendar
+	location             location.Location
 }
 
-func NewCalendar(fiscalYear int, birthday date.Date) *Calendar {
-	st := solstice_table.NewSolsticeTable(fiscalYear)
-	hc := holidays.NewHolidayCalendar()
+func NewCalendar(fiscalYear int, location location.Location, birthday date.Date) *Calendar {
+	st := astro.NewSolsticeTable(fiscalYear, location.Timezone())
+	hc := holidays.NewHolidayCalendar(ag7ifHolidays, location.Timezone())
 
 	return &Calendar{
 		fiscalYear:           fiscalYear,
@@ -34,6 +35,7 @@ func NewCalendar(fiscalYear int, birthday date.Date) *Calendar {
 		lunarCalibrationDate: computeLunarCalibrationDate(fiscalYear),
 		solsticeTable:        st,
 		holidayCalendar:      hc,
+		location:             location,
 	}
 }
 
@@ -116,4 +118,8 @@ func (c *Calendar) FetchWeek(year, week int) (calendar.Week, error) {
 	wk := NewWeek(c, date.New(y, m, d))
 
 	return wk, nil
+}
+
+func (c *Calendar) Location() location.Location {
+	return c.location
 }

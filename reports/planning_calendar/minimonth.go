@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ag7if/calendar/ag7if"
+	"github.com/ag7if/calendar/calendar"
+	"github.com/ag7if/calendar/doomsday"
 	"github.com/fxtlabs/date"
 
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
-	"github.com/derhabicht/planning-tools/pkg/calendar/doomsday"
 )
 
 const minimonthCount = 33 // 32 months displayed in mini planning_calendar, plus September of the previous FY
@@ -79,7 +79,7 @@ func (mm *Minimonth) generateWeekHeader(latex string) string {
 
 	for i := 0; i < 7; i++ {
 		weekday := time.Weekday(i)
-		letter := calendar.WeekdayLetter(weekday)
+		letter := ag7if.WeekdayLetter(weekday)
 
 		repl := letter
 		if weekday == mm.doomsday {
@@ -126,7 +126,7 @@ func (mm *Minimonth) LatexCommand() string {
 	return mm.latexCommand
 }
 
-func (mm *Minimonth) LaTeX() string {
+func (mm *Minimonth) LaTeX() []byte {
 	latex := templates.MinimonthTemplate
 
 	latex = strings.Replace(latex, templates.MinimonthCommand, mm.latexCommand, 1)
@@ -134,5 +134,5 @@ func (mm *Minimonth) LaTeX() string {
 	latex = mm.generateWeekHeader(latex)
 	latex = mm.generateWeeks(latex)
 
-	return latex
+	return []byte(latex)
 }

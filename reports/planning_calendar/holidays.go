@@ -4,11 +4,10 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/ag7if/calendar/calendar"
 	"github.com/fxtlabs/date"
 
 	"github.com/derhabicht/planning-tools/reports/planning_calendar/templates"
-
-	"github.com/derhabicht/planning-tools/pkg/calendar"
 )
 
 type HolidayData struct {
@@ -42,7 +41,7 @@ func (hd HolidayData) String() string {
 	return hd.abbreviation
 }
 
-func (hd HolidayData) LaTeX() string {
+func (hd HolidayData) LaTeX() []byte {
 	const layout = `02 Jan`
 	latex := templates.HolidayAbbvRowTemplate
 
@@ -63,7 +62,7 @@ func (hd HolidayData) LaTeX() string {
 		latex = strings.Replace(latex, templates.HolidayObserved2, hd.cy2act.Format(layout), 2)
 	}
 
-	return latex
+	return []byte(latex)
 }
 
 type HolidayTables struct {
@@ -95,10 +94,12 @@ func (ht HolidayTables) TableByOccurrence(latex string) string {
 		return strings.Compare(a.String(), b.String())
 	})
 
-	table := ""
+	var rawTable []byte
 	for _, holiday := range ht.holidays {
-		table += holiday.LaTeX()
+		rawTable = append(rawTable, holiday.LaTeX()...)
 	}
+
+	table := string(rawTable)
 
 	latex = strings.Replace(latex, templates.HolidayTableByOccurrence, table, 1)
 
@@ -110,10 +111,12 @@ func (ht HolidayTables) TableByAbbreviation(latex string) string {
 		return strings.Compare(a.String(), b.String())
 	})
 
-	table := ""
+	var rawTable []byte
 	for _, holiday := range ht.holidays {
-		table += holiday.LaTeX()
+		rawTable = append(rawTable, holiday.LaTeX()...)
 	}
+
+	table := string(rawTable)
 
 	latex = strings.Replace(latex, templates.HolidayTableByAbbreviation, table, 1)
 

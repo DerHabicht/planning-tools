@@ -134,7 +134,7 @@ func (lv *PlanWxReport) AddWxData(locationKey string, date metoc.Dtg, data metoc
 	lv.wxDataRows[locationKey] += row
 }
 
-func (lv *PlanWxReport) LaTeX() string {
+func (lv *PlanWxReport) LaTeX() []byte {
 	loc := ""
 
 	for k, v := range lv.locations {
@@ -148,5 +148,7 @@ func (lv *PlanWxReport) LaTeX() string {
 
 	out := Template
 	out = strings.Replace(out, "%{GENERATED_DTG}", lv.generated.Full(), -1)
-	return strings.Replace(out, "%{LOCATION_DATA}", loc, -1)
+	out = strings.Replace(out, "%{LOCATION_DATA}", loc, -1)
+
+	return []byte(out)
 }
