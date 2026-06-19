@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
-- Setting home location in config uses MGRS
 
 ### Deprecated
 
@@ -20,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [1.19.0]
+
+### Changed
+- Setting home location in config uses MGRS
 
 ## [1.18.1]
 
@@ -130,7 +134,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [1.1.0]
 - [1.0.0]
 
-[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.1...HEAD
+[unreleased]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.19.0...HEAD
+[1.19.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.1...plancal-v1.19.0
 [1.18.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.18.0...plancal-v1.18.1
 [1.18.0]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.1...plancal-v1.18.0
 [1.17.1]: https://github.com/DerHabicht/planning-tools/compare/plancal-v1.17.0...plancal-v1.17.1
